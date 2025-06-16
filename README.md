@@ -1,6 +1,6 @@
 # @docusign/iam-sdk
 
-Developer-friendly & type-safe Typescript SDK specifically catered to leverage *@docusign/iam-sdk* API.
+Developer-friendly & type-safe TypeScript SDK specifically catered to leverage *@docusign/iam-sdk* API.
 
 <div align="left">
     <a href="https://opensource.org/licenses/MIT">
@@ -11,7 +11,7 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
 
 ## Summary
 
-This SDK enables Typescript and Node.js developers to abstract and simplify the
+This SDK enables TypesSript and Node.js developers to abstract and simplify the
 use of the Docusign IAM APIs.
 
 By installing this nuget package, developers can then use TypeScript objects and
