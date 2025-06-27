@@ -7,10 +7,10 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+/**
+ * A message confirming the instance was canceled, including the instance and workflow IDs
+ */
 export type CancelWorkflowInstanceResponse = {
-  /**
-   * A message confirming the instance was canceled, including the instance and workflow IDs
-   */
   message?: string | undefined;
 };
 

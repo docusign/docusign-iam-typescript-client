@@ -29,3 +29,13 @@ Based on:
 - [typescript v1.0.0-beta.1] .
 ### Releases
 - [NPM v1.0.0-beta.1] https://www.npmjs.com/package/@docusign/iam-sdk/v/1.0.0-beta.1 - .
+
+## 2025-06-27 13:30:01
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.570.2 (2.638.5) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.0.0-beta.2] .
+### Releases
+- [NPM v1.0.0-beta.2] https://www.npmjs.com/package/@docusign/iam-sdk/v/1.0.0-beta.2 - .

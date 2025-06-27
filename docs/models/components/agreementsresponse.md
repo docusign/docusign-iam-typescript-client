@@ -6,11 +6,11 @@ A collection of agreements.
 
 ```typescript
 import { AgreementsResponse } from "@docusign/iam-sdk/models/components";
-import { RFCDate } from "@docusign/iam-sdk/types";
 
 let value: AgreementsResponse = {
   data: [
     {
+      id: "<id>",
       type: "Master Service Agreement",
       category: "BusinessServices",
       summary:
@@ -24,9 +24,9 @@ let value: AgreementsResponse = {
         renewalExtensionPeriod: "P30D",
         terminationPeriodForCause: "P6M",
         terminationPeriodForConvenience: "P6M",
-        effectiveDate: new RFCDate("2025-01-01T00:00:00+02:00"),
-        expirationDate: new RFCDate("2025-12-31T23:59:00+02:00"),
-        executionDate: new RFCDate("2024-12-16T09:13:22+02:00"),
+        effectiveDate: new Date("2025-01-01T00:00:00+02:00"),
+        expirationDate: new Date("2025-12-31"),
+        executionDate: new Date("2024-12-16T09:13:22+02:00"),
         termLength: "P30D",
       },
       languages: [

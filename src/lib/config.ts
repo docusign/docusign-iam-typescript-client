@@ -19,8 +19,8 @@ export const ServerProd = "prod";
  * Contains the list of servers available to the SDK
  */
 export const ServerList = {
-  [ServerDemo]: "https://api-d.docusign.com/v1",
-  [ServerProd]: "https://api.docusign.com/v1",
+  [ServerDemo]: "https://api-d.docusign.com",
+  [ServerProd]: "https://api.docusign.com",
 } as const;
 
 export type SDKOptions = {
@@ -64,8 +64,8 @@ export function serverURLFromOptions(options: SDKOptions): URL | null {
 export const SDK_METADATA = {
   language: "typescript",
   openapiDocVersion: "v1",
-  sdkVersion: "1.0.0-beta.1",
-  genVersion: "2.628.0",
+  sdkVersion: "1.0.0-beta.2",
+  genVersion: "2.638.5",
   userAgent:
-    "speakeasy-sdk/typescript 1.0.0-beta.1 2.628.0 v1 @docusign/iam-sdk",
+    "speakeasy-sdk/typescript 1.0.0-beta.2 2.638.5 v1 @docusign/iam-sdk",
 } as const;

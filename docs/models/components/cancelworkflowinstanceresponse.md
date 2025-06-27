@@ -1,5 +1,7 @@
 # CancelWorkflowInstanceResponse
 
+A message confirming the instance was canceled, including the instance and workflow IDs
+
 ## Example Usage
 
 ```typescript
@@ -10,6 +12,6 @@ let value: CancelWorkflowInstanceResponse = {};
 
 ## Fields
 
-| Field                                                                                   | Type                                                                                    | Required                                                                                | Description                                                                             |
-| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `message`                                                                               | *string*                                                                                | :heavy_minus_sign:                                                                      | A message confirming the instance was canceled, including the instance and workflow IDs |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `message`          | *string*           | :heavy_minus_sign: | N/A                |

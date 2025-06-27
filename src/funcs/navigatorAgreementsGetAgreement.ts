@@ -119,7 +119,7 @@ async function $do(
     }),
   };
 
-  const path = pathToFunc("/accounts/{accountId}/agreements/{agreementId}")(
+  const path = pathToFunc("/v1/accounts/{accountId}/agreements/{agreementId}")(
     pathParams,
   );
 
@@ -199,9 +199,9 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, components.Agreement$inboundSchema),
-    M.jsonErr([400, 401, 403, 404], errors.ErrorT$inboundSchema),
+    M.jsonErr([400, 403, 404], errors.ErrorT$inboundSchema),
     M.jsonErr(500, errors.ErrorT$inboundSchema),
-    M.fail("4XX"),
+    M.fail([401, "4XX"]),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
   if (!result.ok) {

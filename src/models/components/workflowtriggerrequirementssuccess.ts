@@ -72,15 +72,6 @@ export type TriggerHttpConfig = {
 };
 
 /**
- * The data type expected for the input field. This indicates whether the input should
- *
- * @remarks
- * be a string, number, boolean, object, or array, ensuring the data is passed in the
- * correct format.
- */
-export type FieldDataType = {};
-
-/**
  * The default value for the input field if one is provided. This can be a string, number,
  *
  * @remarks
@@ -112,7 +103,7 @@ export type TriggerInputSchema = {
    * be a string, number, boolean, object, or array, ensuring the data is passed in the
    * correct format.
    */
-  fieldDataType?: FieldDataType | undefined;
+  fieldDataType?: string | undefined;
   /**
    * The default value for the input field if one is provided. This can be a string, number,
    *
@@ -133,7 +124,7 @@ export type TriggerInputSchema = {
  * Control information and metadata for the response.
  */
 export type WorkflowTriggerRequirementsSuccess = {
-  triggerId?: string | null | undefined;
+  triggerId?: string | undefined;
   /**
    * The type of event that triggers the workflow. In this case, the workflow is initiated
    *
@@ -169,11 +160,11 @@ export type WorkflowTriggerRequirementsSuccess = {
   /**
    * Unique identifier for the request, useful for tracking and debugging.
    */
-  requestId?: string | null | undefined;
+  requestId: string | null;
   /**
    * The timestamp indicating when the response was generated.
    */
-  responseTimestamp?: Date | null | undefined;
+  responseTimestamp: Date | null;
   /**
    * The duration of time, in milliseconds, that the server took to process and respond
    *
@@ -181,7 +172,7 @@ export type WorkflowTriggerRequirementsSuccess = {
    * to the request. This is measured from the time the server received the request
    * until the time the response was sent.
    */
-  responseDurationMs?: number | null | undefined;
+  responseDurationMs: number | null;
 };
 
 /** @internal */
@@ -282,50 +273,6 @@ export function triggerHttpConfigFromJSON(
 }
 
 /** @internal */
-export const FieldDataType$inboundSchema: z.ZodType<
-  FieldDataType,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
-
-/** @internal */
-export type FieldDataType$Outbound = {};
-
-/** @internal */
-export const FieldDataType$outboundSchema: z.ZodType<
-  FieldDataType$Outbound,
-  z.ZodTypeDef,
-  FieldDataType
-> = z.object({});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace FieldDataType$ {
-  /** @deprecated use `FieldDataType$inboundSchema` instead. */
-  export const inboundSchema = FieldDataType$inboundSchema;
-  /** @deprecated use `FieldDataType$outboundSchema` instead. */
-  export const outboundSchema = FieldDataType$outboundSchema;
-  /** @deprecated use `FieldDataType$Outbound` instead. */
-  export type Outbound = FieldDataType$Outbound;
-}
-
-export function fieldDataTypeToJSON(fieldDataType: FieldDataType): string {
-  return JSON.stringify(FieldDataType$outboundSchema.parse(fieldDataType));
-}
-
-export function fieldDataTypeFromJSON(
-  jsonString: string,
-): SafeParseResult<FieldDataType, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => FieldDataType$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'FieldDataType' from JSON`,
-  );
-}
-
-/** @internal */
 export const DefaultValue$inboundSchema: z.ZodType<
   DefaultValue,
   z.ZodTypeDef,
@@ -390,7 +337,7 @@ export const TriggerInputSchema$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   field_name: z.string().optional(),
-  field_data_type: z.lazy(() => FieldDataType$inboundSchema).optional(),
+  field_data_type: z.string().optional(),
   default_value: z.union([
     z.string(),
     z.number(),
@@ -409,7 +356,7 @@ export const TriggerInputSchema$inboundSchema: z.ZodType<
 /** @internal */
 export type TriggerInputSchema$Outbound = {
   field_name?: string | undefined;
-  field_data_type?: FieldDataType$Outbound | undefined;
+  field_data_type?: string | undefined;
   default_value?:
     | string
     | number
@@ -426,7 +373,7 @@ export const TriggerInputSchema$outboundSchema: z.ZodType<
   TriggerInputSchema
 > = z.object({
   fieldName: z.string().optional(),
-  fieldDataType: z.lazy(() => FieldDataType$outboundSchema).optional(),
+  fieldDataType: z.string().optional(),
   defaultValue: z.union([
     z.string(),
     z.number(),
@@ -479,9 +426,7 @@ export const WorkflowTriggerRequirementsSuccess$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  trigger_id: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
+  trigger_id: z.string().optional(),
   trigger_event_type: TriggerEventType$inboundSchema.optional(),
   trigger_http_config: z.lazy(() => TriggerHttpConfig$inboundSchema).optional(),
   trigger_input_schema: z.array(z.lazy(() => TriggerInputSchema$inboundSchema))
@@ -489,11 +434,11 @@ export const WorkflowTriggerRequirementsSuccess$inboundSchema: z.ZodType<
   metadata: ResourceMetadata$inboundSchema.optional(),
   page_limit: z.nullable(z.number().int()).optional(),
   page_token_next: z.nullable(z.string()).optional(),
-  request_id: z.nullable(z.string()).optional(),
+  request_id: z.nullable(z.string()),
   response_timestamp: z.nullable(
     z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  response_duration_ms: z.nullable(z.number().int()).optional(),
+  ),
+  response_duration_ms: z.nullable(z.number().int()),
 }).transform((v) => {
   return remap$(v, {
     "trigger_id": "triggerId",
@@ -510,16 +455,16 @@ export const WorkflowTriggerRequirementsSuccess$inboundSchema: z.ZodType<
 
 /** @internal */
 export type WorkflowTriggerRequirementsSuccess$Outbound = {
-  trigger_id: string | null;
+  trigger_id?: string | undefined;
   trigger_event_type?: string | undefined;
   trigger_http_config?: TriggerHttpConfig$Outbound | undefined;
   trigger_input_schema?: Array<TriggerInputSchema$Outbound> | undefined;
   metadata?: ResourceMetadata$Outbound | undefined;
   page_limit?: number | null | undefined;
   page_token_next?: string | null | undefined;
-  request_id?: string | null | undefined;
-  response_timestamp?: string | null | undefined;
-  response_duration_ms?: number | null | undefined;
+  request_id: string | null;
+  response_timestamp: string | null;
+  response_duration_ms: number | null;
 };
 
 /** @internal */
@@ -528,9 +473,7 @@ export const WorkflowTriggerRequirementsSuccess$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   WorkflowTriggerRequirementsSuccess
 > = z.object({
-  triggerId: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
+  triggerId: z.string().optional(),
   triggerEventType: TriggerEventType$outboundSchema.optional(),
   triggerHttpConfig: z.lazy(() => TriggerHttpConfig$outboundSchema).optional(),
   triggerInputSchema: z.array(z.lazy(() => TriggerInputSchema$outboundSchema))
@@ -538,10 +481,9 @@ export const WorkflowTriggerRequirementsSuccess$outboundSchema: z.ZodType<
   metadata: ResourceMetadata$outboundSchema.optional(),
   pageLimit: z.nullable(z.number().int()).optional(),
   pageTokenNext: z.nullable(z.string()).optional(),
-  requestId: z.nullable(z.string()).optional(),
-  responseTimestamp: z.nullable(z.date().transform(v => v.toISOString()))
-    .optional(),
-  responseDurationMs: z.nullable(z.number().int()).optional(),
+  requestId: z.nullable(z.string()),
+  responseTimestamp: z.nullable(z.date().transform(v => v.toISOString())),
+  responseDurationMs: z.nullable(z.number().int()),
 }).transform((v) => {
   return remap$(v, {
     triggerId: "trigger_id",

@@ -15,12 +15,12 @@ import {
 } from "./resourcemetadata.js";
 
 export type Workflow = {
-  id?: string | null | undefined;
+  id?: string | undefined;
   /**
    * A user-provided name for this workflow
    */
   name?: string | undefined;
-  accountId?: string | null | undefined;
+  accountId?: string | undefined;
   /**
    * Indicates the readiness and deployment status of a workflow
    */
@@ -34,11 +34,9 @@ export const Workflow$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  id: z.nullable(z.string().default("00000000-0000-0000-0000-000000000000")),
+  id: z.string().optional(),
   name: z.string().optional(),
-  account_id: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
+  account_id: z.string().optional(),
   status: z.string().optional(),
   metadata: ResourceMetadata$inboundSchema.optional(),
 }).transform((v) => {
@@ -49,9 +47,9 @@ export const Workflow$inboundSchema: z.ZodType<
 
 /** @internal */
 export type Workflow$Outbound = {
-  id: string | null;
+  id?: string | undefined;
   name?: string | undefined;
-  account_id: string | null;
+  account_id?: string | undefined;
   status?: string | undefined;
   metadata?: ResourceMetadata$Outbound | undefined;
 };
@@ -62,11 +60,9 @@ export const Workflow$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   Workflow
 > = z.object({
-  id: z.nullable(z.string().default("00000000-0000-0000-0000-000000000000")),
+  id: z.string().optional(),
   name: z.string().optional(),
-  accountId: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
+  accountId: z.string().optional(),
   status: z.string().optional(),
   metadata: ResourceMetadata$outboundSchema.optional(),
 }).transform((v) => {

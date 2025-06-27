@@ -1,6 +1,6 @@
 # @docusign/iam-sdk
 
-Developer-friendly & type-safe TypeScript SDK specifically catered to leverage *@docusign/iam-sdk* API.
+Developer-friendly & type-safe Typescript SDK specifically catered to leverage *@docusign/iam-sdk* API.
 
 <div align="left">
     <a href="https://opensource.org/licenses/MIT">
@@ -11,7 +11,7 @@ Developer-friendly & type-safe TypeScript SDK specifically catered to leverage *
 
 ## Summary
 
-This SDK enables TypesSript and Node.js developers to abstract and simplify the
+This SDK enables Typescript and Node.js developers to abstract and simplify the
 use of the Docusign IAM APIs.
 
 By installing this nuget package, developers can then use TypeScript objects and
@@ -209,6 +209,8 @@ run();
 * [getWorkflowsList](docs/sdks/workflows/README.md#getworkflowslist) - Retrieve a list of available Maestro workflows
 * [getWorkflowTriggerRequirements](docs/sdks/workflows/README.md#getworkflowtriggerrequirements) - Retrieve trigger requirements for a specific Maestro workflow
 * [triggerWorkflow](docs/sdks/workflows/README.md#triggerworkflow) - Trigger a new instance of a Maestro workflow
+* [pauseNewWorkflowInstances](docs/sdks/workflows/README.md#pausenewworkflowinstances) - Pause an Active Workflow
+* [resumePausedWorkflow](docs/sdks/workflows/README.md#resumepausedworkflow) - Resume a Paused Workflow
 
 ### [navigator](docs/sdks/navigator/README.md)
 
@@ -249,6 +251,8 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`maestroWorkflowInstanceManagementGetWorkflowInstancesList`](docs/sdks/workflowinstancemanagement/README.md#getworkflowinstanceslist) - Retrieve All Workflow Instances
 - [`maestroWorkflowsGetWorkflowsList`](docs/sdks/workflows/README.md#getworkflowslist) - Retrieve a list of available Maestro workflows
 - [`maestroWorkflowsGetWorkflowTriggerRequirements`](docs/sdks/workflows/README.md#getworkflowtriggerrequirements) - Retrieve trigger requirements for a specific Maestro workflow
+- [`maestroWorkflowsPauseNewWorkflowInstances`](docs/sdks/workflows/README.md#pausenewworkflowinstances) - Pause an Active Workflow
+- [`maestroWorkflowsResumePausedWorkflow`](docs/sdks/workflows/README.md#resumepausedworkflow) - Resume a Paused Workflow
 - [`maestroWorkflowsTriggerWorkflow`](docs/sdks/workflows/README.md#triggerworkflow) - Trigger a new instance of a Maestro workflow
 - [`navigatorAgreementsCreateAgreementSummary`](docs/sdks/agreements/README.md#createagreementsummary) - Create an AI-generated summary of an agreement document
 - [`navigatorAgreementsDeleteAgreement`](docs/sdks/agreements/README.md#deleteagreement) - Delete a specific agreement
@@ -397,8 +401,8 @@ run();
 
 
 **Inherit from [`IamClientError`](./src/models/errors/iamclienterror.ts)**:
-* [`ErrorT`](docs/models/errors/errort.md): Bad Request - The request could not be understood or was missing required parameters. Applicable to 8 of 16 methods.*
-* [`OAuthErrorResponse`](docs/models/errors/oautherrorresponse.md): Status code `400`. Applicable to 5 of 16 methods.*
+* [`ErrorT`](docs/models/errors/errort.md): Bad Request - The request could not be understood or was missing required parameters. Applicable to 11 of 18 methods.*
+* [`OAuthErrorResponse`](docs/models/errors/oautherrorresponse.md): Status code `400`. Applicable to 5 of 18 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
@@ -413,10 +417,10 @@ run();
 
 You can override the default server globally by passing a server name to the `server: keyof typeof ServerList` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the names associated with the available servers:
 
-| Name   | Server                          | Description |
-| ------ | ------------------------------- | ----------- |
-| `demo` | `https://api-d.docusign.com/v1` | Demo        |
-| `prod` | `https://api.docusign.com/v1`   | Production  |
+| Name   | Server                       | Description |
+| ------ | ---------------------------- | ----------- |
+| `demo` | `https://api-d.docusign.com` | Demo        |
+| `prod` | `https://api.docusign.com`   | Production  |
 
 #### Example
 
@@ -449,7 +453,7 @@ The default server can also be overridden globally by passing a URL to the `serv
 import { IamClient } from "@docusign/iam-sdk";
 
 const iamClient = new IamClient({
-  serverURL: "https://api-d.docusign.com/v1",
+  serverURL: "https://api-d.docusign.com",
 });
 
 async function run() {

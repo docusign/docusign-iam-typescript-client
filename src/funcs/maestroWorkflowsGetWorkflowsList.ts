@@ -3,7 +3,7 @@
  */
 
 import { IamClientCore } from "../core.js";
-import { encodeSimple } from "../lib/encodings.js";
+import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -125,7 +125,11 @@ async function $do(
     }),
   };
 
-  const path = pathToFunc("/accounts/{accountId}/workflows")(pathParams);
+  const path = pathToFunc("/v1/accounts/{accountId}/workflows")(pathParams);
+
+  const query = encodeFormQuery({
+    "status": payload.status,
+  });
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
@@ -166,6 +170,7 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    query: query,
     body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
@@ -203,9 +208,9 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, components.WorkflowsListSuccess$inboundSchema),
-    M.jsonErr([400, 401, 403, 404], errors.ErrorT$inboundSchema),
+    M.jsonErr([400, 403, 404], errors.ErrorT$inboundSchema),
     M.jsonErr(500, errors.ErrorT$inboundSchema),
-    M.fail("4XX"),
+    M.fail([401, "4XX"]),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
   if (!result.ok) {

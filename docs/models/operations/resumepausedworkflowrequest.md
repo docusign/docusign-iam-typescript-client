@@ -1,11 +1,11 @@
-# GetWorkflowInstancesListRequest
+# ResumePausedWorkflowRequest
 
 ## Example Usage
 
 ```typescript
-import { GetWorkflowInstancesListRequest } from "@docusign/iam-sdk/models/operations";
+import { ResumePausedWorkflowRequest } from "@docusign/iam-sdk/models/operations";
 
-let value: GetWorkflowInstancesListRequest = {
+let value: ResumePausedWorkflowRequest = {
   accountId: "<id>",
   workflowId: "<id>",
 };

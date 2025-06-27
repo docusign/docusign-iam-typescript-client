@@ -91,7 +91,7 @@ export const ConfidentialAuthCodeGrantRequestBody$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  flow: z.literal("confidential").optional(),
+  flow: z.literal("confidential").default("confidential").optional(),
   grant_type: ConfidentialAuthCodeGrantRequestBodyGrantType$inboundSchema
     .default("authorization_code"),
   code: z.string(),

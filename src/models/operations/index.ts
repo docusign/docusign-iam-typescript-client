@@ -17,4 +17,6 @@ export * from "./getworkflowinstance.js";
 export * from "./getworkflowinstanceslist.js";
 export * from "./getworkflowslist.js";
 export * from "./getworkflowtriggerrequirements.js";
+export * from "./pausenewworkflowinstances.js";
+export * from "./resumepausedworkflow.js";
 export * from "./triggerworkflow.js";

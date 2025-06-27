@@ -4,6 +4,8 @@
 
 import { maestroWorkflowsGetWorkflowsList } from "../funcs/maestroWorkflowsGetWorkflowsList.js";
 import { maestroWorkflowsGetWorkflowTriggerRequirements } from "../funcs/maestroWorkflowsGetWorkflowTriggerRequirements.js";
+import { maestroWorkflowsPauseNewWorkflowInstances } from "../funcs/maestroWorkflowsPauseNewWorkflowInstances.js";
+import { maestroWorkflowsResumePausedWorkflow } from "../funcs/maestroWorkflowsResumePausedWorkflow.js";
 import { maestroWorkflowsTriggerWorkflow } from "../funcs/maestroWorkflowsTriggerWorkflow.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as components from "../models/components/index.js";
@@ -139,6 +141,40 @@ export class Workflows extends ClientSDK {
     options?: RequestOptions,
   ): Promise<components.TriggerWorkflowSuccess> {
     return unwrapAsync(maestroWorkflowsTriggerWorkflow(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Pause an Active Workflow
+   *
+   * @remarks
+   * This operation pauses new workflow instances from being created. Any running workflows instances will be unaffected.
+   */
+  async pauseNewWorkflowInstances(
+    request: operations.PauseNewWorkflowInstancesRequest,
+    options?: RequestOptions,
+  ): Promise<components.PauseNewWorkflowInstancesSuccess> {
+    return unwrapAsync(maestroWorkflowsPauseNewWorkflowInstances(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Resume a Paused Workflow
+   *
+   * @remarks
+   * This operation enables new workflow instances to be created
+   */
+  async resumePausedWorkflow(
+    request: operations.ResumePausedWorkflowRequest,
+    options?: RequestOptions,
+  ): Promise<components.ResumeNewWorkflowInstancesSuccess> {
+    return unwrapAsync(maestroWorkflowsResumePausedWorkflow(
       this,
       request,
       options,

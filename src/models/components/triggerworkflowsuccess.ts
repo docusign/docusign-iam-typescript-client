@@ -12,7 +12,7 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
  * Control information and metadata for the response.
  */
 export type TriggerWorkflowSuccess = {
-  instanceId?: string | null | undefined;
+  instanceId?: string | undefined;
   /**
    * A fully-qualified URL that can be used to access or interact with this
    *
@@ -32,11 +32,11 @@ export type TriggerWorkflowSuccess = {
   /**
    * Unique identifier for the request, useful for tracking and debugging.
    */
-  requestId?: string | null | undefined;
+  requestId: string | null;
   /**
    * The timestamp indicating when the response was generated.
    */
-  responseTimestamp?: Date | null | undefined;
+  responseTimestamp: Date | null;
   /**
    * The duration of time, in milliseconds, that the server took to process and respond
    *
@@ -44,7 +44,7 @@ export type TriggerWorkflowSuccess = {
    * to the request. This is measured from the time the server received the request
    * until the time the response was sent.
    */
-  responseDurationMs?: number | null | undefined;
+  responseDurationMs: number | null;
 };
 
 /** @internal */
@@ -53,17 +53,15 @@ export const TriggerWorkflowSuccess$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  instance_id: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
+  instance_id: z.string().optional(),
   instance_url: z.string().optional(),
   page_limit: z.nullable(z.number().int()).optional(),
   page_token_next: z.nullable(z.string()).optional(),
-  request_id: z.nullable(z.string()).optional(),
+  request_id: z.nullable(z.string()),
   response_timestamp: z.nullable(
     z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  response_duration_ms: z.nullable(z.number().int()).optional(),
+  ),
+  response_duration_ms: z.nullable(z.number().int()),
 }).transform((v) => {
   return remap$(v, {
     "instance_id": "instanceId",
@@ -78,13 +76,13 @@ export const TriggerWorkflowSuccess$inboundSchema: z.ZodType<
 
 /** @internal */
 export type TriggerWorkflowSuccess$Outbound = {
-  instance_id: string | null;
+  instance_id?: string | undefined;
   instance_url?: string | undefined;
   page_limit?: number | null | undefined;
   page_token_next?: string | null | undefined;
-  request_id?: string | null | undefined;
-  response_timestamp?: string | null | undefined;
-  response_duration_ms?: number | null | undefined;
+  request_id: string | null;
+  response_timestamp: string | null;
+  response_duration_ms: number | null;
 };
 
 /** @internal */
@@ -93,16 +91,13 @@ export const TriggerWorkflowSuccess$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   TriggerWorkflowSuccess
 > = z.object({
-  instanceId: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
+  instanceId: z.string().optional(),
   instanceUrl: z.string().optional(),
   pageLimit: z.nullable(z.number().int()).optional(),
   pageTokenNext: z.nullable(z.string()).optional(),
-  requestId: z.nullable(z.string()).optional(),
-  responseTimestamp: z.nullable(z.date().transform(v => v.toISOString()))
-    .optional(),
-  responseDurationMs: z.nullable(z.number().int()).optional(),
+  requestId: z.nullable(z.string()),
+  responseTimestamp: z.nullable(z.date().transform(v => v.toISOString())),
+  responseDurationMs: z.nullable(z.number().int()),
 }).transform((v) => {
   return remap$(v, {
     instanceId: "instance_id",

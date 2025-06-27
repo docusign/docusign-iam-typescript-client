@@ -19,6 +19,7 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { IamClientError } from "../models/errors/iamclienterror.js";
+import * as errors from "../models/errors/index.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import * as operations from "../models/operations/index.js";
@@ -26,40 +27,19 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve All Workflow Instances
+ * Resume a Paused Workflow
  *
  * @remarks
- * This operation retrieves a list of all available Maestro workflow instances. It returns basic information
- * about each workflow instance, including its unique identifier (`id`), name, status, timestamps, and
- * additional metadata.
- *
- * The response provides key details that help users understand what workflow instances are in progress
- * or completed, and the relevant data for each. Each workflow instance entry also includes metadata, such
- * as who started it, when it was last modified, and how many steps have been completed.
- *
- * ### Use Cases:
- * - Listing all available workflow instances for manual or automated review
- * - Monitoring which workflow instances are currently running or have finished
- * - Gathering basic metadata about workflow instances for auditing, logging, or reporting purposes
- *
- * ### Key Features:
- * - **Comprehensive Instance Overview**: Provides a full list of workflow instances, giving visibility
- *
- *   into all ongoing and completed workflows within the Maestro platform
- * - **Metadata for Tracking**: Includes helpful metadata like creation time, last modification date,
- *
- *   and user details to support audit trails
- * - **Scalable and Future-Proof**: Designed to handle growing numbers of workflow instances as the
- *
- *   platform scales
+ * This operation enables new workflow instances to be created
  */
-export function maestroWorkflowInstanceManagementGetWorkflowInstancesList(
+export function maestroWorkflowsResumePausedWorkflow(
   client: IamClientCore,
-  request: operations.GetWorkflowInstancesListRequest,
+  request: operations.ResumePausedWorkflowRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    components.WorkflowInstanceCollection,
+    components.ResumeNewWorkflowInstancesSuccess,
+    | errors.ErrorT
     | IamClientError
     | ResponseValidationError
     | ConnectionError
@@ -79,12 +59,13 @@ export function maestroWorkflowInstanceManagementGetWorkflowInstancesList(
 
 async function $do(
   client: IamClientCore,
-  request: operations.GetWorkflowInstancesListRequest,
+  request: operations.ResumePausedWorkflowRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      components.WorkflowInstanceCollection,
+      components.ResumeNewWorkflowInstancesSuccess,
+      | errors.ErrorT
       | IamClientError
       | ResponseValidationError
       | ConnectionError
@@ -100,7 +81,7 @@ async function $do(
   const parsed = safeParse(
     request,
     (value) =>
-      operations.GetWorkflowInstancesListRequest$outboundSchema.parse(value),
+      operations.ResumePausedWorkflowRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -121,7 +102,7 @@ async function $do(
   };
 
   const path = pathToFunc(
-    "/v1/accounts/{accountId}/workflows/{workflowId}/instances",
+    "/v1/accounts/{accountId}/workflows/{workflowId}/actions/resume",
   )(pathParams);
 
   const headers = new Headers(compactMap({
@@ -135,7 +116,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "getWorkflowInstancesList",
+    operationID: "resumePausedWorkflow",
     oAuth2Scopes: [],
 
     resolvedSecurity: requestSecurity,
@@ -159,7 +140,7 @@ async function $do(
 
   const requestRes = client._createRequest(context, {
     security: requestSecurity,
-    method: "GET",
+    method: "POST",
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
@@ -174,7 +155,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["4XX", "5XX"],
+    errorCodes: ["400", "401", "403", "404", "409", "4XX", "500", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -183,8 +164,13 @@ async function $do(
   }
   const response = doResult.value;
 
+  const responseFields = {
+    HttpMeta: { Response: response, Request: req },
+  };
+
   const [result] = await M.match<
-    components.WorkflowInstanceCollection,
+    components.ResumeNewWorkflowInstancesSuccess,
+    | errors.ErrorT
     | IamClientError
     | ResponseValidationError
     | ConnectionError
@@ -194,10 +180,12 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, components.WorkflowInstanceCollection$inboundSchema),
-    M.fail("4XX"),
+    M.json(200, components.ResumeNewWorkflowInstancesSuccess$inboundSchema),
+    M.jsonErr([400, 403, 404, 409], errors.ErrorT$inboundSchema),
+    M.jsonErr(500, errors.ErrorT$inboundSchema),
+    M.fail([401, "4XX"]),
     M.fail("5XX"),
-  )(response, req);
+  )(response, req, { extraFields: responseFields });
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];
   }
