@@ -5,7 +5,10 @@
 ```typescript
 import { CreateAgreementSummaryRequest } from "@docusign/iam-sdk/models/operations";
 
-let value: CreateAgreementSummaryRequest = {};
+let value: CreateAgreementSummaryRequest = {
+  accountId: "<id>",
+  agreementId: "<id>",
+};
 ```
 
 ## Fields

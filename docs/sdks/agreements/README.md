@@ -44,6 +44,7 @@ const iamClient = new IamClient({
 
 async function run() {
   const result = await iamClient.navigator.agreements.getAgreementsList({
+    accountId: "00000000-0000-0000-0000-000000000000",
     limit: 10,
     ctoken: "abc123",
   });
@@ -70,6 +71,7 @@ const iamClient = new IamClientCore({
 
 async function run() {
   const res = await navigatorAgreementsGetAgreementsList(iamClient, {
+    accountId: "00000000-0000-0000-0000-000000000000",
     limit: 10,
     ctoken: "abc123",
   });
@@ -99,11 +101,11 @@ run();
 
 ### Errors
 
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| errors.ErrorT      | 400, 401, 403, 404 | application/json   |
-| errors.ErrorT      | 500                | application/json   |
-| errors.APIError    | 4XX, 5XX           | \*/\*              |
+| Error Type       | Status Code      | Content Type     |
+| ---------------- | ---------------- | ---------------- |
+| errors.ErrorT    | 400, 403, 404    | application/json |
+| errors.ErrorT    | 500              | application/json |
+| errors.APIError  | 4XX, 5XX         | \*/\*            |
 
 ## getAgreement
 
@@ -126,7 +128,7 @@ The operation is essential for retrieving the full context of an agreement, enab
 - **Provisions for Legal, Financial, and Lifecycle Conditions**: Includes the full set of provisions that define the terms and conditions of the agreement, making it ideal for compliance and auditing purposes.
 - **Metadata and History**: Tracks the agreement’s history through metadata such as creation and modification dates and user-defined fields.
 - **Data Source for AI Applications**: Enables LLM-based applications to access granular agreement data, providing AI/ML-based solutions (such as Copilots) with the necessary context to answer detailed queries about an agreement.
-- **Involved Parties and Related Agreements**: Lists all parties involved and related agreements, allowing users to see all associated legal documents and relationships between agreements.
+- **Involved Parties and Related Agreements**: Lists all parties involved and related agreements, allowing users to see all associated legal documents and relationships between agreements.   
 
 
 ### Example Usage
@@ -139,7 +141,10 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.navigator.agreements.getAgreement({});
+  const result = await iamClient.navigator.agreements.getAgreement({
+    accountId: "00000000-0000-0000-0000-000000000000",
+    agreementId: "00000000-0000-0000-0000-000000000000",
+  });
 
   console.log(result);
 }
@@ -162,7 +167,10 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await navigatorAgreementsGetAgreement(iamClient, {});
+  const res = await navigatorAgreementsGetAgreement(iamClient, {
+    accountId: "00000000-0000-0000-0000-000000000000",
+    agreementId: "00000000-0000-0000-0000-000000000000",
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
@@ -189,11 +197,11 @@ run();
 
 ### Errors
 
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| errors.ErrorT      | 400, 401, 403, 404 | application/json   |
-| errors.ErrorT      | 500                | application/json   |
-| errors.APIError    | 4XX, 5XX           | \*/\*              |
+| Error Type       | Status Code      | Content Type     |
+| ---------------- | ---------------- | ---------------- |
+| errors.ErrorT    | 400, 403, 404    | application/json |
+| errors.ErrorT    | 500              | application/json |
+| errors.APIError  | 4XX, 5XX         | \*/\*            |
 
 ## deleteAgreement
 
@@ -210,7 +218,10 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  await iamClient.navigator.agreements.deleteAgreement({});
+  await iamClient.navigator.agreements.deleteAgreement({
+    accountId: "00000000-0000-0000-0000-000000000000",
+    agreementId: "00000000-0000-0000-0000-000000000000",
+  });
 
 
 }
@@ -233,7 +244,10 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await navigatorAgreementsDeleteAgreement(iamClient, {});
+  const res = await navigatorAgreementsDeleteAgreement(iamClient, {
+    accountId: "00000000-0000-0000-0000-000000000000",
+    agreementId: "00000000-0000-0000-0000-000000000000",
+  });
   if (res.ok) {
     const { value: result } = res;
     
@@ -260,11 +274,11 @@ run();
 
 ### Errors
 
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| errors.ErrorT      | 400, 401, 403, 404 | application/json   |
-| errors.ErrorT      | 500                | application/json   |
-| errors.APIError    | 4XX, 5XX           | \*/\*              |
+| Error Type       | Status Code      | Content Type     |
+| ---------------- | ---------------- | ---------------- |
+| errors.ErrorT    | 400, 403, 404    | application/json |
+| errors.ErrorT    | 500              | application/json |
+| errors.APIError  | 4XX, 5XX         | \*/\*            |
 
 ## createAgreementSummary
 
@@ -287,7 +301,10 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.navigator.agreements.createAgreementSummary({});
+  const result = await iamClient.navigator.agreements.createAgreementSummary({
+    accountId: "00000000-0000-0000-0000-000000000000",
+    agreementId: "00000000-0000-0000-0000-000000000000",
+  });
 
   console.log(result);
 }
@@ -310,7 +327,10 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await navigatorAgreementsCreateAgreementSummary(iamClient, {});
+  const res = await navigatorAgreementsCreateAgreementSummary(iamClient, {
+    accountId: "00000000-0000-0000-0000-000000000000",
+    agreementId: "00000000-0000-0000-0000-000000000000",
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
@@ -337,8 +357,8 @@ run();
 
 ### Errors
 
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| errors.ErrorT      | 400, 401, 403, 404 | application/json   |
-| errors.ErrorT      | 500                | application/json   |
-| errors.APIError    | 4XX, 5XX           | \*/\*              |
+| Error Type       | Status Code      | Content Type     |
+| ---------------- | ---------------- | ---------------- |
+| errors.ErrorT    | 400, 403, 404    | application/json |
+| errors.ErrorT    | 500              | application/json |
+| errors.APIError  | 4XX, 5XX         | \*/\*            |

@@ -19,6 +19,7 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { IamClientError } from "../models/errors/iamclienterror.js";
+import * as errors from "../models/errors/index.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import * as operations from "../models/operations/index.js";
@@ -47,6 +48,7 @@ export function maestroWorkflowInstanceManagementCancelWorkflowInstance(
 ): APIPromise<
   Result<
     components.CancelWorkflowInstanceResponse,
+    | errors.ErrorT
     | IamClientError
     | ResponseValidationError
     | ConnectionError
@@ -72,6 +74,7 @@ async function $do(
   [
     Result<
       components.CancelWorkflowInstanceResponse,
+      | errors.ErrorT
       | IamClientError
       | ResponseValidationError
       | ConnectionError
@@ -112,7 +115,7 @@ async function $do(
   };
 
   const path = pathToFunc(
-    "/accounts/{accountId}/workflows/{workflowId}/instances/{instanceId}/actions/cancel",
+    "/v1/accounts/{accountId}/workflows/{workflowId}/instances/{instanceId}/actions/cancel",
   )(pathParams);
 
   const headers = new Headers(compactMap({
@@ -165,7 +168,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["4XX", "5XX"],
+    errorCodes: ["400", "401", "403", "404", "409", "4XX", "500", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -174,8 +177,13 @@ async function $do(
   }
   const response = doResult.value;
 
+  const responseFields = {
+    HttpMeta: { Response: response, Request: req },
+  };
+
   const [result] = await M.match<
     components.CancelWorkflowInstanceResponse,
+    | errors.ErrorT
     | IamClientError
     | ResponseValidationError
     | ConnectionError
@@ -186,9 +194,11 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, components.CancelWorkflowInstanceResponse$inboundSchema),
-    M.fail("4XX"),
+    M.jsonErr([400, 403, 404, 409], errors.ErrorT$inboundSchema),
+    M.jsonErr(500, errors.ErrorT$inboundSchema),
+    M.fail([401, "4XX"]),
     M.fail("5XX"),
-  )(response, req);
+  )(response, req, { extraFields: responseFields });
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];
   }

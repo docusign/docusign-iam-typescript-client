@@ -8,8 +8,8 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type CreateAgreementSummaryRequest = {
-  accountId?: string | null | undefined;
-  agreementId?: string | null | undefined;
+  accountId: string;
+  agreementId: string;
 };
 
 /** @internal */
@@ -18,18 +18,14 @@ export const CreateAgreementSummaryRequest$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  accountId: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
-  agreementId: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
+  accountId: z.string(),
+  agreementId: z.string(),
 });
 
 /** @internal */
 export type CreateAgreementSummaryRequest$Outbound = {
-  accountId: string | null;
-  agreementId: string | null;
+  accountId: string;
+  agreementId: string;
 };
 
 /** @internal */
@@ -38,12 +34,8 @@ export const CreateAgreementSummaryRequest$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   CreateAgreementSummaryRequest
 > = z.object({
-  accountId: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
-  agreementId: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
+  accountId: z.string(),
+  agreementId: z.string(),
 });
 
 /**

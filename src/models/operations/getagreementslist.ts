@@ -3,12 +3,26 @@
  */
 
 import * as z from "zod";
+import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+/**
+ * Direction of sorting (ascending or descending).
+ */
+export const Direction = {
+  Asc: "asc",
+  Desc: "desc",
+} as const;
+/**
+ * Direction of sorting (ascending or descending).
+ */
+export type Direction = ClosedEnum<typeof Direction>;
+
 export type GetAgreementsListRequest = {
-  accountId?: string | null | undefined;
+  accountId: string;
   /**
    * The maximum number of items that can be returned in a single page.
    */
@@ -17,7 +31,86 @@ export type GetAgreementsListRequest = {
    * An opaque token that helps retrieve the a page of data.
    */
   ctoken?: string | null | undefined;
+  /**
+   * Field to sort the agreements by.
+   */
+  sort?: string | undefined;
+  /**
+   * Direction of sorting (ascending or descending).
+   */
+  direction?: Direction | undefined;
+  /**
+   * List of agreement IDs to filter by (comma-separated), use operators (=, [in]) with an UUID format.
+   */
+  id?: string | undefined;
+  /**
+   * Status of the agreement.
+   */
+  status?: string | undefined;
+  /**
+   * Filter by party display name in the agreement.
+   */
+  partiesNameInAgreement?: string | undefined;
+  /**
+   * Filter by creation date (also available via `created_at` key). Use operators (`=`, `gte`, `gt`, `lte`, `le`, `ne`) with an ISO 8601 DateTime string (e.g., `YYYY-MM-DD`).
+   */
+  metadataCreatedAt?: string | undefined;
+  /**
+   * Title of the agreement.
+   */
+  title?: string | undefined;
+  /**
+   * Filter by parent agreement document ID (also available via `parent_agreement_document_id` key). with an UUID format.
+   */
+  relatedAgreementDocumentsParentAgreementDocumentId?: string | undefined;
+  /**
+   * List of BCP-47 language tags
+   */
+  languages?: Array<string> | undefined;
+  /**
+   * Filter by effective date range (also available via `effective_date` key). Use operators (`=`, `gte`, `gt`, `lte`, `le`, `ne`) with an ISO 8601 DateTime string (e.g., `YYYY-MM-DD`).
+   */
+  provisionsEffectiveDate?: string | undefined;
+  /**
+   * Filter by expiration date (also available via `expiration_date` key). Use operators (`=`, `gte`, `gt`, `lte`, `le`, `ne`) with an ISO 8601 DateTime string (e.g., `YYYY-MM-DD`).
+   */
+  provisionsExpirationDate?: string | undefined;
+  /**
+   * Filter by execution date (also available via `execution_date` key). Use operators (`=`, `gte`, `gt`, `lte`, `le`, `ne`) with an ISO 8601 DateTime string (e.g., `YYYY-MM-DD`).
+   */
+  provisionsExecutionDate?: string | undefined;
+  /**
+   * duration of the agreement (also available via `term_length` key). Use operators (`=`, `gte`, `gt`, `lte`, `le`, `ne`) with an ISO 8601 Duration string (e.g., `P1Y`).
+   */
+  provisionsTermLength?: string | undefined;
+  /**
+   * Source name of the agreement.
+   */
+  sourceName?: string | undefined;
+  /**
+   * Source id of the agreement.
+   */
+  sourceId?: string | undefined;
 };
+
+/** @internal */
+export const Direction$inboundSchema: z.ZodNativeEnum<typeof Direction> = z
+  .nativeEnum(Direction);
+
+/** @internal */
+export const Direction$outboundSchema: z.ZodNativeEnum<typeof Direction> =
+  Direction$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Direction$ {
+  /** @deprecated use `Direction$inboundSchema` instead. */
+  export const inboundSchema = Direction$inboundSchema;
+  /** @deprecated use `Direction$outboundSchema` instead. */
+  export const outboundSchema = Direction$outboundSchema;
+}
 
 /** @internal */
 export const GetAgreementsListRequest$inboundSchema: z.ZodType<
@@ -25,18 +118,62 @@ export const GetAgreementsListRequest$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  accountId: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
+  accountId: z.string(),
   limit: z.nullable(z.number().int()).optional(),
   ctoken: z.nullable(z.string()).optional(),
+  sort: z.string().optional(),
+  direction: Direction$inboundSchema.optional(),
+  id: z.string().optional(),
+  status: z.string().optional(),
+  "parties.name_in_agreement": z.string().optional(),
+  "metadata.created_at": z.string().optional(),
+  title: z.string().optional(),
+  "related_agreement_documents.parent_agreement_document_id": z.string()
+    .optional(),
+  languages: z.array(z.string()).optional(),
+  "provisions.effective_date": z.string().optional(),
+  "provisions.expiration_date": z.string().optional(),
+  "provisions.execution_date": z.string().optional(),
+  "provisions.term_length": z.string().optional(),
+  source_name: z.string().optional(),
+  source_id: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "parties.name_in_agreement": "partiesNameInAgreement",
+    "metadata.created_at": "metadataCreatedAt",
+    "related_agreement_documents.parent_agreement_document_id":
+      "relatedAgreementDocumentsParentAgreementDocumentId",
+    "provisions.effective_date": "provisionsEffectiveDate",
+    "provisions.expiration_date": "provisionsExpirationDate",
+    "provisions.execution_date": "provisionsExecutionDate",
+    "provisions.term_length": "provisionsTermLength",
+    "source_name": "sourceName",
+    "source_id": "sourceId",
+  });
 });
 
 /** @internal */
 export type GetAgreementsListRequest$Outbound = {
-  accountId: string | null;
+  accountId: string;
   limit?: number | null | undefined;
   ctoken?: string | null | undefined;
+  sort?: string | undefined;
+  direction?: string | undefined;
+  id?: string | undefined;
+  status?: string | undefined;
+  "parties.name_in_agreement"?: string | undefined;
+  "metadata.created_at"?: string | undefined;
+  title?: string | undefined;
+  "related_agreement_documents.parent_agreement_document_id"?:
+    | string
+    | undefined;
+  languages?: Array<string> | undefined;
+  "provisions.effective_date"?: string | undefined;
+  "provisions.expiration_date"?: string | undefined;
+  "provisions.execution_date"?: string | undefined;
+  "provisions.term_length"?: string | undefined;
+  source_name?: string | undefined;
+  source_id?: string | undefined;
 };
 
 /** @internal */
@@ -45,11 +182,37 @@ export const GetAgreementsListRequest$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   GetAgreementsListRequest
 > = z.object({
-  accountId: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
+  accountId: z.string(),
   limit: z.nullable(z.number().int()).optional(),
   ctoken: z.nullable(z.string()).optional(),
+  sort: z.string().optional(),
+  direction: Direction$outboundSchema.optional(),
+  id: z.string().optional(),
+  status: z.string().optional(),
+  partiesNameInAgreement: z.string().optional(),
+  metadataCreatedAt: z.string().optional(),
+  title: z.string().optional(),
+  relatedAgreementDocumentsParentAgreementDocumentId: z.string().optional(),
+  languages: z.array(z.string()).optional(),
+  provisionsEffectiveDate: z.string().optional(),
+  provisionsExpirationDate: z.string().optional(),
+  provisionsExecutionDate: z.string().optional(),
+  provisionsTermLength: z.string().optional(),
+  sourceName: z.string().optional(),
+  sourceId: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    partiesNameInAgreement: "parties.name_in_agreement",
+    metadataCreatedAt: "metadata.created_at",
+    relatedAgreementDocumentsParentAgreementDocumentId:
+      "related_agreement_documents.parent_agreement_document_id",
+    provisionsEffectiveDate: "provisions.effective_date",
+    provisionsExpirationDate: "provisions.expiration_date",
+    provisionsExecutionDate: "provisions.execution_date",
+    provisionsTermLength: "provisions.term_length",
+    sourceName: "source_name",
+    sourceId: "source_id",
+  });
 });
 
 /**

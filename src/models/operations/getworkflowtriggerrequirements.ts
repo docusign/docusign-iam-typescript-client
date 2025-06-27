@@ -12,9 +12,6 @@ export type GetWorkflowTriggerRequirementsRequest = {
    * The unique identifier of the account.
    */
   accountId: string;
-  /**
-   * The unique identifier of the workflow.
-   */
   workflowId: string;
 };
 

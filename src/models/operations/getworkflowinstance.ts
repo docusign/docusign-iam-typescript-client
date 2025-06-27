@@ -12,9 +12,6 @@ export type GetWorkflowInstanceRequest = {
    * The unique identifier of the account.
    */
   accountId: string;
-  /**
-   * The unique identifier of the workflow.
-   */
   workflowId: string;
   /**
    * Unique identifier for the workflow instance

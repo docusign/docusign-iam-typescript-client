@@ -14,11 +14,11 @@ import {
   ResponseMetadata$outboundSchema,
 } from "./responsemetadata.js";
 import {
-  WorkflowList,
-  WorkflowList$inboundSchema,
-  WorkflowList$Outbound,
-  WorkflowList$outboundSchema,
-} from "./workflowlist.js";
+  Workflow,
+  Workflow$inboundSchema,
+  Workflow$Outbound,
+  Workflow$outboundSchema,
+} from "./workflow.js";
 
 /**
  * A list of workflows has been successfully returned.
@@ -27,7 +27,7 @@ export type WorkflowsListSuccess = {
   /**
    * A list of workflows
    */
-  data?: WorkflowList | undefined;
+  data?: Array<Workflow> | undefined;
   /**
    * Control information and metadata for the response.
    */
@@ -40,7 +40,7 @@ export const WorkflowsListSuccess$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  data: WorkflowList$inboundSchema.optional(),
+  data: z.array(Workflow$inboundSchema).optional(),
   response_metadata: ResponseMetadata$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -50,7 +50,7 @@ export const WorkflowsListSuccess$inboundSchema: z.ZodType<
 
 /** @internal */
 export type WorkflowsListSuccess$Outbound = {
-  data?: WorkflowList$Outbound | undefined;
+  data?: Array<Workflow$Outbound> | undefined;
   response_metadata?: ResponseMetadata$Outbound | undefined;
 };
 
@@ -60,7 +60,7 @@ export const WorkflowsListSuccess$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   WorkflowsListSuccess
 > = z.object({
-  data: WorkflowList$outboundSchema.optional(),
+  data: z.array(Workflow$outboundSchema).optional(),
   responseMetadata: ResponseMetadata$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {

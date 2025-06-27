@@ -7,7 +7,6 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
-import { RFCDate } from "../../types/rfcdate.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   CurrencyCode,
@@ -55,10 +54,9 @@ export const PaymentTermsDueDate = {
 export type PaymentTermsDueDate = ClosedEnum<typeof PaymentTermsDueDate>;
 
 /**
- * "The conditions or rules written in a legal agreement. The set of possible provisions is determined by the agreement type.
+ * "The conditions or rules written in a legal agreement. The set of possible provisions is determined by the agreement type."
  *
  * @remarks
- * This set of provisions can change dynamically."
  */
 export type Provisions = {
   /**
@@ -154,7 +152,7 @@ export type Provisions = {
   renewalNoticeDate?: Date | null | undefined;
   autoRenewalTermLength?: string | null | undefined;
   renewalExtensionPeriod?: string | null | undefined;
-  renewalProcessOwner?: string | null | undefined;
+  renewalProcessOwner?: string | undefined;
   /**
    * Additional information related to the renewal process.
    */
@@ -173,15 +171,15 @@ export type Provisions = {
   /**
    * The date when the terms of the agreement start to apply and become legally binding.
    */
-  effectiveDate?: RFCDate | null | undefined;
+  effectiveDate?: Date | null | undefined;
   /**
    * The date when the agreement ends and is no longer valid or enforceable.
    */
-  expirationDate?: RFCDate | null | undefined;
+  expirationDate?: Date | null | undefined;
   /**
    * The date when the agreement is signed by all parties, making it officially binding. This is not necessarily the same as the effective date.
    */
-  executionDate?: RFCDate | null | undefined;
+  executionDate?: Date | null | undefined;
   /**
    * Overall duration of the agreement.
    */
@@ -189,7 +187,7 @@ export type Provisions = {
 };
 
 export type RelatedAgreementDocuments = {
-  parentAgreementDocumentId?: string | null | undefined;
+  parentAgreementDocumentId?: string | undefined;
 };
 
 /**
@@ -201,7 +199,7 @@ export type RelatedAgreementDocuments = {
  * to offer a full representation of the structure and context of an agreement.
  */
 export type Agreement = {
-  id?: string | null | undefined;
+  id: string;
   /**
    * Title of the agreement document, summarizing its purpose.
    */
@@ -231,12 +229,15 @@ export type Agreement = {
    */
   parties?: Array<Party> | null | undefined;
   /**
-   * "The conditions or rules written in a legal agreement. The set of possible provisions is determined by the agreement type.
+   * "The conditions or rules written in a legal agreement. The set of possible provisions is determined by the agreement type."
    *
    * @remarks
-   * This set of provisions can change dynamically."
    */
   provisions?: Provisions | null | undefined;
+  /**
+   * A generic map/dict. The key is a string, and the value can be of any type, including strings, booleans, numbers, arrays, or objects
+   */
+  customProvisions?: { [k: string]: CustomProperty } | null | undefined;
   /**
    * A generic map/dict. The key is a string, and the value can be of any type, including strings, booleans, numbers, arrays, or objects
    */
@@ -331,16 +332,19 @@ export const Provisions$inboundSchema: z.ZodType<
   ).optional(),
   auto_renewal_term_length: z.nullable(z.string()).optional(),
   renewal_extension_period: z.nullable(z.string()).optional(),
-  renewal_process_owner: z.nullable(z.string()).optional(),
+  renewal_process_owner: z.string().optional(),
   renewal_additional_info: z.nullable(z.string()).optional(),
   termination_period_for_cause: z.nullable(z.string()).optional(),
   termination_period_for_convenience: z.nullable(z.string()).optional(),
-  effective_date: z.nullable(z.string().transform(v => new RFCDate(v)))
-    .optional(),
-  expiration_date: z.nullable(z.string().transform(v => new RFCDate(v)))
-    .optional(),
-  execution_date: z.nullable(z.string().transform(v => new RFCDate(v)))
-    .optional(),
+  effective_date: z.nullable(
+    z.string().datetime({ offset: true }).transform(v => new Date(v)),
+  ).optional(),
+  expiration_date: z.nullable(
+    z.string().datetime({ offset: true }).transform(v => new Date(v)),
+  ).optional(),
+  execution_date: z.nullable(
+    z.string().datetime({ offset: true }).transform(v => new Date(v)),
+  ).optional(),
   term_length: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -404,7 +408,7 @@ export type Provisions$Outbound = {
   renewal_notice_date?: string | null | undefined;
   auto_renewal_term_length?: string | null | undefined;
   renewal_extension_period?: string | null | undefined;
-  renewal_process_owner?: string | null | undefined;
+  renewal_process_owner?: string | undefined;
   renewal_additional_info?: string | null | undefined;
   termination_period_for_cause?: string | null | undefined;
   termination_period_for_convenience?: string | null | undefined;
@@ -447,15 +451,15 @@ export const Provisions$outboundSchema: z.ZodType<
     .optional(),
   autoRenewalTermLength: z.nullable(z.string()).optional(),
   renewalExtensionPeriod: z.nullable(z.string()).optional(),
-  renewalProcessOwner: z.nullable(z.string()).optional(),
+  renewalProcessOwner: z.string().optional(),
   renewalAdditionalInfo: z.nullable(z.string()).optional(),
   terminationPeriodForCause: z.nullable(z.string()).optional(),
   terminationPeriodForConvenience: z.nullable(z.string()).optional(),
-  effectiveDate: z.nullable(z.instanceof(RFCDate).transform(v => v.toString()))
+  effectiveDate: z.nullable(z.date().transform(v => v.toISOString()))
     .optional(),
-  expirationDate: z.nullable(z.instanceof(RFCDate).transform(v => v.toString()))
+  expirationDate: z.nullable(z.date().transform(v => v.toISOString()))
     .optional(),
-  executionDate: z.nullable(z.instanceof(RFCDate).transform(v => v.toString()))
+  executionDate: z.nullable(z.date().transform(v => v.toISOString()))
     .optional(),
   termLength: z.nullable(z.string()).optional(),
 }).transform((v) => {
@@ -527,9 +531,7 @@ export const RelatedAgreementDocuments$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  parent_agreement_document_id: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
+  parent_agreement_document_id: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     "parent_agreement_document_id": "parentAgreementDocumentId",
@@ -538,7 +540,7 @@ export const RelatedAgreementDocuments$inboundSchema: z.ZodType<
 
 /** @internal */
 export type RelatedAgreementDocuments$Outbound = {
-  parent_agreement_document_id: string | null;
+  parent_agreement_document_id?: string | undefined;
 };
 
 /** @internal */
@@ -547,9 +549,7 @@ export const RelatedAgreementDocuments$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   RelatedAgreementDocuments
 > = z.object({
-  parentAgreementDocumentId: z.nullable(
-    z.string().default("00000000-0000-0000-0000-000000000000"),
-  ),
+  parentAgreementDocumentId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     parentAgreementDocumentId: "parent_agreement_document_id",
@@ -593,7 +593,7 @@ export const Agreement$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  id: z.nullable(z.string().default("00000000-0000-0000-0000-000000000000")),
+  id: z.string(),
   title: z.nullable(z.string()).optional(),
   file_name: z.nullable(z.string()).optional(),
   type: z.nullable(z.string()).optional(),
@@ -602,6 +602,8 @@ export const Agreement$inboundSchema: z.ZodType<
   status: z.nullable(z.string()).optional(),
   parties: z.nullable(z.array(Party$inboundSchema)).optional(),
   provisions: z.nullable(z.lazy(() => Provisions$inboundSchema)).optional(),
+  custom_provisions: z.nullable(z.record(CustomProperty$inboundSchema))
+    .optional(),
   additional_user_defined_data: z.nullable(
     z.record(CustomProperty$inboundSchema),
   ).optional(),
@@ -621,6 +623,7 @@ export const Agreement$inboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     "file_name": "fileName",
+    "custom_provisions": "customProvisions",
     "additional_user_defined_data": "additionalUserDefinedData",
     "additional_custom_clm_data": "additionalCustomClmData",
     "additional_custom_esign_data": "additionalCustomEsignData",
@@ -633,7 +636,7 @@ export const Agreement$inboundSchema: z.ZodType<
 
 /** @internal */
 export type Agreement$Outbound = {
-  id: string | null;
+  id: string;
   title?: string | null | undefined;
   file_name?: string | null | undefined;
   type?: string | null | undefined;
@@ -642,6 +645,10 @@ export type Agreement$Outbound = {
   status?: string | null | undefined;
   parties?: Array<Party$Outbound> | null | undefined;
   provisions?: Provisions$Outbound | null | undefined;
+  custom_provisions?:
+    | { [k: string]: CustomProperty$Outbound }
+    | null
+    | undefined;
   additional_user_defined_data?:
     | { [k: string]: CustomProperty$Outbound }
     | null
@@ -668,7 +675,7 @@ export const Agreement$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   Agreement
 > = z.object({
-  id: z.nullable(z.string().default("00000000-0000-0000-0000-000000000000")),
+  id: z.string(),
   title: z.nullable(z.string()).optional(),
   fileName: z.nullable(z.string()).optional(),
   type: z.nullable(z.string()).optional(),
@@ -677,6 +684,8 @@ export const Agreement$outboundSchema: z.ZodType<
   status: z.nullable(z.string()).optional(),
   parties: z.nullable(z.array(Party$outboundSchema)).optional(),
   provisions: z.nullable(z.lazy(() => Provisions$outboundSchema)).optional(),
+  customProvisions: z.nullable(z.record(CustomProperty$outboundSchema))
+    .optional(),
   additionalUserDefinedData: z.nullable(z.record(CustomProperty$outboundSchema))
     .optional(),
   additionalCustomClmData: z.nullable(z.record(CustomProperty$outboundSchema))
@@ -694,6 +703,7 @@ export const Agreement$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     fileName: "file_name",
+    customProvisions: "custom_provisions",
     additionalUserDefinedData: "additional_user_defined_data",
     additionalCustomClmData: "additional_custom_clm_data",
     additionalCustomEsignData: "additional_custom_esign_data",

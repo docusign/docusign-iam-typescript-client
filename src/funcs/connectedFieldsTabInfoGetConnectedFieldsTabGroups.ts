@@ -99,9 +99,9 @@ async function $do(
     }),
   };
 
-  const path = pathToFunc("/accounts/{accountId}/connected-fields/tab-groups")(
-    pathParams,
-  );
+  const path = pathToFunc(
+    "/v1/accounts/{accountId}/connected-fields/tab-groups",
+  )(pathParams);
 
   const query = encodeFormQuery({
     "appId": payload.appId,

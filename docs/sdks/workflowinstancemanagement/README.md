@@ -217,11 +217,11 @@ run();
 
 ### Errors
 
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| errors.ErrorT      | 400, 401, 403, 404 | application/json   |
-| errors.ErrorT      | 500                | application/json   |
-| errors.APIError    | 4XX, 5XX           | \*/\*              |
+| Error Type       | Status Code      | Content Type     |
+| ---------------- | ---------------- | ---------------- |
+| errors.ErrorT    | 400, 403, 404    | application/json |
+| errors.ErrorT    | 500              | application/json |
+| errors.APIError  | 4XX, 5XX         | \*/\*            |
 
 ## cancelWorkflowInstance
 
@@ -305,6 +305,8 @@ run();
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| errors.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| errors.ErrorT      | 400, 403, 404, 409 | application/json   |
+| errors.ErrorT      | 500                | application/json   |
+| errors.APIError    | 4XX, 5XX           | \*/\*              |

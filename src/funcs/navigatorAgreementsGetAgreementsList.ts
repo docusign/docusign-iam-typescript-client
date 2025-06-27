@@ -114,11 +114,27 @@ async function $do(
     }),
   };
 
-  const path = pathToFunc("/accounts/{accountId}/agreements")(pathParams);
+  const path = pathToFunc("/v1/accounts/{accountId}/agreements")(pathParams);
 
   const query = encodeFormQuery({
     "ctoken": payload.ctoken,
+    "direction": payload.direction,
+    "id": payload.id,
+    "languages": payload.languages,
     "limit": payload.limit,
+    "metadata.created_at": payload["metadata.created_at"],
+    "parties.name_in_agreement": payload["parties.name_in_agreement"],
+    "provisions.effective_date": payload["provisions.effective_date"],
+    "provisions.execution_date": payload["provisions.execution_date"],
+    "provisions.expiration_date": payload["provisions.expiration_date"],
+    "provisions.term_length": payload["provisions.term_length"],
+    "related_agreement_documents.parent_agreement_document_id":
+      payload["related_agreement_documents.parent_agreement_document_id"],
+    "sort": payload.sort,
+    "source_id": payload.source_id,
+    "source_name": payload.source_name,
+    "status": payload.status,
+    "title": payload.title,
   });
 
   const headers = new Headers(compactMap({
@@ -198,9 +214,9 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, components.AgreementsResponse$inboundSchema),
-    M.jsonErr([400, 401, 403, 404], errors.ErrorT$inboundSchema),
+    M.jsonErr([400, 403, 404], errors.ErrorT$inboundSchema),
     M.jsonErr(500, errors.ErrorT$inboundSchema),
-    M.fail("4XX"),
+    M.fail([401, "4XX"]),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
   if (!result.ok) {
