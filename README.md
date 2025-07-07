@@ -401,8 +401,8 @@ run();
 
 
 **Inherit from [`IamClientError`](./src/models/errors/iamclienterror.ts)**:
-* [`ErrorT`](docs/models/errors/errort.md): Bad Request - The request could not be understood or was missing required parameters. Applicable to 11 of 18 methods.*
-* [`OAuthErrorResponse`](docs/models/errors/oautherrorresponse.md): Status code `400`. Applicable to 5 of 18 methods.*
+* [`ErrorT`](./src/models/errors/errort.ts): Bad Request - The request could not be understood or was missing required parameters. Applicable to 11 of 18 methods.*
+* [`OAuthErrorResponse`](./src/models/errors/oautherrorresponse.ts): Status code `400`. Applicable to 5 of 18 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

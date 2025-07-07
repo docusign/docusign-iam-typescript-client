@@ -211,7 +211,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(201, components.TriggerWorkflowSuccess$inboundSchema),
+    M.json(200, components.TriggerWorkflowSuccess$inboundSchema),
     M.jsonErr([400, 403, 404], errors.ErrorT$inboundSchema),
     M.jsonErr(500, errors.ErrorT$inboundSchema),
     M.fail([401, "4XX"]),
