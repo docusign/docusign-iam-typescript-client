@@ -23,11 +23,11 @@ export type ResponseMetadata = {
   /**
    * Unique identifier for the request, useful for tracking and debugging.
    */
-  requestId: string | null;
+  requestId?: string | null | undefined;
   /**
    * The timestamp indicating when the response was generated.
    */
-  responseTimestamp: Date | null;
+  responseTimestamp?: Date | null | undefined;
   /**
    * The duration of time, in milliseconds, that the server took to process and respond
    *
@@ -35,7 +35,7 @@ export type ResponseMetadata = {
    * to the request. This is measured from the time the server received the request
    * until the time the response was sent.
    */
-  responseDurationMs: number | null;
+  responseDurationMs?: number | null | undefined;
 };
 
 /** @internal */
@@ -46,11 +46,11 @@ export const ResponseMetadata$inboundSchema: z.ZodType<
 > = z.object({
   page_limit: z.nullable(z.number().int()).optional(),
   page_token_next: z.nullable(z.string()).optional(),
-  request_id: z.nullable(z.string()),
+  request_id: z.nullable(z.string()).optional(),
   response_timestamp: z.nullable(
     z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ),
-  response_duration_ms: z.nullable(z.number().int()),
+  ).optional(),
+  response_duration_ms: z.nullable(z.number().int()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "page_limit": "pageLimit",
@@ -65,9 +65,9 @@ export const ResponseMetadata$inboundSchema: z.ZodType<
 export type ResponseMetadata$Outbound = {
   page_limit?: number | null | undefined;
   page_token_next?: string | null | undefined;
-  request_id: string | null;
-  response_timestamp: string | null;
-  response_duration_ms: number | null;
+  request_id?: string | null | undefined;
+  response_timestamp?: string | null | undefined;
+  response_duration_ms?: number | null | undefined;
 };
 
 /** @internal */
@@ -78,9 +78,10 @@ export const ResponseMetadata$outboundSchema: z.ZodType<
 > = z.object({
   pageLimit: z.nullable(z.number().int()).optional(),
   pageTokenNext: z.nullable(z.string()).optional(),
-  requestId: z.nullable(z.string()),
-  responseTimestamp: z.nullable(z.date().transform(v => v.toISOString())),
-  responseDurationMs: z.nullable(z.number().int()),
+  requestId: z.nullable(z.string()).optional(),
+  responseTimestamp: z.nullable(z.date().transform(v => v.toISOString()))
+    .optional(),
+  responseDurationMs: z.nullable(z.number().int()).optional(),
 }).transform((v) => {
   return remap$(v, {
     pageLimit: "page_limit",
