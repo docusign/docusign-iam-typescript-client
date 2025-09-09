@@ -222,6 +222,42 @@ run();
 * [deleteAgreement](docs/sdks/agreements/README.md#deleteagreement) - Delete a specific agreement
 * [createAgreementSummary](docs/sdks/agreements/README.md#createagreementsummary) - Create an AI-generated summary of an agreement document
 
+### [workspaces](docs/sdks/workspaces1/README.md)
+
+
+#### [workspaces.workspaceDocuments](docs/sdks/workspacedocuments/README.md)
+
+* [getWorkspaceDocuments](docs/sdks/workspacedocuments/README.md#getworkspacedocuments) - Get documents in the workspace accessible to the calling user
+* [getWorkspaceDocument](docs/sdks/workspacedocuments/README.md#getworkspacedocument) - Get information about the document
+* [deleteWorkspaceDocument](docs/sdks/workspacedocuments/README.md#deleteworkspacedocument) - Deletes a document in the workspace
+* [getWorkspaceDocumentContents](docs/sdks/workspacedocuments/README.md#getworkspacedocumentcontents) - Get the file contents of the document
+
+#### [workspaces.workspaces](docs/sdks/workspaces2/README.md)
+
+* [getWorkspaces](docs/sdks/workspaces2/README.md#getworkspaces) - Gets workspaces available to the calling user
+* [createWorkspace](docs/sdks/workspaces2/README.md#createworkspace) - Creates a new workspace
+* [getWorkspace](docs/sdks/workspaces2/README.md#getworkspace) - Returns details about the workspace
+* [getWorkspaceAssignableRoles](docs/sdks/workspaces2/README.md#getworkspaceassignableroles) - Returns the roles the caller can assign to workspace users
+* [createWorkspaceEnvelope](docs/sdks/workspaces2/README.md#createworkspaceenvelope) - Creates an envelope with the given documents. Returns the ID of the created envelope
+* [getWorkspaceEnvelopes](docs/sdks/workspaces2/README.md#getworkspaceenvelopes) - Returns the envelopes associated with the given workspace
+
+#### [workspaces.workspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md)
+
+* [createWorkspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md#createworkspaceuploadrequest) - Creates a new upload request within a workspace
+* [getWorkspaceUploadRequests](docs/sdks/workspaceuploadrequest/README.md#getworkspaceuploadrequests) - Gets upload requests within a workspace
+* [getWorkspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md#getworkspaceuploadrequest) - Gets details for a specific upload request
+* [updateWorkspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md#updateworkspaceuploadrequest) - Updates a specific upload request
+* [deleteWorkspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md#deleteworkspaceuploadrequest) - Deletes a specific upload request
+* [completeWorkspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md#completeworkspaceuploadrequest) - Complete an upload request
+
+#### [workspaces.workspaceUsers](docs/sdks/workspaceusers/README.md)
+
+* [getWorkspaceUsers](docs/sdks/workspaceusers/README.md#getworkspaceusers) - Retrieves the list of users in the given workspace
+* [addWorkspaceUser](docs/sdks/workspaceusers/README.md#addworkspaceuser) - Adds a user to the workspace by email address
+* [updateWorkspaceUser](docs/sdks/workspaceusers/README.md#updateworkspaceuser) - Updates the specified user's role
+* [revokeWorkspaceUserAccess](docs/sdks/workspaceusers/README.md#revokeworkspaceuseraccess) - Revokes the specified user's access to the workspace
+* [restoreWorkspaceUserAccess](docs/sdks/workspaceusers/README.md#restoreworkspaceuseraccess) - Restores the specified user's access to the workspace
+
 </details>
 <!-- End Available Resources and Operations [operations] -->
 
@@ -258,6 +294,27 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`navigatorAgreementsDeleteAgreement`](docs/sdks/agreements/README.md#deleteagreement) - Delete a specific agreement
 - [`navigatorAgreementsGetAgreement`](docs/sdks/agreements/README.md#getagreement) - Retrieve detailed information about a specific agreement
 - [`navigatorAgreementsGetAgreementsList`](docs/sdks/agreements/README.md#getagreementslist) - Retrieve a list of agreements
+- [`workspacesWorkspaceDocumentsDeleteWorkspaceDocument`](docs/sdks/workspacedocuments/README.md#deleteworkspacedocument) - Deletes a document in the workspace
+- [`workspacesWorkspaceDocumentsGetWorkspaceDocument`](docs/sdks/workspacedocuments/README.md#getworkspacedocument) - Get information about the document
+- [`workspacesWorkspaceDocumentsGetWorkspaceDocumentContents`](docs/sdks/workspacedocuments/README.md#getworkspacedocumentcontents) - Get the file contents of the document
+- [`workspacesWorkspaceDocumentsGetWorkspaceDocuments`](docs/sdks/workspacedocuments/README.md#getworkspacedocuments) - Get documents in the workspace accessible to the calling user
+- [`workspacesWorkspacesCreateWorkspace`](docs/sdks/workspaces2/README.md#createworkspace) - Creates a new workspace
+- [`workspacesWorkspacesCreateWorkspaceEnvelope`](docs/sdks/workspaces2/README.md#createworkspaceenvelope) - Creates an envelope with the given documents. Returns the ID of the created envelope
+- [`workspacesWorkspacesGetWorkspace`](docs/sdks/workspaces2/README.md#getworkspace) - Returns details about the workspace
+- [`workspacesWorkspacesGetWorkspaceAssignableRoles`](docs/sdks/workspaces2/README.md#getworkspaceassignableroles) - Returns the roles the caller can assign to workspace users
+- [`workspacesWorkspacesGetWorkspaceEnvelopes`](docs/sdks/workspaces2/README.md#getworkspaceenvelopes) - Returns the envelopes associated with the given workspace
+- [`workspacesWorkspacesGetWorkspaces`](docs/sdks/workspaces2/README.md#getworkspaces) - Gets workspaces available to the calling user
+- [`workspacesWorkspaceUploadRequestCompleteWorkspaceUploadRequest`](docs/sdks/workspaceuploadrequest/README.md#completeworkspaceuploadrequest) - Complete an upload request
+- [`workspacesWorkspaceUploadRequestCreateWorkspaceUploadRequest`](docs/sdks/workspaceuploadrequest/README.md#createworkspaceuploadrequest) - Creates a new upload request within a workspace
+- [`workspacesWorkspaceUploadRequestDeleteWorkspaceUploadRequest`](docs/sdks/workspaceuploadrequest/README.md#deleteworkspaceuploadrequest) - Deletes a specific upload request
+- [`workspacesWorkspaceUploadRequestGetWorkspaceUploadRequest`](docs/sdks/workspaceuploadrequest/README.md#getworkspaceuploadrequest) - Gets details for a specific upload request
+- [`workspacesWorkspaceUploadRequestGetWorkspaceUploadRequests`](docs/sdks/workspaceuploadrequest/README.md#getworkspaceuploadrequests) - Gets upload requests within a workspace
+- [`workspacesWorkspaceUploadRequestUpdateWorkspaceUploadRequest`](docs/sdks/workspaceuploadrequest/README.md#updateworkspaceuploadrequest) - Updates a specific upload request
+- [`workspacesWorkspaceUsersAddWorkspaceUser`](docs/sdks/workspaceusers/README.md#addworkspaceuser) - Adds a user to the workspace by email address
+- [`workspacesWorkspaceUsersGetWorkspaceUsers`](docs/sdks/workspaceusers/README.md#getworkspaceusers) - Retrieves the list of users in the given workspace
+- [`workspacesWorkspaceUsersRestoreWorkspaceUserAccess`](docs/sdks/workspaceusers/README.md#restoreworkspaceuseraccess) - Restores the specified user's access to the workspace
+- [`workspacesWorkspaceUsersRevokeWorkspaceUserAccess`](docs/sdks/workspaceusers/README.md#revokeworkspaceuseraccess) - Revokes the specified user's access to the workspace
+- [`workspacesWorkspaceUsersUpdateWorkspaceUser`](docs/sdks/workspaceusers/README.md#updateworkspaceuser) - Updates the specified user's role
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -388,7 +445,7 @@ run();
 **Primary error:**
 * [`IamClientError`](./src/models/errors/iamclienterror.ts): The base class for HTTP error responses.
 
-<details><summary>Less common errors (8)</summary>
+<details><summary>Less common errors (9)</summary>
 
 <br />
 
@@ -401,8 +458,9 @@ run();
 
 
 **Inherit from [`IamClientError`](./src/models/errors/iamclienterror.ts)**:
-* [`ErrorT`](./src/models/errors/errort.ts): Bad Request - The request could not be understood or was missing required parameters. Applicable to 11 of 18 methods.*
-* [`OAuthErrorResponse`](./src/models/errors/oautherrorresponse.ts): Status code `400`. Applicable to 5 of 18 methods.*
+* [`ErrorDetails`](./src/models/errors/errordetails.ts): The error response object for the Workspaces API. Applicable to 21 of 39 methods.*
+* [`ErrorT`](./src/models/errors/errort.ts): Bad Request - The request could not be understood or was missing required parameters. Applicable to 11 of 39 methods.*
+* [`OAuthErrorResponse`](./src/models/errors/oautherrorresponse.ts): Status code `400`. Applicable to 5 of 39 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

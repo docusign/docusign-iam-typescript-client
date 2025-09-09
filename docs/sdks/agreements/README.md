@@ -35,6 +35,7 @@ The response also includes provisions that outline the key legal, financial, and
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="GetAgreementsList" method="get" path="/v1/accounts/{accountId}/agreements" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -133,6 +134,7 @@ The operation is essential for retrieving the full context of an agreement, enab
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="GetAgreement" method="get" path="/v1/accounts/{accountId}/agreements/{agreementId}" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -210,6 +212,7 @@ This operation safely deletes an agreement. This action conforms to GDPR and CCP
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="DeleteAgreement" method="delete" path="/v1/accounts/{accountId}/agreements/{agreementId}" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -293,6 +296,7 @@ Please refer to the original agreement for any legally binding information.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="CreateAgreementSummary" method="post" path="/v1/accounts/{accountId}/agreements/{agreementId}/ai/actions/summarize" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 

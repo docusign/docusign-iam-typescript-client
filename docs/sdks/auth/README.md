@@ -20,6 +20,7 @@ You do not need an integration key to obtain an access token.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="GetTokenFromConfidentialAuthCode" method="post" path="/oauth/token#FromConfidentialAuthCode" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -100,6 +101,7 @@ You do not need an integration key to obtain an access token.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="GetTokenFromPublicAuthCode" method="post" path="/oauth/token#FromPublicAuthCode" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -185,6 +187,7 @@ You do not need an integration key to obtain an access token.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="GetTokenFromJWTGrant" method="post" path="/oauth/token#FromJWTGrant" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -263,6 +266,7 @@ You do not need an integration key to obtain an access token.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="GetTokenFromRefreshToken" method="post" path="/oauth/token#FromRefreshToken" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -338,6 +342,7 @@ For the production environment, the URI is https://account.docusign.com/oauth/us
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="GetUserInfo" method="get" path="/oauth/userinfo" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 

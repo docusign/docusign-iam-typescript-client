@@ -16,7 +16,7 @@ export type ErrorTData = {
   /**
    * HTTP status code for the error.
    */
-  code?: number | undefined;
+  code?: string | undefined;
   /**
    * The timestamp when the error occurred.
    */
@@ -34,7 +34,7 @@ export class ErrorT extends IamClientError {
   /**
    * HTTP status code for the error.
    */
-  code?: number | undefined;
+  code?: string | undefined;
   /**
    * The timestamp when the error occurred.
    */
@@ -64,7 +64,7 @@ export class ErrorT extends IamClientError {
 export const ErrorT$inboundSchema: z.ZodType<ErrorT, z.ZodTypeDef, unknown> = z
   .object({
     error: z.string().optional(),
-    code: z.number().int().optional(),
+    code: z.string().optional(),
     timestamp: z.string().datetime({ offset: true }).transform(v => new Date(v))
       .optional(),
     request$: z.instanceof(Request),
@@ -82,7 +82,7 @@ export const ErrorT$inboundSchema: z.ZodType<ErrorT, z.ZodTypeDef, unknown> = z
 /** @internal */
 export type ErrorT$Outbound = {
   error?: string | undefined;
-  code?: number | undefined;
+  code?: string | undefined;
   timestamp?: string | undefined;
 };
 
@@ -95,7 +95,7 @@ export const ErrorT$outboundSchema: z.ZodType<
   .transform(v => v.data$)
   .pipe(z.object({
     error: z.string().optional(),
-    code: z.number().int().optional(),
+    code: z.string().optional(),
     timestamp: z.date().transform(v => v.toISOString()).optional(),
   }));
 
