@@ -45,6 +45,23 @@ export type DocusignIamNavigatorOAuthScope =
   (typeof DOCUSIGN_IAM_NAVIGATOR_OAUTH_SCOPES)[number];
 
 /**
+ * WORKSPACE SCOPES
+ */
+
+/** OAuth Scopes for Docusign Workspace API */
+export const DOCUSIGN_IAM_WORKSPACE_OAUTH_SCOPES = [
+  "signature",
+  "dtr.company.read",
+  "dtr.rooms.read",
+  "dtr.rooms.write",
+  "dtr.documents.write",
+] as const;
+
+/** OAuth Scopes for Docusign Workspace API */
+export type DocusignIamWorkspaceOAuthScope =
+  (typeof DOCUSIGN_IAM_WORKSPACE_OAUTH_SCOPES)[number];
+
+/**
  * COMMON SCOPES
  */
 
@@ -64,6 +81,7 @@ export const DOCUSIGN_IAM_OAUTH_SCOPES = [
   ...DOCUSIGN_IAM_CONNECTED_FIELDS_OAUTH_SCOPES,
   ...DOCUSIGN_IAM_MAESTRO_OAUTH_SCOPES,
   ...DOCUSIGN_IAM_NAVIGATOR_OAUTH_SCOPES,
+  ...DOCUSIGN_IAM_WORKSPACE_OAUTH_SCOPES,
 ] as const;
 
 /** Schema to validate OAuth scopes for Docusign API's */

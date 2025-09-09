@@ -152,6 +152,9 @@ export type Provisions = {
   renewalNoticeDate?: Date | null | undefined;
   autoRenewalTermLength?: string | null | undefined;
   renewalExtensionPeriod?: string | null | undefined;
+  /**
+   * The userId parameter
+   */
   renewalProcessOwner?: string | undefined;
   /**
    * Additional information related to the renewal process.

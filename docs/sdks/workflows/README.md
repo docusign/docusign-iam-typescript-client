@@ -75,6 +75,7 @@ be triggered.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="GetWorkflowsList" method="get" path="/v1/accounts/{accountId}/workflows" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -196,6 +197,7 @@ the workflow instance, ensuring seamless execution and compliance with workflow 
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="GetWorkflowTriggerRequirements" method="get" path="/v1/accounts/{accountId}/workflows/{workflowId}/trigger-requirements" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -325,6 +327,7 @@ interact with or track the running instance.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="TriggerWorkflow" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/actions/trigger" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -416,6 +419,7 @@ This operation pauses new workflow instances from being created. Any running wor
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="pauseNewWorkflowInstances" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/actions/pause" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -493,6 +497,7 @@ This operation enables new workflow instances to be created
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="resumePausedWorkflow" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/actions/resume" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 

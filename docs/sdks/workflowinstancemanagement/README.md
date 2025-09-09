@@ -59,6 +59,7 @@ as who started it, when it was last modified, and how many steps have been compl
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="getWorkflowInstancesList" method="get" path="/v1/accounts/{accountId}/workflows/{workflowId}/instances" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -151,6 +152,7 @@ auditing and reporting within the system.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="getWorkflowInstance" method="get" path="/v1/accounts/{accountId}/workflows/{workflowId}/instances/{instanceId}" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -239,6 +241,7 @@ Once canceled, the workflow instance will no longer continue executing any remai
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="cancelWorkflowInstance" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/instances/{instanceId}/actions/cancel" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 

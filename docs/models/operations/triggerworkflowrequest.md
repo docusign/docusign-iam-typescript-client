@@ -8,6 +8,13 @@ import { TriggerWorkflowRequest } from "@docusign/iam-sdk/models/operations";
 let value: TriggerWorkflowRequest = {
   accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
   workflowId: "<id>",
+  triggerWorkflow: {
+    instanceName: "My Instance",
+    triggerInputs: {
+      "name": "Jon Doe",
+      "email": "jdoe@example.com",
+    },
+  },
 };
 ```
 

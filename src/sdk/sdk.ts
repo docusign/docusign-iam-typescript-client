@@ -7,6 +7,7 @@ import { Auth } from "./auth.js";
 import { ConnectedFields } from "./connectedfields.js";
 import { Maestro } from "./maestro.js";
 import { Navigator } from "./navigator.js";
+import { Workspaces1 } from "./workspaces1.js";
 
 export class IamClient extends ClientSDK {
   private _auth?: Auth;
@@ -27,5 +28,10 @@ export class IamClient extends ClientSDK {
   private _connectedFields?: ConnectedFields;
   get connectedFields(): ConnectedFields {
     return (this._connectedFields ??= new ConnectedFields(this._options));
+  }
+
+  private _workspaces1?: Workspaces1;
+  get workspaces1(): Workspaces1 {
+    return (this._workspaces1 ??= new Workspaces1(this._options));
   }
 }
