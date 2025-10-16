@@ -59,3 +59,13 @@ Based on:
 - [typescript v1.0.0-beta.4] .
 ### Releases
 - [NPM v1.0.0-beta.4] https://www.npmjs.com/package/@docusign/iam-sdk/v/1.0.0-beta.4 - .
+
+## 2025-10-09 05:44:06
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.636.2 (2.723.8) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.0.0-beta.5] .
+### Releases
+- [NPM v1.0.0-beta.5] https://www.npmjs.com/package/@docusign/iam-sdk/v/1.0.0-beta.5 - .

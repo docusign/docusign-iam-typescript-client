@@ -10,6 +10,7 @@
 * [getWorkspaceUploadRequest](#getworkspaceuploadrequest) - Gets details for a specific upload request
 * [updateWorkspaceUploadRequest](#updateworkspaceuploadrequest) - Updates a specific upload request
 * [deleteWorkspaceUploadRequest](#deleteworkspaceuploadrequest) - Deletes a specific upload request
+* [addWorkspaceUploadRequestDocument](#addworkspaceuploadrequestdocument) - Add a document to an upload request via file upload
 * [completeWorkspaceUploadRequest](#completeworkspaceuploadrequest) - Complete an upload request
 
 ## createWorkspaceUploadRequest
@@ -428,6 +429,85 @@ run();
 ### Response
 
 **Promise\<void\>**
+
+### Errors
+
+| Error Type          | Status Code         | Content Type        |
+| ------------------- | ------------------- | ------------------- |
+| errors.ErrorDetails | 400, 401            | application/json    |
+| errors.ErrorDetails | 500                 | application/json    |
+| errors.APIError     | 4XX, 5XX            | \*/\*               |
+
+## addWorkspaceUploadRequestDocument
+
+This operation adds a document to a specific upload request within a workspace via file upload. The file is passed in the request body as multipart/form-data. The file name is used as the document name.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="addWorkspaceUploadRequestDocument" method="post" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/upload-requests/{uploadRequestId}/documents" -->
+```typescript
+import { IamClient } from "@docusign/iam-sdk";
+
+const iamClient = new IamClient({
+  accessToken: process.env["DOCUSIGN_IAM_CLIENT_ACCESS_TOKEN"] ?? "",
+});
+
+async function run() {
+  const result = await iamClient.workspaces.workspaceUploadRequest.addWorkspaceUploadRequestDocument({
+    accountId: "8b599acd-faa6-4529-b5ad-02f99b937198",
+    workspaceId: "4cbc6785-7806-4970-8bca-94d8b557bc6e",
+    uploadRequestId: "a1972622-e272-42d7-9477-b2574b1da2ae",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { IamClientCore } from "@docusign/iam-sdk/core.js";
+import { workspacesWorkspaceUploadRequestAddWorkspaceUploadRequestDocument } from "@docusign/iam-sdk/funcs/workspacesWorkspaceUploadRequestAddWorkspaceUploadRequestDocument.js";
+
+// Use `IamClientCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const iamClient = new IamClientCore({
+  accessToken: process.env["DOCUSIGN_IAM_CLIENT_ACCESS_TOKEN"] ?? "",
+});
+
+async function run() {
+  const res = await workspacesWorkspaceUploadRequestAddWorkspaceUploadRequestDocument(iamClient, {
+    accountId: "8b599acd-faa6-4529-b5ad-02f99b937198",
+    workspaceId: "4cbc6785-7806-4970-8bca-94d8b557bc6e",
+    uploadRequestId: "a1972622-e272-42d7-9477-b2574b1da2ae",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("workspacesWorkspaceUploadRequestAddWorkspaceUploadRequestDocument failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.AddWorkspaceUploadRequestDocumentRequest](../../models/operations/addworkspaceuploadrequestdocumentrequest.md)                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[components.AddWorkspaceUploadRequestDocumentResponse](../../models/components/addworkspaceuploadrequestdocumentresponse.md)\>**
 
 ### Errors
 

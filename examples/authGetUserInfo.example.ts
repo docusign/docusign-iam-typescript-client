@@ -18,7 +18,7 @@ const iamClient = new IamClient({
 });
 
 async function main() {
-  const result = await iamClient.getUserInfo();
+  const result = await iamClient.auth.getUserInfo();
 
   console.log(result);
 }

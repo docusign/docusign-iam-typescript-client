@@ -20,6 +20,7 @@ methods to interact with the following Docusign APIs:
 * [Maestro API](https://developers.docusign.com/docs/maestro-api/)
 * [Navigator API](https://developers.docusign.com/docs/navigator-api/)
 * [Connected Fields API](https://developers.docusign.com/docs/connected-fields-api/)
+* [Workspaces API](https://developers.docusign.com/docs/workspaces-api/)
 
 This repo contains the source-code for this SDK. You only need to use the code
 in this repo if you want to customize the SDK for your own needs. To use the
@@ -40,6 +41,7 @@ Developer Center](https://developers.docusign.com/).
   * [Authentication](#authentication)
   * [Available Resources and Operations](#available-resources-and-operations)
   * [Standalone functions](#standalone-functions)
+  * [File uploads](#file-uploads)
   * [Retries](#retries)
   * [Error Handling](#error-handling)
   * [Server Selection](#server-selection)
@@ -77,10 +79,7 @@ bun add @docusign/iam-sdk
 ### Yarn
 
 ```bash
-yarn add @docusign/iam-sdk zod
-
-# Note that Yarn does not install peer dependencies automatically. You will need
-# to install zod as shown above.
+yarn add @docusign/iam-sdk
 ```
 
 > [!NOTE]
@@ -187,16 +186,9 @@ run();
 * [getTokenFromRefreshToken](docs/sdks/auth/README.md#gettokenfromrefreshtoken) - Obtains an access token from the Docusign API using an authorization code.
 * [getUserInfo](docs/sdks/auth/README.md#getuserinfo) - Get user information
 
-### [connectedFields](docs/sdks/connectedfields/README.md)
-
-
 #### [connectedFields.tabInfo](docs/sdks/tabinfo/README.md)
 
 * [getConnectedFieldsTabGroups](docs/sdks/tabinfo/README.md#getconnectedfieldstabgroups) - Returns all tabs associated with the given account
-
-
-### [maestro](docs/sdks/maestro/README.md)
-
 
 #### [maestro.workflowInstanceManagement](docs/sdks/workflowinstancemanagement/README.md)
 
@@ -212,9 +204,6 @@ run();
 * [pauseNewWorkflowInstances](docs/sdks/workflows/README.md#pausenewworkflowinstances) - Pause an Active Workflow
 * [resumePausedWorkflow](docs/sdks/workflows/README.md#resumepausedworkflow) - Resume a Paused Workflow
 
-### [navigator](docs/sdks/navigator/README.md)
-
-
 #### [navigator.agreements](docs/sdks/agreements/README.md)
 
 * [getAgreementsList](docs/sdks/agreements/README.md#getagreementslist) - Retrieve a list of agreements
@@ -222,12 +211,10 @@ run();
 * [deleteAgreement](docs/sdks/agreements/README.md#deleteagreement) - Delete a specific agreement
 * [createAgreementSummary](docs/sdks/agreements/README.md#createagreementsummary) - Create an AI-generated summary of an agreement document
 
-### [workspaces](docs/sdks/workspaces1/README.md)
-
-
 #### [workspaces.workspaceDocuments](docs/sdks/workspacedocuments/README.md)
 
 * [getWorkspaceDocuments](docs/sdks/workspacedocuments/README.md#getworkspacedocuments) - Get documents in the workspace accessible to the calling user
+* [addWorkspaceDocument](docs/sdks/workspacedocuments/README.md#addworkspacedocument) - Add a document to a workspace via file contents upload
 * [getWorkspaceDocument](docs/sdks/workspacedocuments/README.md#getworkspacedocument) - Get information about the document
 * [deleteWorkspaceDocument](docs/sdks/workspacedocuments/README.md#deleteworkspacedocument) - Deletes a document in the workspace
 * [getWorkspaceDocumentContents](docs/sdks/workspacedocuments/README.md#getworkspacedocumentcontents) - Get the file contents of the document
@@ -248,6 +235,7 @@ run();
 * [getWorkspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md#getworkspaceuploadrequest) - Gets details for a specific upload request
 * [updateWorkspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md#updateworkspaceuploadrequest) - Updates a specific upload request
 * [deleteWorkspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md#deleteworkspaceuploadrequest) - Deletes a specific upload request
+* [addWorkspaceUploadRequestDocument](docs/sdks/workspaceuploadrequest/README.md#addworkspaceuploadrequestdocument) - Add a document to an upload request via file upload
 * [completeWorkspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md#completeworkspaceuploadrequest) - Complete an upload request
 
 #### [workspaces.workspaceUsers](docs/sdks/workspaceusers/README.md)
@@ -294,6 +282,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`navigatorAgreementsDeleteAgreement`](docs/sdks/agreements/README.md#deleteagreement) - Delete a specific agreement
 - [`navigatorAgreementsGetAgreement`](docs/sdks/agreements/README.md#getagreement) - Retrieve detailed information about a specific agreement
 - [`navigatorAgreementsGetAgreementsList`](docs/sdks/agreements/README.md#getagreementslist) - Retrieve a list of agreements
+- [`workspacesWorkspaceDocumentsAddWorkspaceDocument`](docs/sdks/workspacedocuments/README.md#addworkspacedocument) - Add a document to a workspace via file contents upload
 - [`workspacesWorkspaceDocumentsDeleteWorkspaceDocument`](docs/sdks/workspacedocuments/README.md#deleteworkspacedocument) - Deletes a document in the workspace
 - [`workspacesWorkspaceDocumentsGetWorkspaceDocument`](docs/sdks/workspacedocuments/README.md#getworkspacedocument) - Get information about the document
 - [`workspacesWorkspaceDocumentsGetWorkspaceDocumentContents`](docs/sdks/workspacedocuments/README.md#getworkspacedocumentcontents) - Get the file contents of the document
@@ -304,6 +293,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`workspacesWorkspacesGetWorkspaceAssignableRoles`](docs/sdks/workspaces2/README.md#getworkspaceassignableroles) - Returns the roles the caller can assign to workspace users
 - [`workspacesWorkspacesGetWorkspaceEnvelopes`](docs/sdks/workspaces2/README.md#getworkspaceenvelopes) - Returns the envelopes associated with the given workspace
 - [`workspacesWorkspacesGetWorkspaces`](docs/sdks/workspaces2/README.md#getworkspaces) - Gets workspaces available to the calling user
+- [`workspacesWorkspaceUploadRequestAddWorkspaceUploadRequestDocument`](docs/sdks/workspaceuploadrequest/README.md#addworkspaceuploadrequestdocument) - Add a document to an upload request via file upload
 - [`workspacesWorkspaceUploadRequestCompleteWorkspaceUploadRequest`](docs/sdks/workspaceuploadrequest/README.md#completeworkspaceuploadrequest) - Complete an upload request
 - [`workspacesWorkspaceUploadRequestCreateWorkspaceUploadRequest`](docs/sdks/workspaceuploadrequest/README.md#createworkspaceuploadrequest) - Creates a new upload request within a workspace
 - [`workspacesWorkspaceUploadRequestDeleteWorkspaceUploadRequest`](docs/sdks/workspaceuploadrequest/README.md#deleteworkspaceuploadrequest) - Deletes a specific upload request
@@ -318,6 +308,42 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
+
+<!-- Start File uploads [file-upload] -->
+## File uploads
+
+Certain SDK methods accept files as part of a multi-part request. It is possible and typically recommended to upload files as a stream rather than reading the entire contents into memory. This avoids excessive memory consumption and potentially crashing with out-of-memory errors when working with very large files. The following example demonstrates how to attach a file stream to a request.
+
+> [!TIP]
+>
+> Depending on your JavaScript runtime, there are convenient utilities that return a handle to a file without reading the entire contents into memory:
+>
+> - **Node.js v20+:** Since v20, Node.js comes with a native `openAsBlob` function in [`node:fs`](https://nodejs.org/docs/latest-v20.x/api/fs.html#fsopenasblobpath-options).
+> - **Bun:** The native [`Bun.file`](https://bun.sh/docs/api/file-io#reading-files-bun-file) function produces a file handle that can be used for streaming file uploads.
+> - **Browsers:** All supported browsers return an instance to a [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File) when reading the value from an `<input type="file">` element.
+> - **Node.js v18:** A file stream can be created using the `fileFrom` helper from [`fetch-blob/from.js`](https://www.npmjs.com/package/fetch-blob).
+
+```typescript
+import { IamClient } from "@docusign/iam-sdk";
+
+const iamClient = new IamClient({
+  accessToken: process.env["DOCUSIGN_IAM_CLIENT_ACCESS_TOKEN"] ?? "",
+});
+
+async function run() {
+  const result = await iamClient.workspaces.workspaceDocuments
+    .addWorkspaceDocument({
+      accountId: "5eddb8e1-d00e-47c4-9ed6-3b1c8915ae0d",
+      workspaceId: "7f9e0991-b6d1-4de8-bfa5-7724e59a3087",
+    });
+
+  console.log(result);
+}
+
+run();
+
+```
+<!-- End File uploads [file-upload] -->
 
 <!-- Start Retries [retries] -->
 ## Retries
@@ -458,9 +484,9 @@ run();
 
 
 **Inherit from [`IamClientError`](./src/models/errors/iamclienterror.ts)**:
-* [`ErrorDetails`](./src/models/errors/errordetails.ts): The error response object for the Workspaces API. Applicable to 21 of 39 methods.*
-* [`ErrorT`](./src/models/errors/errort.ts): Bad Request - The request could not be understood or was missing required parameters. Applicable to 11 of 39 methods.*
-* [`OAuthErrorResponse`](./src/models/errors/oautherrorresponse.ts): Status code `400`. Applicable to 5 of 39 methods.*
+* [`ErrorDetails`](./src/models/errors/errordetails.ts): The error response object for the Workspaces API. Applicable to 23 of 41 methods.*
+* [`ErrorT`](./src/models/errors/errort.ts): Bad Request - The request could not be understood or was missing required parameters. Applicable to 11 of 41 methods.*
+* [`OAuthErrorResponse`](./src/models/errors/oautherrorresponse.ts): Status code `400`. Applicable to 5 of 41 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
@@ -600,7 +626,7 @@ httpClient.addHook("requestError", (error, request) => {
   console.groupEnd();
 });
 
-const sdk = new IamClient({ httpClient });
+const sdk = new IamClient({ httpClient: httpClient });
 ```
 <!-- End Custom HTTP Client [http-client] -->
 
