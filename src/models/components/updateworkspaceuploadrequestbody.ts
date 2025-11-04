@@ -75,7 +75,7 @@ export type UpdateWorkspaceUploadRequestBody = {
   /**
    * The due date for the upload request (editable)
    */
-  dueDate: string | null;
+  dueDate: Date;
   /**
    * The date the upload request was sent
    */
@@ -117,7 +117,7 @@ export const UpdateWorkspaceUploadRequestBody$inboundSchema: z.ZodType<
   ).optional(),
   created_date: z.nullable(z.string()).optional(),
   updated_date: z.nullable(z.string()).optional(),
-  due_date: z.nullable(z.string()),
+  due_date: z.string().datetime({ offset: true }).transform(v => new Date(v)),
   sent_date: z.nullable(z.string()).optional(),
   completed_date: z.nullable(z.string()).optional(),
   can_view: z.nullable(z.boolean()).optional(),
@@ -154,7 +154,7 @@ export type UpdateWorkspaceUploadRequestBody$Outbound = {
     | undefined;
   created_date?: string | null | undefined;
   updated_date?: string | null | undefined;
-  due_date: string | null;
+  due_date: string;
   sent_date?: string | null | undefined;
   completed_date?: string | null | undefined;
   can_view?: boolean | null | undefined;
@@ -181,7 +181,7 @@ export const UpdateWorkspaceUploadRequestBody$outboundSchema: z.ZodType<
   ).optional(),
   createdDate: z.nullable(z.string()).optional(),
   updatedDate: z.nullable(z.string()).optional(),
-  dueDate: z.nullable(z.string()),
+  dueDate: z.date().transform(v => v.toISOString()),
   sentDate: z.nullable(z.string()).optional(),
   completedDate: z.nullable(z.string()).optional(),
   canView: z.nullable(z.boolean()).optional(),
