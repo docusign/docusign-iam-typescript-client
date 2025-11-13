@@ -8,6 +8,7 @@ import { workspacesWorkspacesGetWorkspace } from "../funcs/workspacesWorkspacesG
 import { workspacesWorkspacesGetWorkspaceAssignableRoles } from "../funcs/workspacesWorkspacesGetWorkspaceAssignableRoles.js";
 import { workspacesWorkspacesGetWorkspaceEnvelopes } from "../funcs/workspacesWorkspacesGetWorkspaceEnvelopes.js";
 import { workspacesWorkspacesGetWorkspaces } from "../funcs/workspacesWorkspacesGetWorkspaces.js";
+import { workspacesWorkspacesUpdateWorkspace } from "../funcs/workspacesWorkspacesUpdateWorkspace.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as components from "../models/components/index.js";
 import * as operations from "../models/operations/index.js";
@@ -46,6 +47,23 @@ export class Workspaces2 extends ClientSDK {
     options?: RequestOptions,
   ): Promise<components.CreateWorkspaceResponse> {
     return unwrapAsync(workspacesWorkspacesCreateWorkspace(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Updates an existing workspace
+   *
+   * @remarks
+   * This operation updates details about a specific workspace. It returns the workspace's unique identifier (ID), name, and metadata such as when it was created and by whom.
+   */
+  async updateWorkspace(
+    request: operations.UpdateWorkspaceRequest,
+    options?: RequestOptions,
+  ): Promise<components.UpdateWorkspaceResponse> {
+    return unwrapAsync(workspacesWorkspacesUpdateWorkspace(
       this,
       request,
       options,

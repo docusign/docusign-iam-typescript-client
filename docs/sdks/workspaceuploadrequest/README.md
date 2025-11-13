@@ -291,7 +291,7 @@ async function run() {
       name: "<value>",
       description: "at providence phew furthermore save digitize than how circa never",
       status: "overdue",
-      dueDate: "<value>",
+      dueDate: new Date("<value>"),
     },
   });
 
@@ -324,7 +324,7 @@ async function run() {
       name: "<value>",
       description: "at providence phew furthermore save digitize than how circa never",
       status: "overdue",
-      dueDate: "<value>",
+      dueDate: new Date("<value>"),
     },
   });
   if (res.ok) {

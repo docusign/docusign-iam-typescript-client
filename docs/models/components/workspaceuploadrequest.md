@@ -15,9 +15,9 @@ let value: WorkspaceUploadRequest = {
   status: "overdue",
   documents: [],
   assignments: [],
-  createdDate: new Date("2023-01-02T04:54:12.774Z"),
-  updatedDate: new Date("2023-12-29T22:45:15.002Z"),
-  canView: true,
+  createdDate: null,
+  updatedDate: new Date("2023-03-04T08:54:31.312Z"),
+  canView: false,
   canEdit: false,
   canDelete: false,
 };

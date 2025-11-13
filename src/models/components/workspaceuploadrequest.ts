@@ -64,11 +64,11 @@ export type WorkspaceUploadRequest = {
   /**
    * The date the upload request was created
    */
-  createdDate: Date;
+  createdDate: Date | null;
   /**
    * The date the upload request was last updated
    */
-  updatedDate: Date;
+  updatedDate: Date | null;
   /**
    * The due date for the upload request
    */
@@ -111,11 +111,11 @@ export const WorkspaceUploadRequest$inboundSchema: z.ZodType<
   assignments: z.nullable(
     z.array(WorkspaceUploadRequestAssignment$inboundSchema),
   ),
-  created_date: z.string().datetime({ offset: true }).transform(v =>
-    new Date(v)
+  created_date: z.nullable(
+    z.string().datetime({ offset: true }).transform(v => new Date(v)),
   ),
-  updated_date: z.string().datetime({ offset: true }).transform(v =>
-    new Date(v)
+  updated_date: z.nullable(
+    z.string().datetime({ offset: true }).transform(v => new Date(v)),
   ),
   due_date: z.nullable(
     z.string().datetime({ offset: true }).transform(v => new Date(v)),
@@ -155,8 +155,8 @@ export type WorkspaceUploadRequest$Outbound = {
   status: string;
   documents: Array<WorkspaceUploadRequestDocument$Outbound> | null;
   assignments: Array<WorkspaceUploadRequestAssignment$Outbound> | null;
-  created_date: string;
-  updated_date: string;
+  created_date: string | null;
+  updated_date: string | null;
   due_date?: string | null | undefined;
   sent_date?: string | null | undefined;
   completed_date?: string | null | undefined;
@@ -181,8 +181,8 @@ export const WorkspaceUploadRequest$outboundSchema: z.ZodType<
   assignments: z.nullable(
     z.array(WorkspaceUploadRequestAssignment$outboundSchema),
   ),
-  createdDate: z.date().transform(v => v.toISOString()),
-  updatedDate: z.date().transform(v => v.toISOString()),
+  createdDate: z.nullable(z.date().transform(v => v.toISOString())),
+  updatedDate: z.nullable(z.date().transform(v => v.toISOString())),
   dueDate: z.nullable(z.date().transform(v => v.toISOString())).optional(),
   sentDate: z.nullable(z.date().transform(v => v.toISOString())).optional(),
   completedDate: z.nullable(z.date().transform(v => v.toISOString()))

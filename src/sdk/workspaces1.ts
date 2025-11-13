@@ -3,12 +3,18 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
+import { WorkspaceBrands } from "./workspacebrands.js";
 import { WorkspaceDocuments } from "./workspacedocuments.js";
 import { Workspaces2 } from "./workspaces2.js";
 import { WorkspaceUploadRequest } from "./workspaceuploadrequest.js";
 import { WorkspaceUsers } from "./workspaceusers.js";
 
 export class Workspaces1 extends ClientSDK {
+  private _workspaceBrands?: WorkspaceBrands;
+  get workspaceBrands(): WorkspaceBrands {
+    return (this._workspaceBrands ??= new WorkspaceBrands(this._options));
+  }
+
   private _workspaceDocuments?: WorkspaceDocuments;
   get workspaceDocuments(): WorkspaceDocuments {
     return (this._workspaceDocuments ??= new WorkspaceDocuments(this._options));
