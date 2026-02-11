@@ -46,13 +46,10 @@ import { Result } from "../types/fp.js";
  *
  * ### Key Features:
  * - **Detailed Trigger Input Requirements**: Provides an exhaustive schema of required fields,
- *
  *   their data types, and optional default values for easy reference and data validation.
  * - **Trigger Event Type Information**: Specifies the type of event required to initiate the workflow
- *
  *   (e.g., HTTP), helping developers configure their systems to invoke the workflow appropriately.
  * - **Configurable for Custom Triggers**: Suitable for custom configurations, enabling flexibility
- *
  *   in how workflows can be triggered according to system needs.
  */
 export function maestroWorkflowsGetWorkflowTriggerRequirements(

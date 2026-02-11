@@ -4,10 +4,16 @@
 
 import { ClientSDK } from "../lib/sdks.js";
 import { Agreements } from "./agreements.js";
+import { BulkJob } from "./bulkjob.js";
 
 export class Navigator extends ClientSDK {
   private _agreements?: Agreements;
   get agreements(): Agreements {
     return (this._agreements ??= new Agreements(this._options));
+  }
+
+  private _bulkJob?: BulkJob;
+  get bulkJob(): BulkJob {
+    return (this._bulkJob ??= new BulkJob(this._options));
   }
 }

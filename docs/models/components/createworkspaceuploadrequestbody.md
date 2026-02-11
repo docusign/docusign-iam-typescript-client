@@ -8,7 +8,7 @@ import { CreateWorkspaceUploadRequestBody } from "@docusign/iam-sdk/models/compo
 let value: CreateWorkspaceUploadRequestBody = {
   name: "<value>",
   description: "husband from than",
-  dueDate: new Date("2023-09-12T01:57:32.078Z"),
+  dueDate: new Date("2024-09-11T01:57:32.078Z"),
   assignments: [],
   status: "complete",
 };

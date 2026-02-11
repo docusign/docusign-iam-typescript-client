@@ -1,14 +1,11 @@
-# CreateAgreementSummaryRequest
+# UploadCompleteBulkJobRequest
 
 ## Example Usage
 
 ```typescript
-import { CreateAgreementSummaryRequest } from "@docusign/iam-sdk/models/operations";
+import { UploadCompleteBulkJobRequest } from "@docusign/iam-sdk/models/operations";
 
-let value: CreateAgreementSummaryRequest = {
-  accountId: "<id>",
-  agreementId: "<id>",
-};
+let value: UploadCompleteBulkJobRequest = {};
 ```
 
 ## Fields
@@ -16,4 +13,4 @@ let value: CreateAgreementSummaryRequest = {
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
 | `accountId`        | *string*           | :heavy_check_mark: | N/A                |
-| `agreementId`      | *string*           | :heavy_check_mark: | N/A                |
+| `jobId`            | *string*           | :heavy_check_mark: | N/A                |

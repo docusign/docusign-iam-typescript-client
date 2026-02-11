@@ -6,8 +6,6 @@
 import { CancelWorkflowInstanceRequest } from "@docusign/iam-sdk/models/operations";
 
 let value: CancelWorkflowInstanceRequest = {
-  accountId: "<id>",
-  workflowId: "<id>",
   instanceId: "f13a0104-6e97-4dd2-8556-cc2eb1ed5cd3",
 };
 ```

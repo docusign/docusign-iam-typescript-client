@@ -1,5 +1,4 @@
-# Workspaces2
-(*workspaces.workspaces*)
+# Workspaces.Workspaces
 
 ## Overview
 

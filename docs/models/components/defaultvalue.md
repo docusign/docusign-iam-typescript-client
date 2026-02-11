@@ -17,7 +17,7 @@ const value: string = "";
 ### `number`
 
 ```typescript
-const value: number = NaN;
+const value: number = 1284.03;
 ```
 
 ### `boolean`
@@ -40,7 +40,9 @@ const value: { [k: string]: any } = {
 
 ```typescript
 const value: any[] = [
-  "",
+  "<value 1>",
+  "<value 2>",
+  "<value 3>",
 ];
 ```
 

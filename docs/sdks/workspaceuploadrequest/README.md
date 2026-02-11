@@ -1,5 +1,4 @@
-# WorkspaceUploadRequest
-(*workspaces.workspaceUploadRequest*)
+# Workspaces.WorkspaceUploadRequest
 
 ## Overview
 

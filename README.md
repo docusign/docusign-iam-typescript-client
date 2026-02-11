@@ -178,7 +178,7 @@ run();
 <details open>
 <summary>Available methods</summary>
 
-### [auth](docs/sdks/auth/README.md)
+### [Auth](docs/sdks/auth/README.md)
 
 * [getTokenFromConfidentialAuthCode](docs/sdks/auth/README.md#gettokenfromconfidentialauthcode) - Obtains an access token from the Docusign API using an authorization code.
 * [getTokenFromPublicAuthCode](docs/sdks/auth/README.md#gettokenfrompublicauthcode) - Obtains an access token from the Docusign API using an authorization code.
@@ -186,17 +186,17 @@ run();
 * [getTokenFromRefreshToken](docs/sdks/auth/README.md#gettokenfromrefreshtoken) - Obtains an access token from the Docusign API using an authorization code.
 * [getUserInfo](docs/sdks/auth/README.md#getuserinfo) - Get user information
 
-#### [connectedFields.tabInfo](docs/sdks/tabinfo/README.md)
+### [ConnectedFields.TabInfo](docs/sdks/tabinfo/README.md)
 
 * [getConnectedFieldsTabGroups](docs/sdks/tabinfo/README.md#getconnectedfieldstabgroups) - Returns all tabs associated with the given account
 
-#### [maestro.workflowInstanceManagement](docs/sdks/workflowinstancemanagement/README.md)
+### [Maestro.WorkflowInstanceManagement](docs/sdks/workflowinstancemanagement/README.md)
 
 * [getWorkflowInstancesList](docs/sdks/workflowinstancemanagement/README.md#getworkflowinstanceslist) - Retrieve All Workflow Instances
 * [getWorkflowInstance](docs/sdks/workflowinstancemanagement/README.md#getworkflowinstance) - Retrieve a Workflow Instance
 * [cancelWorkflowInstance](docs/sdks/workflowinstancemanagement/README.md#cancelworkflowinstance) - Cancel a Running Workflow Instance
 
-#### [maestro.workflows](docs/sdks/workflows/README.md)
+### [Maestro.Workflows](docs/sdks/workflows/README.md)
 
 * [getWorkflowsList](docs/sdks/workflows/README.md#getworkflowslist) - Retrieve a list of available Maestro workflows
 * [getWorkflowTriggerRequirements](docs/sdks/workflows/README.md#getworkflowtriggerrequirements) - Retrieve trigger requirements for a specific Maestro workflow
@@ -204,19 +204,24 @@ run();
 * [pauseNewWorkflowInstances](docs/sdks/workflows/README.md#pausenewworkflowinstances) - Pause an Active Workflow
 * [resumePausedWorkflow](docs/sdks/workflows/README.md#resumepausedworkflow) - Resume a Paused Workflow
 
-#### [navigator.agreements](docs/sdks/agreements/README.md)
+### [Navigator.Agreements](docs/sdks/agreements/README.md)
 
 * [getAgreementsList](docs/sdks/agreements/README.md#getagreementslist) - Retrieve a list of agreements
 * [getAgreement](docs/sdks/agreements/README.md#getagreement) - Retrieve detailed information about a specific agreement
 * [deleteAgreement](docs/sdks/agreements/README.md#deleteagreement) - Delete a specific agreement
-* [createAgreementSummary](docs/sdks/agreements/README.md#createagreementsummary) - Create an AI-generated summary of an agreement document
 
-#### [workspaces.workspaceBrands](docs/sdks/workspacebrands/README.md)
+### [Navigator.BulkJob](docs/sdks/bulkjob/README.md)
+
+* [createBulkUploadJob](docs/sdks/bulkjob/README.md#createbulkuploadjob) - Create new bulk job with presigned URLs direct to Azure Blob Store
+* [getBulkJobStatus](docs/sdks/bulkjob/README.md#getbulkjobstatus) - Get bulk job status
+* [uploadCompleteBulkJob](docs/sdks/bulkjob/README.md#uploadcompletebulkjob) - Mark bulk job upload as complete
+
+### [Workspaces.WorkspaceBrands](docs/sdks/workspacebrands/README.md)
 
 * [getWorkspaceBrand](docs/sdks/workspacebrands/README.md#getworkspacebrand) - Returns details about the brand set for a workspace
 * [updateWorkspaceBrand](docs/sdks/workspacebrands/README.md#updateworkspacebrand) - Updates brand for an existing workspace
 
-#### [workspaces.workspaceDocuments](docs/sdks/workspacedocuments/README.md)
+### [Workspaces.WorkspaceDocuments](docs/sdks/workspacedocuments/README.md)
 
 * [getWorkspaceDocuments](docs/sdks/workspacedocuments/README.md#getworkspacedocuments) - Get documents in the workspace accessible to the calling user
 * [addWorkspaceDocument](docs/sdks/workspacedocuments/README.md#addworkspacedocument) - Add a document to a workspace via file contents upload
@@ -224,7 +229,7 @@ run();
 * [deleteWorkspaceDocument](docs/sdks/workspacedocuments/README.md#deleteworkspacedocument) - Deletes a document in the workspace
 * [getWorkspaceDocumentContents](docs/sdks/workspacedocuments/README.md#getworkspacedocumentcontents) - Get the file contents of the document
 
-#### [workspaces.workspaces](docs/sdks/workspaces2/README.md)
+### [Workspaces.Workspaces](docs/sdks/workspaces2/README.md)
 
 * [getWorkspaces](docs/sdks/workspaces2/README.md#getworkspaces) - Gets workspaces available to the calling user
 * [createWorkspace](docs/sdks/workspaces2/README.md#createworkspace) - Creates a new workspace
@@ -234,7 +239,7 @@ run();
 * [createWorkspaceEnvelope](docs/sdks/workspaces2/README.md#createworkspaceenvelope) - Creates an envelope with the given documents. Returns the ID of the created envelope
 * [getWorkspaceEnvelopes](docs/sdks/workspaces2/README.md#getworkspaceenvelopes) - Returns the envelopes associated with the given workspace
 
-#### [workspaces.workspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md)
+### [Workspaces.WorkspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md)
 
 * [createWorkspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md#createworkspaceuploadrequest) - Creates a new upload request within a workspace
 * [getWorkspaceUploadRequests](docs/sdks/workspaceuploadrequest/README.md#getworkspaceuploadrequests) - Gets upload requests within a workspace
@@ -244,7 +249,7 @@ run();
 * [addWorkspaceUploadRequestDocument](docs/sdks/workspaceuploadrequest/README.md#addworkspaceuploadrequestdocument) - Add a document to an upload request via file upload
 * [completeWorkspaceUploadRequest](docs/sdks/workspaceuploadrequest/README.md#completeworkspaceuploadrequest) - Complete an upload request
 
-#### [workspaces.workspaceUsers](docs/sdks/workspaceusers/README.md)
+### [Workspaces.WorkspaceUsers](docs/sdks/workspaceusers/README.md)
 
 * [getWorkspaceUsers](docs/sdks/workspaceusers/README.md#getworkspaceusers) - Retrieves the list of users in the given workspace
 * [addWorkspaceUser](docs/sdks/workspaceusers/README.md#addworkspaceuser) - Adds a user to the workspace by email address
@@ -284,10 +289,12 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`maestroWorkflowsPauseNewWorkflowInstances`](docs/sdks/workflows/README.md#pausenewworkflowinstances) - Pause an Active Workflow
 - [`maestroWorkflowsResumePausedWorkflow`](docs/sdks/workflows/README.md#resumepausedworkflow) - Resume a Paused Workflow
 - [`maestroWorkflowsTriggerWorkflow`](docs/sdks/workflows/README.md#triggerworkflow) - Trigger a new instance of a Maestro workflow
-- [`navigatorAgreementsCreateAgreementSummary`](docs/sdks/agreements/README.md#createagreementsummary) - Create an AI-generated summary of an agreement document
 - [`navigatorAgreementsDeleteAgreement`](docs/sdks/agreements/README.md#deleteagreement) - Delete a specific agreement
 - [`navigatorAgreementsGetAgreement`](docs/sdks/agreements/README.md#getagreement) - Retrieve detailed information about a specific agreement
 - [`navigatorAgreementsGetAgreementsList`](docs/sdks/agreements/README.md#getagreementslist) - Retrieve a list of agreements
+- [`navigatorBulkJobCreateBulkUploadJob`](docs/sdks/bulkjob/README.md#createbulkuploadjob) - Create new bulk job with presigned URLs direct to Azure Blob Store
+- [`navigatorBulkJobGetBulkJobStatus`](docs/sdks/bulkjob/README.md#getbulkjobstatus) - Get bulk job status
+- [`navigatorBulkJobUploadCompleteBulkJob`](docs/sdks/bulkjob/README.md#uploadcompletebulkjob) - Mark bulk job upload as complete
 - [`workspacesWorkspaceBrandsGetWorkspaceBrand`](docs/sdks/workspacebrands/README.md#getworkspacebrand) - Returns details about the brand set for a workspace
 - [`workspacesWorkspaceBrandsUpdateWorkspaceBrand`](docs/sdks/workspacebrands/README.md#updateworkspacebrand) - Updates brand for an existing workspace
 - [`workspacesWorkspaceDocumentsAddWorkspaceDocument`](docs/sdks/workspacedocuments/README.md#addworkspacedocument) - Add a document to a workspace via file contents upload
@@ -480,7 +487,7 @@ run();
 **Primary error:**
 * [`IamClientError`](./src/models/errors/iamclienterror.ts): The base class for HTTP error responses.
 
-<details><summary>Less common errors (9)</summary>
+<details><summary>Less common errors (10)</summary>
 
 <br />
 
@@ -493,9 +500,10 @@ run();
 
 
 **Inherit from [`IamClientError`](./src/models/errors/iamclienterror.ts)**:
-* [`ErrorDetails`](./src/models/errors/errordetails.ts): The error response object for the Workspaces API. Applicable to 26 of 44 methods.*
-* [`ErrorT`](./src/models/errors/errort.ts): Bad Request - The request could not be understood or was missing required parameters. Applicable to 11 of 44 methods.*
-* [`OAuthErrorResponse`](./src/models/errors/oautherrorresponse.ts): Status code `400`. Applicable to 5 of 44 methods.*
+* [`ErrorDetails`](./src/models/errors/errordetails.ts): The error response object for the Workspaces API. Applicable to 26 of 46 methods.*
+* [`ErrorT`](./src/models/errors/errort.ts): Bad Request - The request could not be understood or was missing required parameters. Applicable to 10 of 46 methods.*
+* [`OAuthErrorResponse`](./src/models/errors/oautherrorresponse.ts): Status code `400`. Applicable to 5 of 46 methods.*
+* [`ErrDetails`](./src/models/errors/errdetails.ts): Applicable to 3 of 46 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
@@ -521,7 +529,7 @@ You can override the default server globally by passing a server name to the `se
 import { IamClient } from "@docusign/iam-sdk";
 
 const iamClient = new IamClient({
-  server: "prod",
+  server: "demo",
 });
 
 async function run() {

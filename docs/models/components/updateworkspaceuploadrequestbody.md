@@ -11,7 +11,7 @@ let value: UpdateWorkspaceUploadRequestBody = {
   name: "<value>",
   description: "sauerkraut upwardly appropriate",
   status: "complete",
-  dueDate: new Date("2023-03-16T04:59:49.764Z"),
+  dueDate: new Date("2024-03-15T04:59:49.764Z"),
 };
 ```
 

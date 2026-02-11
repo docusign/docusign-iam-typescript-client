@@ -16,7 +16,7 @@ let value: WorkspaceUploadRequest = {
   documents: [],
   assignments: [],
   createdDate: null,
-  updatedDate: new Date("2023-03-04T08:54:31.312Z"),
+  updatedDate: new Date("2024-03-03T08:54:31.312Z"),
   canView: false,
   canEdit: false,
   canDelete: false,

@@ -13,7 +13,7 @@ let value: UpdateWorkspaceUploadRequestRequest = {
     name: null,
     description: "mid tired creamy bourgeoisie hmph dead",
     status: "complete",
-    dueDate: new Date("2025-03-30T10:11:35.281Z"),
+    dueDate: new Date("2026-03-30T10:11:35.281Z"),
   },
 };
 ```

@@ -1,0 +1,38 @@
+# BulkJobEmbedded
+
+Contains detailed information about the BulkJob including presigned upload links, document IDs, etc
+
+## Example Usage
+
+```typescript
+import { BulkJobEmbedded } from "@docusign/iam-sdk/models/components";
+
+let value: BulkJobEmbedded = {
+  documentStatusEnum: [
+    "NOT_STARTED",
+    "IN_PROGRESS",
+    "CANCELED",
+    "SUCCEEDED",
+    "FAILED",
+  ],
+  documents: [
+    {
+      actions: {
+        uploadDocument:
+          "https://docupstoragewestwu3dsto.blob.core.windows.net/1d4dbfd5-6911-47a7-93fa-f597975f7d2d/8c566d26-e7fb-4b7e-870c-1d0fb8df9084?sv=2023-01-03&st=2025-10-27T19%3A11%3A42Z&se=2025-10-28T03%3A16%3A42Z&sr=b&sp=cw&sig=st%2Fot4COaU9icCNYbEfm7RdKJhjxgfi4Oo0HSEZ7EMQ%3D",
+      },
+      agreementId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      id: "8c566d26-e7fb-4b7e-870c-1d0fb8df9084",
+      sequence: 1,
+      status: "NOT_STARTED",
+    },
+  ],
+};
+```
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          | Example                                                                              |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `documentStatusEnum`                                                                 | *string*[]                                                                           | :heavy_minus_sign:                                                                   | All possible document status values                                                  | [<br/>"NOT_STARTED",<br/>"IN_PROGRESS",<br/>"CANCELED",<br/>"SUCCEEDED",<br/>"FAILED"<br/>] |
+| `documents`                                                                          | [components.BulkJobEmbeddedItems](../../models/components/bulkjobembeddeditems.md)[] | :heavy_minus_sign:                                                                   | List of documents with presigned upload URLs                                         |                                                                                      |

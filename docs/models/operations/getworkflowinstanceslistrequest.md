@@ -5,10 +5,7 @@
 ```typescript
 import { GetWorkflowInstancesListRequest } from "@docusign/iam-sdk/models/operations";
 
-let value: GetWorkflowInstancesListRequest = {
-  accountId: "<id>",
-  workflowId: "<id>",
-};
+let value: GetWorkflowInstancesListRequest = {};
 ```
 
 ## Fields

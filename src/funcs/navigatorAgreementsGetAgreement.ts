@@ -36,6 +36,8 @@ import { Result } from "../types/fp.js";
  *
  * The operation is essential for retrieving the full context of an agreement, enabling users to understand the contract's scope, key provisions, and the legal or financial obligations that have been agreed upon.
  *
+ * [Required scopes](/docs/navigator-api/auth/): `adm_store_unified_repo_read`
+ *
  * ### Use Cases:
  * - **Integrating agreement data into external systems**: Sync detailed agreement information, such as legal and financial provisions, into external systems like ERP, CRM, or contract management tools to streamline workflows.
  * - **Providing detailed data for RAG (Retrieval-Augmented Generation) applications or Copilots**: Retrieve detailed agreement data for use in LLM-based applications that answer specific user queries about their agreements, such as the status of a contract, its provisions, or involved parties.
@@ -199,8 +201,12 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, components.Agreement$inboundSchema),
-    M.jsonErr([400, 403, 404], errors.ErrorT$inboundSchema),
-    M.jsonErr(500, errors.ErrorT$inboundSchema),
+    M.jsonErr([400, 403, 404], errors.ErrorT$inboundSchema, {
+      ctype: "application/problem+json",
+    }),
+    M.jsonErr(500, errors.ErrorT$inboundSchema, {
+      ctype: "application/problem+json",
+    }),
     M.fail([401, "4XX"]),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
