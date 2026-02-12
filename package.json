@@ -1,6 +1,6 @@
 {
   "name": "@docusign/iam-sdk",
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-beta.7",
   "author": "Docusign",
   "keywords": [
     "Docusign",
@@ -54,7 +54,7 @@
     "vitest": "^3.1.1"
   },
   "dependencies": {
-    "zod": "^3.20.0"
+    "zod": "^3.25.0 || ^4.0.0"
   },
   "exports": {
     ".": {

@@ -1,5 +1,4 @@
-# WorkspaceBrands
-(*workspaces.workspaceBrands*)
+# Workspaces.WorkspaceBrands
 
 ## Overview
 

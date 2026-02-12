@@ -18,7 +18,7 @@ let value: Organization = {
 
 ## Fields
 
-| Field                                                | Type                                                 | Required                                             | Description                                          |
-| ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| `organizationId`                                     | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
-| `links`                                              | [components.Link](../../models/components/link.md)[] | :heavy_check_mark:                                   | N/A                                                  |
+| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `organizationId`                                                     | *string*                                                             | :heavy_check_mark:                                                   | N/A                                                                  |
+| `links`                                                              | [components.UserInfoLink](../../models/components/userinfolink.md)[] | :heavy_check_mark:                                                   | N/A                                                                  |

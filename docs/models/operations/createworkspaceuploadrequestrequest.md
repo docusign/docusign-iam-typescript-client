@@ -12,7 +12,7 @@ let value: CreateWorkspaceUploadRequestRequest = {
     name: null,
     description:
       "er heavenly phew chairperson gee sans randomize thoroughly for",
-    dueDate: new Date("2023-10-09T00:51:49.699Z"),
+    dueDate: new Date("2024-10-08T00:51:49.699Z"),
     assignments: [
       {
         uploadRequestResponsibilityTypeId: "assignee",

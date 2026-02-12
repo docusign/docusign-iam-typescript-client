@@ -49,16 +49,12 @@ import { Result } from "../types/fp.js";
  *
  * ### Key Features:
  * - **Comprehensive Workflow Overview**: Provides a full list of workflows, giving visibility
- *
  *   into all the automated processes available within the Maestro platform.
  * - **Input Schema Information**: Each workflow includes its trigger input schema, showing
- *
  *   what data must be provided when triggering the workflow.
  * - **Metadata for Tracking**: Useful metadata like creation time, last modification date,
- *
  *   and user details are included to support tracking and auditing workflows.
  * - **Future-Proof**: The operation is designed to be expandable as more workflows are added
- *
  *   or the platform grows, ensuring scalability in the workflow management process.
  */
 export function maestroWorkflowsGetWorkflowsList(

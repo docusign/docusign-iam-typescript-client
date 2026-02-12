@@ -27,25 +27,21 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create an AI-generated summary of an agreement document
+ * Get bulk job status
  *
  * @remarks
- * This operation request an AI-generated summary of the specified agreement document.
- * The summary is intended to provide a concise overview of the original agreement’s content
- * and key points; however, it may not capture all details or legal nuances.
+ * Get the current status and details of a bulk job.
  *
- * **Important**: By invoking this operation, you acknowledge and accept the
- * [Docusign AI Terms and Conditions](https://www.docusign.com/legal/terms-and-conditions/ai-attachment-docusign-services).
- * Please refer to the original agreement for any legally binding information.
+ * [Required scopes](/docs/navigator-api/auth/): `document_uploader_read`
  */
-export function navigatorAgreementsCreateAgreementSummary(
+export function navigatorBulkJobGetBulkJobStatus(
   client: IamClientCore,
-  request: operations.CreateAgreementSummaryRequest,
+  request: operations.GetBulkJobStatusRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    components.AgreementSummary,
-    | errors.ErrorT
+    components.BulkJob,
+    | errors.ErrDetails
     | IamClientError
     | ResponseValidationError
     | ConnectionError
@@ -65,13 +61,13 @@ export function navigatorAgreementsCreateAgreementSummary(
 
 async function $do(
   client: IamClientCore,
-  request: operations.CreateAgreementSummaryRequest,
+  request: operations.GetBulkJobStatusRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      components.AgreementSummary,
-      | errors.ErrorT
+      components.BulkJob,
+      | errors.ErrDetails
       | IamClientError
       | ResponseValidationError
       | ConnectionError
@@ -86,8 +82,7 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) =>
-      operations.CreateAgreementSummaryRequest$outboundSchema.parse(value),
+    (value) => operations.GetBulkJobStatusRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -101,15 +96,15 @@ async function $do(
       explode: false,
       charEncoding: "percent",
     }),
-    agreementId: encodeSimple("agreementId", payload.agreementId, {
+    jobId: encodeSimple("jobId", payload.jobId, {
       explode: false,
       charEncoding: "percent",
     }),
   };
 
-  const path = pathToFunc(
-    "/v1/accounts/{accountId}/agreements/{agreementId}/ai/actions/summarize",
-  )(pathParams);
+  const path = pathToFunc("/v1/accounts/{accountId}/upload/jobs/{jobId}")(
+    pathParams,
+  );
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
@@ -122,7 +117,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "CreateAgreementSummary",
+    operationID: "getBulkJobStatus",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
@@ -146,7 +141,7 @@ async function $do(
 
   const requestRes = client._createRequest(context, {
     security: requestSecurity,
-    method: "POST",
+    method: "GET",
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
@@ -161,7 +156,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "403", "404", "4XX", "500", "5XX"],
+    errorCodes: ["401", "403", "404", "4XX", "500", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -175,8 +170,8 @@ async function $do(
   };
 
   const [result] = await M.match<
-    components.AgreementSummary,
-    | errors.ErrorT
+    components.BulkJob,
+    | errors.ErrDetails
     | IamClientError
     | ResponseValidationError
     | ConnectionError
@@ -186,10 +181,10 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, components.AgreementSummary$inboundSchema),
-    M.jsonErr([400, 403, 404], errors.ErrorT$inboundSchema),
-    M.jsonErr(500, errors.ErrorT$inboundSchema),
-    M.fail([401, "4XX"]),
+    M.json(200, components.BulkJob$inboundSchema),
+    M.jsonErr([401, 403, 404], errors.ErrDetails$inboundSchema),
+    M.jsonErr(500, errors.ErrDetails$inboundSchema),
+    M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
   if (!result.ok) {

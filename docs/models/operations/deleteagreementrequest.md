@@ -5,10 +5,7 @@
 ```typescript
 import { DeleteAgreementRequest } from "@docusign/iam-sdk/models/operations";
 
-let value: DeleteAgreementRequest = {
-  accountId: "<id>",
-  agreementId: "<id>",
-};
+let value: DeleteAgreementRequest = {};
 ```
 
 ## Fields

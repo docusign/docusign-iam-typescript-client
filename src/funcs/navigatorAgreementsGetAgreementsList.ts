@@ -36,6 +36,8 @@ import { Result } from "../types/fp.js";
  *
  * The response also includes provisions that outline the key legal, financial, and lifecycle conditions, along with custom user-defined fields, providing a comprehensive understanding of each agreement.
  *
+ * [Required scopes](/docs/navigator-api/auth/): `adm_store_unified_repo_read`
+ *
  * ### Use Cases:
  * - **Retrieving a list of agreements for integration into external systems**: Export or sync agreement data into other platforms (e.g., CRM, ERP systems) to align business processes across different tools.
  * - **Providing data for RAG (Retrieval-Augmented Generation) applications or Copilots**: The list of agreements can be a valuable data source for AI/LLM-based applications that answer user queries about agreements.
@@ -117,8 +119,10 @@ async function $do(
   const path = pathToFunc("/v1/accounts/{accountId}/agreements")(pathParams);
 
   const query = encodeFormQuery({
+    "$filter": payload.$filter,
     "ctoken": payload.ctoken,
     "direction": payload.direction,
+    "document_id": payload.document_id,
     "id": payload.id,
     "languages": payload.languages,
     "limit": payload.limit,
@@ -130,6 +134,8 @@ async function $do(
     "provisions.term_length": payload["provisions.term_length"],
     "related_agreement_documents.parent_agreement_document_id":
       payload["related_agreement_documents.parent_agreement_document_id"],
+    "review_completed_at": payload.review_completed_at,
+    "review_status": payload.review_status,
     "sort": payload.sort,
     "source_id": payload.source_id,
     "source_name": payload.source_name,
@@ -214,8 +220,12 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, components.AgreementsResponse$inboundSchema),
-    M.jsonErr([400, 403, 404], errors.ErrorT$inboundSchema),
-    M.jsonErr(500, errors.ErrorT$inboundSchema),
+    M.jsonErr([400, 403, 404], errors.ErrorT$inboundSchema, {
+      ctype: "application/problem+json",
+    }),
+    M.jsonErr(500, errors.ErrorT$inboundSchema, {
+      ctype: "application/problem+json",
+    }),
     M.fail([401, "4XX"]),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });

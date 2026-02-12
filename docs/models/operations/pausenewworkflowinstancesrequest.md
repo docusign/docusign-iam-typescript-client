@@ -5,10 +5,7 @@
 ```typescript
 import { PauseNewWorkflowInstancesRequest } from "@docusign/iam-sdk/models/operations";
 
-let value: PauseNewWorkflowInstancesRequest = {
-  accountId: "<id>",
-  workflowId: "<id>",
-};
+let value: PauseNewWorkflowInstancesRequest = {};
 ```
 
 ## Fields

@@ -12,17 +12,16 @@ let value: WorkflowsListSuccess = {
     {
       metadata: {
         requestId: "3f7c9e4b-851c-4f9b-89e7-123456789abc",
-        responseTimestamp: new Date("2024-10-17T14:30:00Z"),
         responseDurationMs: 150,
+        responseTimestamp: new Date("2024-10-17T14:30:00Z"),
       },
     },
   ],
   responseMetadata: {
     pageLimit: 10,
-    pageTokenNext: "abc123",
     requestId: "3f7c9e4b-851c-4f9b-89e7-123456789abc",
-    responseTimestamp: new Date("2024-10-17T14:30:00Z"),
     responseDurationMs: 150,
+    responseTimestamp: new Date("2024-10-17T14:30:00Z"),
   },
 };
 ```

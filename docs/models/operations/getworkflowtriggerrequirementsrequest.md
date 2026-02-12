@@ -7,7 +7,6 @@ import { GetWorkflowTriggerRequirementsRequest } from "@docusign/iam-sdk/models/
 
 let value: GetWorkflowTriggerRequirementsRequest = {
   accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-  workflowId: "<id>",
 };
 ```
 

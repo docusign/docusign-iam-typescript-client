@@ -54,13 +54,10 @@ import { Result } from "../types/fp.js";
  * ### Key Features:
  * - **Automated Execution**: Once triggered, the workflow runs until a step requires manual intervention.
  * - **Input-Driven**: Workflow execution is based on the provided input data, which is validated
- *
  *   against the workflow's input schema.
  * - **Real-Time Triggering**: Designed to be invoked as part of an event-driven architecture,
- *
  *   allowing for workflows to respond to external events.
  * - **Tracking and Interaction**: The response includes a URL that allows users to check the status
- *
  *   of the workflow instance or take further actions while it runs.
  */
 export function maestroWorkflowsTriggerWorkflow(
