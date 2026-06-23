@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   BulkJobActionTemplates,
@@ -27,32 +28,14 @@ import {
 import { BulkJobStatus, BulkJobStatus$inboundSchema } from "./bulkjobstatus.js";
 
 export type BulkJob = {
-  actionTemplates?: BulkJobActionTemplates | undefined;
-  /**
-   * Contains detailed information about the BulkJob including presigned upload links, document IDs, etc
-   */
-  embedded?: BulkJobEmbedded | undefined;
-  links?: BulkJobLinks | undefined;
-  /**
-   * Describes the limits of a bulk job, or an action associated with a bulk job
-   */
-  constraints?: BulkJobConstraints | undefined;
-  createdAt: Date;
-  expiresAt: Date;
-  /**
-   * User provided reference ID for this job
-   */
-  externalJobId?: string | undefined;
   /**
    * Id for job
    */
   id: string;
-  message?: string | undefined;
   /**
-   * Properties about THIS request/response, not the job resource itself
+   * User provided reference ID for this job
    */
-  metadata: BulkJobMetadata;
-  modifiedAt: Date;
+  externalJobId?: string | undefined;
   /**
    * User provided name for this job
    */
@@ -70,47 +53,59 @@ export type BulkJob = {
    */
   status: BulkJobStatus;
   statusEnum: Array<string>;
+  createdAt: Date;
+  modifiedAt: Date;
+  expiresAt: Date;
   /**
    * ISO 8601 duration for job validity
    */
   ttlPeriod?: string | undefined;
+  /**
+   * Contains detailed information about the BulkJob including presigned upload links, document IDs, etc
+   */
+  embedded?: BulkJobEmbedded | undefined;
+  actionTemplates?: BulkJobActionTemplates | undefined;
+  links?: BulkJobLinks | undefined;
+  /**
+   * Describes the limits of a bulk job, or an action associated with a bulk job
+   */
+  constraints?: BulkJobConstraints | undefined;
+  /**
+   * Properties about THIS request/response, not the job resource itself
+   */
+  metadata: BulkJobMetadata;
+  message?: string | undefined;
 };
 
 /** @internal */
 export const BulkJob$inboundSchema: z.ZodType<BulkJob, z.ZodTypeDef, unknown> =
   z.object({
-    _action_templates: BulkJobActionTemplates$inboundSchema.optional(),
-    _embedded: BulkJobEmbedded$inboundSchema.optional(),
-    _links: BulkJobLinks$inboundSchema.optional(),
-    constraints: BulkJobConstraints$inboundSchema.optional(),
-    created_at: z.string().datetime({ offset: true }).transform(v =>
-      new Date(v)
-    ),
-    expires_at: z.string().datetime({ offset: true }).transform(v =>
-      new Date(v)
-    ),
-    external_job_id: z.string().optional(),
-    id: z.string(),
-    message: z.string().optional(),
-    metadata: BulkJobMetadata$inboundSchema,
-    modified_at: z.string().datetime({ offset: true }).transform(v =>
-      new Date(v)
-    ),
-    name: z.string(),
+    id: types.string(),
+    external_job_id: types.optional(types.string()),
+    name: types.string(),
     status: BulkJobStatus$inboundSchema,
-    status_enum: z.array(z.string()),
-    ttl_period: z.string().optional(),
+    status_enum: z.array(types.string()),
+    created_at: types.date(),
+    modified_at: types.date(),
+    expires_at: types.date(),
+    ttl_period: types.optional(types.string()),
+    _embedded: types.optional(BulkJobEmbedded$inboundSchema),
+    _action_templates: types.optional(BulkJobActionTemplates$inboundSchema),
+    _links: types.optional(BulkJobLinks$inboundSchema),
+    constraints: types.optional(BulkJobConstraints$inboundSchema),
+    metadata: BulkJobMetadata$inboundSchema,
+    message: types.optional(types.string()),
   }).transform((v) => {
     return remap$(v, {
-      "_action_templates": "actionTemplates",
-      "_embedded": "embedded",
-      "_links": "links",
-      "created_at": "createdAt",
-      "expires_at": "expiresAt",
       "external_job_id": "externalJobId",
-      "modified_at": "modifiedAt",
       "status_enum": "statusEnum",
+      "created_at": "createdAt",
+      "modified_at": "modifiedAt",
+      "expires_at": "expiresAt",
       "ttl_period": "ttlPeriod",
+      "_embedded": "embedded",
+      "_action_templates": "actionTemplates",
+      "_links": "links",
     });
   });
 

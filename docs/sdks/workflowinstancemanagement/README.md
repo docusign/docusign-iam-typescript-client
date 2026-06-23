@@ -1,4 +1,4 @@
-# Maestro.WorkflowInstanceManagement
+# WorkflowBuilder.WorkflowInstanceManagement
 
 ## Overview
 
@@ -10,7 +10,7 @@
 
 ## getWorkflowInstancesList
 
-This operation retrieves a list of all available Maestro workflow instances. It returns basic information
+This operation retrieves a list of all available Workflow Builder workflow instances. It returns basic information
 about each workflow instance, including its unique identifier (`id`), name, status, timestamps, and
 additional metadata.
 
@@ -25,7 +25,7 @@ as who started it, when it was last modified, and how many steps have been compl
 
 ### Key Features:
 - **Comprehensive Instance Overview**: Provides a full list of workflow instances, giving visibility
-  into all ongoing and completed workflows within the Maestro platform
+  into all ongoing and completed workflows within the Workflow Builder platform
 - **Metadata for Tracking**: Includes helpful metadata like creation time, last modification date,
   and user details to support audit trails
 - **Scalable and Future-Proof**: Designed to handle growing numbers of workflow instances as the
@@ -34,7 +34,7 @@ as who started it, when it was last modified, and how many steps have been compl
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getWorkflowInstancesList" method="get" path="/v1/accounts/{accountId}/workflows/{workflowId}/instances" -->
+<!-- UsageSnippet language="typescript" operationID="getWorkflowInstancesList" method="get" path="/v1/accounts/{accountId}/workflows/{workflowId}/instances" example="multipleWorkflowInstances" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -43,10 +43,7 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.maestro.workflowInstanceManagement.getWorkflowInstancesList({
-    accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-    workflowId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-  });
+  const result = await iamClient.workflowBuilder.workflowInstanceManagement.getWorkflowInstancesList({});
 
   console.log(result);
 }
@@ -60,7 +57,7 @@ The standalone function version of this method:
 
 ```typescript
 import { IamClientCore } from "@docusign/iam-sdk/core.js";
-import { maestroWorkflowInstanceManagementGetWorkflowInstancesList } from "@docusign/iam-sdk/funcs/maestroWorkflowInstanceManagementGetWorkflowInstancesList.js";
+import { workflowBuilderWorkflowInstanceManagementGetWorkflowInstancesList } from "@docusign/iam-sdk/funcs/workflowBuilderWorkflowInstanceManagementGetWorkflowInstancesList.js";
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -69,15 +66,12 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await maestroWorkflowInstanceManagementGetWorkflowInstancesList(iamClient, {
-    accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-    workflowId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-  });
+  const res = await workflowBuilderWorkflowInstanceManagementGetWorkflowInstancesList(iamClient, {});
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("maestroWorkflowInstanceManagementGetWorkflowInstancesList failed:", res.error);
+    console.log("workflowBuilderWorkflowInstanceManagementGetWorkflowInstancesList failed:", res.error);
   }
 }
 
@@ -105,7 +99,7 @@ run();
 
 ## getWorkflowInstance
 
-This operation retrieves a single Maestro workflow instance by its unique identifier (`id`).
+This operation retrieves a single Workflow Builder workflow instance by its unique identifier (`id`).
 It returns the primary details of the workflow instance, including its name, status,
 starting information, and other metadata.
 
@@ -127,7 +121,7 @@ auditing and reporting within the system.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getWorkflowInstance" method="get" path="/v1/accounts/{accountId}/workflows/{workflowId}/instances/{instanceId}" -->
+<!-- UsageSnippet language="typescript" operationID="getWorkflowInstance" method="get" path="/v1/accounts/{accountId}/workflows/{workflowId}/instances/{instanceId}" example="workflowInstance" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -136,10 +130,8 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.maestro.workflowInstanceManagement.getWorkflowInstance({
-    accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-    workflowId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-    instanceId: "ce20ee0f-4090-48d8-b5fa-3d05ca654f73",
+  const result = await iamClient.workflowBuilder.workflowInstanceManagement.getWorkflowInstance({
+    instanceId: "75bf864c-a7e9-4262-affb-fdc932e921f0",
   });
 
   console.log(result);
@@ -154,7 +146,7 @@ The standalone function version of this method:
 
 ```typescript
 import { IamClientCore } from "@docusign/iam-sdk/core.js";
-import { maestroWorkflowInstanceManagementGetWorkflowInstance } from "@docusign/iam-sdk/funcs/maestroWorkflowInstanceManagementGetWorkflowInstance.js";
+import { workflowBuilderWorkflowInstanceManagementGetWorkflowInstance } from "@docusign/iam-sdk/funcs/workflowBuilderWorkflowInstanceManagementGetWorkflowInstance.js";
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -163,16 +155,14 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await maestroWorkflowInstanceManagementGetWorkflowInstance(iamClient, {
-    accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-    workflowId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-    instanceId: "ce20ee0f-4090-48d8-b5fa-3d05ca654f73",
+  const res = await workflowBuilderWorkflowInstanceManagementGetWorkflowInstance(iamClient, {
+    instanceId: "75bf864c-a7e9-4262-affb-fdc932e921f0",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("maestroWorkflowInstanceManagementGetWorkflowInstance failed:", res.error);
+    console.log("workflowBuilderWorkflowInstanceManagementGetWorkflowInstance failed:", res.error);
   }
 }
 
@@ -194,15 +184,15 @@ run();
 
 ### Errors
 
-| Error Type       | Status Code      | Content Type     |
-| ---------------- | ---------------- | ---------------- |
-| errors.ErrorT    | 400, 403, 404    | application/json |
-| errors.ErrorT    | 500              | application/json |
-| errors.APIError  | 4XX, 5XX         | \*/\*            |
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrDetails        | 400, 401, 403, 404       | application/problem+json |
+| errors.ErrDetails        | 500                      | application/problem+json |
+| errors.APIError          | 4XX, 5XX                 | \*/\*                    |
 
 ## cancelWorkflowInstance
 
-This operation cancels a running Maestro workflow instance by its unique identifier (`instanceId`).
+This operation cancels a running Workflow Builder workflow instance by its unique identifier (`instanceId`).
 Once canceled, the workflow instance will no longer continue executing any remaining steps.
 
 ### Use Cases:
@@ -214,9 +204,9 @@ Once canceled, the workflow instance will no longer continue executing any remai
 - **Clear Feedback**: Returns a confirmation message including both the instance and workflow identifiers
 
 
-### Example Usage
+### Example Usage: CancelWorkflowInstanceResponseExample
 
-<!-- UsageSnippet language="typescript" operationID="cancelWorkflowInstance" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/instances/{instanceId}/actions/cancel" -->
+<!-- UsageSnippet language="typescript" operationID="cancelWorkflowInstance" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/instances/{instanceId}/actions/cancel" example="CancelWorkflowInstanceResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -225,9 +215,7 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.maestro.workflowInstanceManagement.cancelWorkflowInstance({
-    accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-    workflowId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
+  const result = await iamClient.workflowBuilder.workflowInstanceManagement.cancelWorkflowInstance({
     instanceId: "ba4a94fa-3efc-4309-9463-36899a4c6d1e",
   });
 
@@ -243,7 +231,7 @@ The standalone function version of this method:
 
 ```typescript
 import { IamClientCore } from "@docusign/iam-sdk/core.js";
-import { maestroWorkflowInstanceManagementCancelWorkflowInstance } from "@docusign/iam-sdk/funcs/maestroWorkflowInstanceManagementCancelWorkflowInstance.js";
+import { workflowBuilderWorkflowInstanceManagementCancelWorkflowInstance } from "@docusign/iam-sdk/funcs/workflowBuilderWorkflowInstanceManagementCancelWorkflowInstance.js";
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -252,16 +240,67 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await maestroWorkflowInstanceManagementCancelWorkflowInstance(iamClient, {
-    accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-    workflowId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
+  const res = await workflowBuilderWorkflowInstanceManagementCancelWorkflowInstance(iamClient, {
     instanceId: "ba4a94fa-3efc-4309-9463-36899a4c6d1e",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("maestroWorkflowInstanceManagementCancelWorkflowInstance failed:", res.error);
+    console.log("workflowBuilderWorkflowInstanceManagementCancelWorkflowInstance failed:", res.error);
+  }
+}
+
+run();
+```
+### Example Usage: cancelSuccess
+
+<!-- UsageSnippet language="typescript" operationID="cancelWorkflowInstance" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/instances/{instanceId}/actions/cancel" example="cancelSuccess" -->
+```typescript
+import { IamClient } from "@docusign/iam-sdk";
+
+const iamClient = new IamClient({
+  accessToken: process.env["DOCUSIGN_IAM_CLIENT_ACCESS_TOKEN"] ?? "",
+});
+
+async function run() {
+  const result = await iamClient.workflowBuilder.workflowInstanceManagement.cancelWorkflowInstance({
+    accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
+    workflowId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
+    instanceId: "6fdf215b-e22e-4bb9-9526-ab5cd1430b4c",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { IamClientCore } from "@docusign/iam-sdk/core.js";
+import { workflowBuilderWorkflowInstanceManagementCancelWorkflowInstance } from "@docusign/iam-sdk/funcs/workflowBuilderWorkflowInstanceManagementCancelWorkflowInstance.js";
+
+// Use `IamClientCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const iamClient = new IamClientCore({
+  accessToken: process.env["DOCUSIGN_IAM_CLIENT_ACCESS_TOKEN"] ?? "",
+});
+
+async function run() {
+  const res = await workflowBuilderWorkflowInstanceManagementCancelWorkflowInstance(iamClient, {
+    accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
+    workflowId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
+    instanceId: "6fdf215b-e22e-4bb9-9526-ab5cd1430b4c",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("workflowBuilderWorkflowInstanceManagementCancelWorkflowInstance failed:", res.error);
   }
 }
 
@@ -283,8 +322,8 @@ run();
 
 ### Errors
 
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| errors.ErrorT      | 400, 403, 404, 409 | application/json   |
-| errors.ErrorT      | 500                | application/json   |
-| errors.APIError    | 4XX, 5XX           | \*/\*              |
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrDetails        | 400, 401, 403, 404, 409  | application/problem+json |
+| errors.ErrDetails        | 500                      | application/problem+json |
+| errors.APIError          | 4XX, 5XX                 | \*/\*                    |

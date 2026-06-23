@@ -18,7 +18,7 @@ Pagination is supported by passing `start_position` and `count` in the request. 
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getWorkspaceUsers" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/users" -->
+<!-- UsageSnippet language="typescript" operationID="getWorkspaceUsers" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/users" example="GetWorkspaceUsersResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -97,7 +97,7 @@ Available role IDs can be retrieved via the Assignable Roles operation on a work
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="addWorkspaceUser" method="post" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/users" -->
+<!-- UsageSnippet language="typescript" operationID="addWorkspaceUser" method="post" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/users" example="CreateWorkspaceUserResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -174,7 +174,7 @@ This operation updates the specified user's role in the workspace. Users within 
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="updateWorkspaceUser" method="put" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/users/{userId}" -->
+<!-- UsageSnippet language="typescript" operationID="updateWorkspaceUser" method="put" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/users/{userId}" example="UpdateWorkspaceUserResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 

@@ -20,5 +20,5 @@ let value: BulkJobStatus = "OPEN";
 ## Values
 
 ```typescript
-"OPEN" | "UPLOAD_COMPLETE" | "IN_PROGRESS" | "COMPLETE" | "FAILED" | "CANCELLED"
+"OPEN" | "UPLOAD_COMPLETE" | "IN_PROGRESS" | "COMPLETE" | "FAILED" | "CANCELED"
 ```

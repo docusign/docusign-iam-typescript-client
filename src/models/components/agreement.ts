@@ -7,21 +7,48 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import {
+  AgreementActions,
+  AgreementActions$inboundSchema,
+  AgreementActions$Outbound,
+  AgreementActions$outboundSchema,
+} from "./agreementactions.js";
 import {
   AgreementLinks,
   AgreementLinks$inboundSchema,
+  AgreementLinks$Outbound,
+  AgreementLinks$outboundSchema,
 } from "./agreementlinks.js";
-import { CurrencyCode, CurrencyCode$inboundSchema } from "./currencycode.js";
+import {
+  CurrencyCode,
+  CurrencyCode$inboundSchema,
+  CurrencyCode$outboundSchema,
+} from "./currencycode.js";
 import {
   CustomProperty,
   CustomProperty$inboundSchema,
+  CustomProperty$Outbound,
+  CustomProperty$outboundSchema,
 } from "./customproperty.js";
-import { LinkedData, LinkedData$inboundSchema } from "./linkeddata.js";
-import { Party, Party$inboundSchema } from "./party.js";
+import {
+  LinkedData,
+  LinkedData$inboundSchema,
+  LinkedData$Outbound,
+  LinkedData$outboundSchema,
+} from "./linkeddata.js";
+import {
+  Party,
+  Party$inboundSchema,
+  Party$Outbound,
+  Party$outboundSchema,
+} from "./party.js";
 import {
   ResourceMetadata,
   ResourceMetadata$inboundSchema,
+  ResourceMetadata$Outbound,
+  ResourceMetadata$outboundSchema,
 } from "./resourcemetadata.js";
 
 /**
@@ -52,6 +79,10 @@ export type PaymentTermsDueDate = ClosedEnum<typeof PaymentTermsDueDate>;
  */
 export type Provisions = {
   /**
+   * The type of assignment rights in the agreement (e.g., transferability)
+   */
+  assignmentType?: string | null | undefined;
+  /**
    * Provisions related to changes in control of the assigning party
    */
   assignmentChangeOfControl?: string | null | undefined;
@@ -59,10 +90,6 @@ export type Provisions = {
    * Provisions for the termination of assignment rights
    */
   assignmentTerminationRights?: string | null | undefined;
-  /**
-   * The type of assignment rights in the agreement (e.g., transferability)
-   */
-  assignmentType?: string | null | undefined;
   /**
    * A subset of ISO 8601 duration. Fractional or negative values are not supported.
    */
@@ -98,7 +125,7 @@ export type Provisions = {
   /**
    * Terms specifying the payment due date, based on a defined number of days or other conditions.
    */
-  paymentTermsDueDate: PaymentTermsDueDate;
+  paymentTermsDueDate?: PaymentTermsDueDate | undefined;
   /**
    * Indicates if late payment fees can be charged.
    */
@@ -108,53 +135,53 @@ export type Provisions = {
    */
   latePaymentFeePercent?: number | null | undefined;
   /**
-   * Currency code for the liability cap amount.
-   */
-  liabilityCapCurrencyCode?: CurrencyCode | null | undefined;
-  /**
-   * Duration for the liability cap
-   */
-  liabilityCapDuration?: string | null | undefined;
-  /**
    * Maximum liability cap in the agreement
    */
   liabilityCapFixedAmount?: number | null | undefined;
+  /**
+   * Currency code for the liability cap amount.
+   */
+  liabilityCapCurrencyCode?: CurrencyCode | null | undefined;
   /**
    * Multiplier applied to calculate the liability cap
    */
   liabilityCapMultiplier?: number | null | undefined;
   /**
+   * Duration for the liability cap
+   */
+  liabilityCapDuration?: string | null | undefined;
+  /**
    * Maximum allowed percentage increase in prices, limited between 0 and 100.
    */
   priceCapPercentIncrease?: number | null | undefined;
   /**
-   * The duration of the auto-renewal period.
+   * Specifies the type of renewal (e.g., automatic, manual).
    */
-  autoRenewalTermLength?: string | null | undefined;
-  /**
-   * Additional information related to the renewal process.
-   */
-  renewalAdditionalInfo?: string | null | undefined;
-  /**
-   * The period an agreement has been extended after it has been renewed.
-   */
-  renewalExtensionPeriod?: string | null | undefined;
-  /**
-   * ISO 8601 formatted date-time string. May be local (no timezone), UTC (Z suffix), or include an explicit offset (e.g., +05:30, -0800).
-   */
-  renewalNoticeDate?: string | undefined;
+  renewalType?: string | null | undefined;
   /**
    * The period of time that a party is required to provide to indicate their intention to renew an agreement.
    */
   renewalNoticePeriod?: string | null | undefined;
   /**
+   * ISO 8601 formatted date-time string. May be local (no timezone), UTC (Z suffix), or include an explicit offset (e.g., +05:30, -0800).
+   */
+  renewalNoticeDate?: string | undefined;
+  /**
+   * The duration of the auto-renewal period.
+   */
+  autoRenewalTermLength?: string | null | undefined;
+  /**
+   * The period an agreement has been extended after it has been renewed.
+   */
+  renewalExtensionPeriod?: string | null | undefined;
+  /**
    * User ID of the person responsible for managing the renewal process
    */
   renewalProcessOwner?: string | undefined;
   /**
-   * Specifies the type of renewal (e.g., automatic, manual).
+   * Additional information related to the renewal process.
    */
-  renewalType?: string | null | undefined;
+  renewalAdditionalInfo?: string | null | undefined;
   /**
    * The specific duration that a party has to give notice before terminating the agreement due to a significant breach or violation of terms.
    *
@@ -173,11 +200,11 @@ export type Provisions = {
   /**
    * ISO 8601 formatted date-time string. May be local (no timezone), UTC (Z suffix), or include an explicit offset (e.g., +05:30, -0800).
    */
-  executionDate?: string | undefined;
+  expirationDate?: string | undefined;
   /**
    * ISO 8601 formatted date-time string. May be local (no timezone), UTC (Z suffix), or include an explicit offset (e.g., +05:30, -0800).
    */
-  expirationDate?: string | undefined;
+  executionDate?: string | undefined;
   /**
    * Overall duration of the agreement.
    */
@@ -188,7 +215,7 @@ export type RelatedAgreementDocuments = {
   /**
    * ID of the parent agreement document, if related.
    */
-  parentAgreementDocumentId: string;
+  parentAgreementDocumentId?: string | undefined;
 };
 
 /**
@@ -200,12 +227,64 @@ export type RelatedAgreementDocuments = {
  * to offer a full representation of the structure and context of an agreement.
  */
 export type Agreement = {
+  id?: string | undefined;
   /**
-   * Hypermedia controls (HATEOAS) for agreement specific links to resources.
+   * Title of the agreement document, summarizing its purpose.
+   */
+  title?: string | null | undefined;
+  /**
+   * The file name of the agreement.
+   */
+  fileName?: string | null | undefined;
+  /**
+   * The id the original agreement document.
+   */
+  documentId?: string | null | undefined;
+  /**
+   * The type of agreement.
+   */
+  type?: string | null | undefined;
+  /**
+   * Server-defined category based on the agreement type.
+   */
+  category?: string | null | undefined;
+  /**
+   * A detailed summary of the agreement's key provisions and scope.
+   */
+  summary?: string | null | undefined;
+  /**
+   * Current status of the agreement (e.g., PENDING, COMPLETE, INACTIVE)
+   */
+  status?: string | null | undefined;
+  /**
+   * The review status of the agreement, indicating whether it has been complete or pending.
+   */
+  reviewStatus?: string | null | undefined;
+  /**
+   * The date when the agreement extraction review was completed.
+   */
+  reviewCompletedAt?: Date | null | undefined;
+  /**
+   * A list of parties involved in the agreement.
+   */
+  parties?: Array<Party> | null | undefined;
+  /**
+   * "The conditions or rules written in a legal agreement. The set of possible provisions is determined by the agreement type."
    *
    * @remarks
    */
-  links?: AgreementLinks | null | undefined;
+  provisions?: Provisions | null | undefined;
+  /**
+   * A generic map/dict. The key is a string, and the value can be of any type, including strings, booleans, numbers, arrays, or objects
+   */
+  customProvisions?: { [k: string]: CustomProperty } | null | undefined;
+  /**
+   * A generic map/dict. The key is a string, and the value can be of any type, including strings, booleans, numbers, arrays, or objects
+   */
+  additionalUserDefinedData?:
+    | { [k: string]: CustomProperty }
+    | null
+    | undefined;
   /**
    * A generic map/dict. The key is a string, and the value can be of any type, including strings, booleans, numbers, arrays, or objects
    */
@@ -217,89 +296,47 @@ export type Agreement = {
     | { [k: string]: CustomProperty }
     | null
     | undefined;
-  /**
-   * A generic map/dict. The key is a string, and the value can be of any type, including strings, booleans, numbers, arrays, or objects
-   */
-  additionalUserDefinedData?:
-    | { [k: string]: CustomProperty }
-    | null
-    | undefined;
-  /**
-   * Server-defined category based on the agreement type.
-   */
-  category?: string | null | undefined;
-  /**
-   * A generic map/dict. The key is a string, and the value can be of any type, including strings, booleans, numbers, arrays, or objects
-   */
-  customProvisions?: { [k: string]: CustomProperty } | null | undefined;
-  /**
-   * The id the original agreement document.
-   */
-  documentId?: string | null | undefined;
-  /**
-   * The file name of the agreement.
-   */
-  fileName?: string | null | undefined;
-  id: string;
+  relatedAgreementDocuments?: RelatedAgreementDocuments | undefined;
   /**
    * List of languages applicable to the agreement, identified using BCP-47 language codes.
    */
   languages?: Array<string | null> | null | undefined;
-  linkedData?: Array<LinkedData> | undefined;
-  metadata?: ResourceMetadata | undefined;
-  /**
-   * A list of parties involved in the agreement.
-   */
-  parties?: Array<Party> | null | undefined;
-  /**
-   * "The conditions or rules written in a legal agreement. The set of possible provisions is determined by the agreement type."
-   *
-   * @remarks
-   */
-  provisions?: Provisions | null | undefined;
-  relatedAgreementDocuments?: RelatedAgreementDocuments | undefined;
-  /**
-   * The date when the agreement extraction review was completed.
-   */
-  reviewCompletedAt?: Date | null | undefined;
-  /**
-   * The review status of the agreement, indicating whether it has been complete or pending.
-   */
-  reviewStatus?: string | null | undefined;
-  /**
-   * The Account ID of the source system who creates this entity, e.g. eSign Account ID
-   */
-  sourceAccountId?: string | null | undefined;
-  /**
-   * The ID of the entity in the source system that this entity is associated with. For example, it could be an ID of the envelope in eSign.
-   */
-  sourceId?: string | null | undefined;
   /**
    * The name of the source system which created this agreement, e.g. eSign, CLM, or Salesforce.
    */
   sourceName?: string | null | undefined;
   /**
-   * Current status of the agreement (e.g., PENDING, COMPLETE, INACTIVE)
+   * The ID of the entity in the source system that this entity is associated with. For example, it could be an ID of the envelope in eSign.
    */
-  status?: string | null | undefined;
+  sourceId?: string | null | undefined;
   /**
-   * A detailed summary of the agreement's key provisions and scope.
+   * The Account ID of the source system who creates this entity, e.g. eSign Account ID
    */
-  summary?: string | null | undefined;
+  sourceAccountId?: string | null | undefined;
+  linkedData?: Array<LinkedData> | undefined;
+  metadata?: ResourceMetadata | undefined;
   /**
-   * Title of the agreement document, summarizing its purpose.
+   * Hypermedia controls (HATEOAS) for agreement specific links to resources.
+   *
+   * @remarks
    */
-  title?: string | null | undefined;
+  links?: AgreementLinks | null | undefined;
   /**
-   * The type of agreement.
+   * Available actions on the agreement. Actions are conditionally present based on the current state of the resource.
+   *
+   * @remarks
    */
-  type?: string | null | undefined;
+  actions?: AgreementActions | null | undefined;
 };
 
 /** @internal */
 export const PaymentTermsDueDate$inboundSchema: z.ZodNativeEnum<
   typeof PaymentTermsDueDate
 > = z.nativeEnum(PaymentTermsDueDate);
+/** @internal */
+export const PaymentTermsDueDate$outboundSchema: z.ZodNativeEnum<
+  typeof PaymentTermsDueDate
+> = PaymentTermsDueDate$inboundSchema;
 
 /** @internal */
 export const Provisions$inboundSchema: z.ZodType<
@@ -307,46 +344,46 @@ export const Provisions$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  assignment_change_of_control: z.nullable(z.string()).optional(),
-  assignment_termination_rights: z.nullable(z.string()).optional(),
-  assignment_type: z.nullable(z.string()).optional(),
-  confidentiality_obligation_period: z.nullable(z.string()).optional(),
-  governing_law: z.nullable(z.string()).optional(),
-  jurisdiction: z.nullable(z.string()).optional(),
-  nda_type: z.nullable(z.string()).optional(),
-  annual_agreement_value: z.nullable(z.number()).optional(),
+  assignment_type: z.nullable(types.string()).optional(),
+  assignment_change_of_control: z.nullable(types.string()).optional(),
+  assignment_termination_rights: z.nullable(types.string()).optional(),
+  confidentiality_obligation_period: z.nullable(types.string()).optional(),
+  governing_law: z.nullable(types.string()).optional(),
+  jurisdiction: z.nullable(types.string()).optional(),
+  nda_type: z.nullable(types.string()).optional(),
+  annual_agreement_value: z.nullable(types.number()).optional(),
   annual_agreement_value_currency_code: z.nullable(CurrencyCode$inboundSchema)
     .optional(),
-  total_agreement_value: z.nullable(z.number()).optional(),
+  total_agreement_value: z.nullable(types.number()).optional(),
   total_agreement_value_currency_code: z.nullable(CurrencyCode$inboundSchema)
     .optional(),
   payment_terms_due_date: PaymentTermsDueDate$inboundSchema.default("OTHER"),
-  can_charge_late_payment_fees: z.nullable(z.boolean()).optional(),
-  late_payment_fee_percent: z.nullable(z.number()).optional(),
+  can_charge_late_payment_fees: z.nullable(types.boolean()).optional(),
+  late_payment_fee_percent: z.nullable(types.number()).optional(),
+  liability_cap_fixed_amount: z.nullable(types.number()).optional(),
   liability_cap_currency_code: z.nullable(CurrencyCode$inboundSchema)
     .optional(),
-  liability_cap_duration: z.nullable(z.string()).optional(),
-  liability_cap_fixed_amount: z.nullable(z.number()).optional(),
-  liability_cap_multiplier: z.nullable(z.number()).optional(),
-  price_cap_percent_increase: z.nullable(z.number()).optional(),
-  auto_renewal_term_length: z.nullable(z.string()).optional(),
-  renewal_additional_info: z.nullable(z.string()).optional(),
-  renewal_extension_period: z.nullable(z.string()).optional(),
-  renewal_notice_date: z.string().optional(),
-  renewal_notice_period: z.nullable(z.string()).optional(),
-  renewal_process_owner: z.string().optional(),
-  renewal_type: z.nullable(z.string()).optional(),
-  termination_period_for_cause: z.nullable(z.string()).optional(),
-  termination_period_for_convenience: z.nullable(z.string()).optional(),
-  effective_date: z.string().optional(),
-  execution_date: z.string().optional(),
-  expiration_date: z.string().optional(),
-  term_length: z.nullable(z.string()).optional(),
+  liability_cap_multiplier: z.nullable(types.number()).optional(),
+  liability_cap_duration: z.nullable(types.string()).optional(),
+  price_cap_percent_increase: z.nullable(types.number()).optional(),
+  renewal_type: z.nullable(types.string()).optional(),
+  renewal_notice_period: z.nullable(types.string()).optional(),
+  renewal_notice_date: types.optional(types.string()),
+  auto_renewal_term_length: z.nullable(types.string()).optional(),
+  renewal_extension_period: z.nullable(types.string()).optional(),
+  renewal_process_owner: types.optional(types.string()),
+  renewal_additional_info: z.nullable(types.string()).optional(),
+  termination_period_for_cause: z.nullable(types.string()).optional(),
+  termination_period_for_convenience: z.nullable(types.string()).optional(),
+  effective_date: types.optional(types.string()),
+  expiration_date: types.optional(types.string()),
+  execution_date: types.optional(types.string()),
+  term_length: z.nullable(types.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
+    "assignment_type": "assignmentType",
     "assignment_change_of_control": "assignmentChangeOfControl",
     "assignment_termination_rights": "assignmentTerminationRights",
-    "assignment_type": "assignmentType",
     "confidentiality_obligation_period": "confidentialityObligationPeriod",
     "governing_law": "governingLaw",
     "nda_type": "ndaType",
@@ -357,27 +394,141 @@ export const Provisions$inboundSchema: z.ZodType<
     "payment_terms_due_date": "paymentTermsDueDate",
     "can_charge_late_payment_fees": "canChargeLatePaymentFees",
     "late_payment_fee_percent": "latePaymentFeePercent",
-    "liability_cap_currency_code": "liabilityCapCurrencyCode",
-    "liability_cap_duration": "liabilityCapDuration",
     "liability_cap_fixed_amount": "liabilityCapFixedAmount",
+    "liability_cap_currency_code": "liabilityCapCurrencyCode",
     "liability_cap_multiplier": "liabilityCapMultiplier",
+    "liability_cap_duration": "liabilityCapDuration",
     "price_cap_percent_increase": "priceCapPercentIncrease",
-    "auto_renewal_term_length": "autoRenewalTermLength",
-    "renewal_additional_info": "renewalAdditionalInfo",
-    "renewal_extension_period": "renewalExtensionPeriod",
-    "renewal_notice_date": "renewalNoticeDate",
-    "renewal_notice_period": "renewalNoticePeriod",
-    "renewal_process_owner": "renewalProcessOwner",
     "renewal_type": "renewalType",
+    "renewal_notice_period": "renewalNoticePeriod",
+    "renewal_notice_date": "renewalNoticeDate",
+    "auto_renewal_term_length": "autoRenewalTermLength",
+    "renewal_extension_period": "renewalExtensionPeriod",
+    "renewal_process_owner": "renewalProcessOwner",
+    "renewal_additional_info": "renewalAdditionalInfo",
     "termination_period_for_cause": "terminationPeriodForCause",
     "termination_period_for_convenience": "terminationPeriodForConvenience",
     "effective_date": "effectiveDate",
-    "execution_date": "executionDate",
     "expiration_date": "expirationDate",
+    "execution_date": "executionDate",
     "term_length": "termLength",
   });
 });
+/** @internal */
+export type Provisions$Outbound = {
+  assignment_type?: string | null | undefined;
+  assignment_change_of_control?: string | null | undefined;
+  assignment_termination_rights?: string | null | undefined;
+  confidentiality_obligation_period?: string | null | undefined;
+  governing_law?: string | null | undefined;
+  jurisdiction?: string | null | undefined;
+  nda_type?: string | null | undefined;
+  annual_agreement_value?: number | null | undefined;
+  annual_agreement_value_currency_code?: string | null | undefined;
+  total_agreement_value?: number | null | undefined;
+  total_agreement_value_currency_code?: string | null | undefined;
+  payment_terms_due_date: string;
+  can_charge_late_payment_fees?: boolean | null | undefined;
+  late_payment_fee_percent?: number | null | undefined;
+  liability_cap_fixed_amount?: number | null | undefined;
+  liability_cap_currency_code?: string | null | undefined;
+  liability_cap_multiplier?: number | null | undefined;
+  liability_cap_duration?: string | null | undefined;
+  price_cap_percent_increase?: number | null | undefined;
+  renewal_type?: string | null | undefined;
+  renewal_notice_period?: string | null | undefined;
+  renewal_notice_date?: string | undefined;
+  auto_renewal_term_length?: string | null | undefined;
+  renewal_extension_period?: string | null | undefined;
+  renewal_process_owner?: string | undefined;
+  renewal_additional_info?: string | null | undefined;
+  termination_period_for_cause?: string | null | undefined;
+  termination_period_for_convenience?: string | null | undefined;
+  effective_date?: string | undefined;
+  expiration_date?: string | undefined;
+  execution_date?: string | undefined;
+  term_length?: string | null | undefined;
+};
 
+/** @internal */
+export const Provisions$outboundSchema: z.ZodType<
+  Provisions$Outbound,
+  z.ZodTypeDef,
+  Provisions
+> = z.object({
+  assignmentType: z.nullable(z.string()).optional(),
+  assignmentChangeOfControl: z.nullable(z.string()).optional(),
+  assignmentTerminationRights: z.nullable(z.string()).optional(),
+  confidentialityObligationPeriod: z.nullable(z.string()).optional(),
+  governingLaw: z.nullable(z.string()).optional(),
+  jurisdiction: z.nullable(z.string()).optional(),
+  ndaType: z.nullable(z.string()).optional(),
+  annualAgreementValue: z.nullable(z.number()).optional(),
+  annualAgreementValueCurrencyCode: z.nullable(CurrencyCode$outboundSchema)
+    .optional(),
+  totalAgreementValue: z.nullable(z.number()).optional(),
+  totalAgreementValueCurrencyCode: z.nullable(CurrencyCode$outboundSchema)
+    .optional(),
+  paymentTermsDueDate: PaymentTermsDueDate$outboundSchema.default("OTHER"),
+  canChargeLatePaymentFees: z.nullable(z.boolean()).optional(),
+  latePaymentFeePercent: z.nullable(z.number()).optional(),
+  liabilityCapFixedAmount: z.nullable(z.number()).optional(),
+  liabilityCapCurrencyCode: z.nullable(CurrencyCode$outboundSchema).optional(),
+  liabilityCapMultiplier: z.nullable(z.number()).optional(),
+  liabilityCapDuration: z.nullable(z.string()).optional(),
+  priceCapPercentIncrease: z.nullable(z.number()).optional(),
+  renewalType: z.nullable(z.string()).optional(),
+  renewalNoticePeriod: z.nullable(z.string()).optional(),
+  renewalNoticeDate: z.string().optional(),
+  autoRenewalTermLength: z.nullable(z.string()).optional(),
+  renewalExtensionPeriod: z.nullable(z.string()).optional(),
+  renewalProcessOwner: z.string().optional(),
+  renewalAdditionalInfo: z.nullable(z.string()).optional(),
+  terminationPeriodForCause: z.nullable(z.string()).optional(),
+  terminationPeriodForConvenience: z.nullable(z.string()).optional(),
+  effectiveDate: z.string().optional(),
+  expirationDate: z.string().optional(),
+  executionDate: z.string().optional(),
+  termLength: z.nullable(z.string()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    assignmentType: "assignment_type",
+    assignmentChangeOfControl: "assignment_change_of_control",
+    assignmentTerminationRights: "assignment_termination_rights",
+    confidentialityObligationPeriod: "confidentiality_obligation_period",
+    governingLaw: "governing_law",
+    ndaType: "nda_type",
+    annualAgreementValue: "annual_agreement_value",
+    annualAgreementValueCurrencyCode: "annual_agreement_value_currency_code",
+    totalAgreementValue: "total_agreement_value",
+    totalAgreementValueCurrencyCode: "total_agreement_value_currency_code",
+    paymentTermsDueDate: "payment_terms_due_date",
+    canChargeLatePaymentFees: "can_charge_late_payment_fees",
+    latePaymentFeePercent: "late_payment_fee_percent",
+    liabilityCapFixedAmount: "liability_cap_fixed_amount",
+    liabilityCapCurrencyCode: "liability_cap_currency_code",
+    liabilityCapMultiplier: "liability_cap_multiplier",
+    liabilityCapDuration: "liability_cap_duration",
+    priceCapPercentIncrease: "price_cap_percent_increase",
+    renewalType: "renewal_type",
+    renewalNoticePeriod: "renewal_notice_period",
+    renewalNoticeDate: "renewal_notice_date",
+    autoRenewalTermLength: "auto_renewal_term_length",
+    renewalExtensionPeriod: "renewal_extension_period",
+    renewalProcessOwner: "renewal_process_owner",
+    renewalAdditionalInfo: "renewal_additional_info",
+    terminationPeriodForCause: "termination_period_for_cause",
+    terminationPeriodForConvenience: "termination_period_for_convenience",
+    effectiveDate: "effective_date",
+    expirationDate: "expiration_date",
+    executionDate: "execution_date",
+    termLength: "term_length",
+  });
+});
+
+export function provisionsToJSON(provisions: Provisions): string {
+  return JSON.stringify(Provisions$outboundSchema.parse(provisions));
+}
 export function provisionsFromJSON(
   jsonString: string,
 ): SafeParseResult<Provisions, SDKValidationError> {
@@ -394,7 +545,7 @@ export const RelatedAgreementDocuments$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  parent_agreement_document_id: z.string().default(
+  parent_agreement_document_id: types.string().default(
     "00000000-0000-0000-0000-000000000000",
   ),
 }).transform((v) => {
@@ -402,7 +553,33 @@ export const RelatedAgreementDocuments$inboundSchema: z.ZodType<
     "parent_agreement_document_id": "parentAgreementDocumentId",
   });
 });
+/** @internal */
+export type RelatedAgreementDocuments$Outbound = {
+  parent_agreement_document_id: string;
+};
 
+/** @internal */
+export const RelatedAgreementDocuments$outboundSchema: z.ZodType<
+  RelatedAgreementDocuments$Outbound,
+  z.ZodTypeDef,
+  RelatedAgreementDocuments
+> = z.object({
+  parentAgreementDocumentId: z.string().default(
+    "00000000-0000-0000-0000-000000000000",
+  ),
+}).transform((v) => {
+  return remap$(v, {
+    parentAgreementDocumentId: "parent_agreement_document_id",
+  });
+});
+
+export function relatedAgreementDocumentsToJSON(
+  relatedAgreementDocuments: RelatedAgreementDocuments,
+): string {
+  return JSON.stringify(
+    RelatedAgreementDocuments$outboundSchema.parse(relatedAgreementDocuments),
+  );
+}
 export function relatedAgreementDocumentsFromJSON(
   jsonString: string,
 ): SafeParseResult<RelatedAgreementDocuments, SDKValidationError> {
@@ -419,59 +596,160 @@ export const Agreement$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  _links: z.nullable(AgreementLinks$inboundSchema).optional(),
+  id: types.string().default("00000000-0000-0000-0000-000000000000"),
+  title: z.nullable(types.string()).optional(),
+  file_name: z.nullable(types.string()).optional(),
+  document_id: z.nullable(types.string()).optional(),
+  type: z.nullable(types.string()).optional(),
+  category: z.nullable(types.string()).optional(),
+  summary: z.nullable(types.string()).optional(),
+  status: z.nullable(types.string()).optional(),
+  review_status: z.nullable(types.string()).optional(),
+  review_completed_at: z.nullable(types.date()).optional(),
+  parties: z.nullable(z.array(Party$inboundSchema)).optional(),
+  provisions: z.nullable(z.lazy(() => Provisions$inboundSchema)).optional(),
+  custom_provisions: z.nullable(z.record(CustomProperty$inboundSchema))
+    .optional(),
+  additional_user_defined_data: z.nullable(
+    z.record(CustomProperty$inboundSchema),
+  ).optional(),
   additional_custom_clm_data: z.nullable(z.record(CustomProperty$inboundSchema))
     .optional(),
   additional_custom_esign_data: z.nullable(
     z.record(CustomProperty$inboundSchema),
   ).optional(),
-  additional_user_defined_data: z.nullable(
-    z.record(CustomProperty$inboundSchema),
-  ).optional(),
-  category: z.nullable(z.string()).optional(),
-  custom_provisions: z.nullable(z.record(CustomProperty$inboundSchema))
-    .optional(),
-  document_id: z.nullable(z.string()).optional(),
-  file_name: z.nullable(z.string()).optional(),
-  id: z.string().default("00000000-0000-0000-0000-000000000000"),
-  languages: z.nullable(z.array(z.nullable(z.string()))).optional(),
-  linked_data: z.array(LinkedData$inboundSchema).optional(),
-  metadata: ResourceMetadata$inboundSchema.optional(),
-  parties: z.nullable(z.array(Party$inboundSchema)).optional(),
-  provisions: z.nullable(z.lazy(() => Provisions$inboundSchema)).optional(),
-  related_agreement_documents: z.lazy(() =>
-    RelatedAgreementDocuments$inboundSchema
-  ).optional(),
-  review_completed_at: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  review_status: z.nullable(z.string()).optional(),
-  source_account_id: z.nullable(z.string()).optional(),
-  source_id: z.nullable(z.string()).optional(),
-  source_name: z.nullable(z.string()).optional(),
-  status: z.nullable(z.string()).optional(),
-  summary: z.nullable(z.string()).optional(),
-  title: z.nullable(z.string()).optional(),
-  type: z.nullable(z.string()).optional(),
+  related_agreement_documents: types.optional(
+    z.lazy(() => RelatedAgreementDocuments$inboundSchema),
+  ),
+  languages: z.nullable(z.array(types.nullable(types.string()))).optional(),
+  source_name: z.nullable(types.string()).optional(),
+  source_id: z.nullable(types.string()).optional(),
+  source_account_id: z.nullable(types.string()).optional(),
+  linked_data: types.optional(z.array(LinkedData$inboundSchema)),
+  metadata: types.optional(ResourceMetadata$inboundSchema),
+  _links: z.nullable(AgreementLinks$inboundSchema).optional(),
+  _actions: z.nullable(AgreementActions$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
-    "_links": "links",
+    "file_name": "fileName",
+    "document_id": "documentId",
+    "review_status": "reviewStatus",
+    "review_completed_at": "reviewCompletedAt",
+    "custom_provisions": "customProvisions",
+    "additional_user_defined_data": "additionalUserDefinedData",
     "additional_custom_clm_data": "additionalCustomClmData",
     "additional_custom_esign_data": "additionalCustomEsignData",
-    "additional_user_defined_data": "additionalUserDefinedData",
-    "custom_provisions": "customProvisions",
-    "document_id": "documentId",
-    "file_name": "fileName",
-    "linked_data": "linkedData",
     "related_agreement_documents": "relatedAgreementDocuments",
-    "review_completed_at": "reviewCompletedAt",
-    "review_status": "reviewStatus",
-    "source_account_id": "sourceAccountId",
-    "source_id": "sourceId",
     "source_name": "sourceName",
+    "source_id": "sourceId",
+    "source_account_id": "sourceAccountId",
+    "linked_data": "linkedData",
+    "_links": "links",
+    "_actions": "actions",
+  });
+});
+/** @internal */
+export type Agreement$Outbound = {
+  id: string;
+  title?: string | null | undefined;
+  file_name?: string | null | undefined;
+  document_id?: string | null | undefined;
+  type?: string | null | undefined;
+  category?: string | null | undefined;
+  summary?: string | null | undefined;
+  status?: string | null | undefined;
+  review_status?: string | null | undefined;
+  review_completed_at?: string | null | undefined;
+  parties?: Array<Party$Outbound> | null | undefined;
+  provisions?: Provisions$Outbound | null | undefined;
+  custom_provisions?:
+    | { [k: string]: CustomProperty$Outbound }
+    | null
+    | undefined;
+  additional_user_defined_data?:
+    | { [k: string]: CustomProperty$Outbound }
+    | null
+    | undefined;
+  additional_custom_clm_data?:
+    | { [k: string]: CustomProperty$Outbound }
+    | null
+    | undefined;
+  additional_custom_esign_data?:
+    | { [k: string]: CustomProperty$Outbound }
+    | null
+    | undefined;
+  related_agreement_documents?: RelatedAgreementDocuments$Outbound | undefined;
+  languages?: Array<string | null> | null | undefined;
+  source_name?: string | null | undefined;
+  source_id?: string | null | undefined;
+  source_account_id?: string | null | undefined;
+  linked_data?: Array<LinkedData$Outbound> | undefined;
+  metadata?: ResourceMetadata$Outbound | undefined;
+  _links?: AgreementLinks$Outbound | null | undefined;
+  _actions?: AgreementActions$Outbound | null | undefined;
+};
+
+/** @internal */
+export const Agreement$outboundSchema: z.ZodType<
+  Agreement$Outbound,
+  z.ZodTypeDef,
+  Agreement
+> = z.object({
+  id: z.string().default("00000000-0000-0000-0000-000000000000"),
+  title: z.nullable(z.string()).optional(),
+  fileName: z.nullable(z.string()).optional(),
+  documentId: z.nullable(z.string()).optional(),
+  type: z.nullable(z.string()).optional(),
+  category: z.nullable(z.string()).optional(),
+  summary: z.nullable(z.string()).optional(),
+  status: z.nullable(z.string()).optional(),
+  reviewStatus: z.nullable(z.string()).optional(),
+  reviewCompletedAt: z.nullable(z.date().transform(v => v.toISOString()))
+    .optional(),
+  parties: z.nullable(z.array(Party$outboundSchema)).optional(),
+  provisions: z.nullable(z.lazy(() => Provisions$outboundSchema)).optional(),
+  customProvisions: z.nullable(z.record(CustomProperty$outboundSchema))
+    .optional(),
+  additionalUserDefinedData: z.nullable(z.record(CustomProperty$outboundSchema))
+    .optional(),
+  additionalCustomClmData: z.nullable(z.record(CustomProperty$outboundSchema))
+    .optional(),
+  additionalCustomEsignData: z.nullable(z.record(CustomProperty$outboundSchema))
+    .optional(),
+  relatedAgreementDocuments: z.lazy(() =>
+    RelatedAgreementDocuments$outboundSchema
+  ).optional(),
+  languages: z.nullable(z.array(z.nullable(z.string()))).optional(),
+  sourceName: z.nullable(z.string()).optional(),
+  sourceId: z.nullable(z.string()).optional(),
+  sourceAccountId: z.nullable(z.string()).optional(),
+  linkedData: z.array(LinkedData$outboundSchema).optional(),
+  metadata: ResourceMetadata$outboundSchema.optional(),
+  links: z.nullable(AgreementLinks$outboundSchema).optional(),
+  actions: z.nullable(AgreementActions$outboundSchema).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    fileName: "file_name",
+    documentId: "document_id",
+    reviewStatus: "review_status",
+    reviewCompletedAt: "review_completed_at",
+    customProvisions: "custom_provisions",
+    additionalUserDefinedData: "additional_user_defined_data",
+    additionalCustomClmData: "additional_custom_clm_data",
+    additionalCustomEsignData: "additional_custom_esign_data",
+    relatedAgreementDocuments: "related_agreement_documents",
+    sourceName: "source_name",
+    sourceId: "source_id",
+    sourceAccountId: "source_account_id",
+    linkedData: "linked_data",
+    links: "_links",
+    actions: "_actions",
   });
 });
 
+export function agreementToJSON(agreement: Agreement): string {
+  return JSON.stringify(Agreement$outboundSchema.parse(agreement));
+}
 export function agreementFromJSON(
   jsonString: string,
 ): SafeParseResult<Agreement, SDKValidationError> {

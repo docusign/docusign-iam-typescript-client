@@ -5,6 +5,7 @@
 import * as z from "zod/v3";
 import { IamClientCore } from "../core.js";
 import { encodeSimple } from "../lib/encodings.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -31,6 +32,8 @@ import { Result } from "../types/fp.js";
  *
  * @remarks
  * This operation completes a specific upload request within a workspace and is intended to be called by the user completing the upload request. Only upload requests that are in progress can be completed.
+ *
+ * If set, this operation will use {@link Security.accessToken} from the global security.
  */
 export function workspacesWorkspaceUploadRequestCompleteWorkspaceUploadRequest(
   client: IamClientCore,
@@ -106,7 +109,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc(
     "/v1/accounts/{accountId}/workspaces/{workspaceId}/upload-requests/{uploadRequestId}/actions/complete",
   )(pathParams);
@@ -117,7 +119,7 @@ async function $do(
 
   const secConfig = await extractSecurity(client._options.accessToken);
   const securityInput = secConfig == null ? {} : { accessToken: secConfig };
-  const requestSecurity = resolveGlobalSecurity(securityInput);
+  const requestSecurity = resolveGlobalSecurity(securityInput, [0]);
 
   const context = {
     options: client._options,
@@ -161,7 +163,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "4XX", "500", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });

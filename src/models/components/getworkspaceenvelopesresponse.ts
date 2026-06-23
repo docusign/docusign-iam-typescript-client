@@ -5,6 +5,7 @@
 import * as z from "zod/v3";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   WorkspaceEnvelopeSummary,
@@ -24,7 +25,7 @@ export const GetWorkspaceEnvelopesResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  envelopes: z.nullable(z.array(WorkspaceEnvelopeSummary$inboundSchema)),
+  envelopes: types.nullable(z.array(WorkspaceEnvelopeSummary$inboundSchema)),
 });
 
 export function getWorkspaceEnvelopesResponseFromJSON(

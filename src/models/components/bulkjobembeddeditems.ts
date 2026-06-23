@@ -6,40 +6,158 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   BulkJobItemActions,
   BulkJobItemActions$inboundSchema,
 } from "./bulkjobitemactions.js";
 import { DocStatus, DocStatus$inboundSchema } from "./docstatus.js";
+import {
+  DocumentWarning,
+  DocumentWarning$inboundSchema,
+} from "./documentwarning.js";
+
+/**
+ * Link to download the document
+ */
+export type Document = {
+  /**
+   * URL to download the document
+   */
+  href?: string | undefined;
+};
+
+/**
+ * Link to the associated agreement
+ */
+export type BulkJobEmbeddedItemsAgreement = {
+  /**
+   * URL to the agreement resource
+   */
+  href?: string | undefined;
+};
+
+/**
+ * Hypermedia links related to this document
+ */
+export type BulkJobEmbeddedItemsLinks = {
+  /**
+   * Link to download the document
+   */
+  document?: Document | undefined;
+  /**
+   * Link to the associated agreement
+   */
+  agreement?: BulkJobEmbeddedItemsAgreement | undefined;
+};
 
 export type BulkJobEmbeddedItems = {
-  actions?: BulkJobItemActions | undefined;
-  /**
-   * Agreement ID associated with this document, if created
-   */
-  agreementId?: string | undefined;
-  /**
-   * Error message if document processing failed
-   */
-  error?: string | undefined;
-  /**
-   * Error code if document processing failed
-   */
-  errorCode?: number | undefined;
   /**
    * Id of the document
    */
   id?: string | undefined;
   /**
+   * Agreement ID associated with this document, if created
+   */
+  agreementId?: string | undefined;
+  /**
    * Sequential order of the document
    */
   sequence?: number | undefined;
   /**
-   * Document status. Last 3 are terminal statuses. Matches enum with similar name in the backend.
+   * Document status. Last 4 are terminal statuses. Matches enum with similar name in the backend.
    */
   status?: DocStatus | undefined;
+  /**
+   * The name of the uploaded file
+   */
+  fileName?: string | undefined;
+  /**
+   * Whether AI extraction was performed on this document
+   */
+  aiExtraction?: boolean | undefined;
+  /**
+   * Error code if document processing failed
+   */
+  errorCode?: number | undefined;
+  /**
+   * Error message if document processing failed
+   */
+  error?: string | undefined;
+  /**
+   * List of warnings encountered during document processing. Present when status is SUCCEEDED_WITH_WARNINGS.
+   */
+  warnings?: Array<DocumentWarning> | undefined;
+  /**
+   * Available actions for this document. Actions vary based on document state - upload actions during initial upload, remediation actions after processing.
+   */
+  actions?: BulkJobItemActions | undefined;
+  /**
+   * Hypermedia links related to this document
+   */
+  links?: BulkJobEmbeddedItemsLinks | undefined;
 };
+
+/** @internal */
+export const Document$inboundSchema: z.ZodType<
+  Document,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  href: types.optional(types.string()),
+});
+
+export function documentFromJSON(
+  jsonString: string,
+): SafeParseResult<Document, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Document$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Document' from JSON`,
+  );
+}
+
+/** @internal */
+export const BulkJobEmbeddedItemsAgreement$inboundSchema: z.ZodType<
+  BulkJobEmbeddedItemsAgreement,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  href: types.optional(types.string()),
+});
+
+export function bulkJobEmbeddedItemsAgreementFromJSON(
+  jsonString: string,
+): SafeParseResult<BulkJobEmbeddedItemsAgreement, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => BulkJobEmbeddedItemsAgreement$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'BulkJobEmbeddedItemsAgreement' from JSON`,
+  );
+}
+
+/** @internal */
+export const BulkJobEmbeddedItemsLinks$inboundSchema: z.ZodType<
+  BulkJobEmbeddedItemsLinks,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  document: types.optional(z.lazy(() => Document$inboundSchema)),
+  agreement: types.optional(
+    z.lazy(() => BulkJobEmbeddedItemsAgreement$inboundSchema),
+  ),
+});
+
+export function bulkJobEmbeddedItemsLinksFromJSON(
+  jsonString: string,
+): SafeParseResult<BulkJobEmbeddedItemsLinks, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => BulkJobEmbeddedItemsLinks$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'BulkJobEmbeddedItemsLinks' from JSON`,
+  );
+}
 
 /** @internal */
 export const BulkJobEmbeddedItems$inboundSchema: z.ZodType<
@@ -47,18 +165,25 @@ export const BulkJobEmbeddedItems$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  _actions: BulkJobItemActions$inboundSchema.optional(),
-  agreement_id: z.string().optional(),
-  error: z.string().optional(),
-  error_code: z.number().int().optional(),
-  id: z.string().optional(),
-  sequence: z.number().int().optional(),
-  status: DocStatus$inboundSchema.optional(),
+  id: types.optional(types.string()),
+  agreement_id: types.optional(types.string()),
+  sequence: types.optional(types.number()),
+  status: types.optional(DocStatus$inboundSchema),
+  file_name: types.optional(types.string()),
+  ai_extraction: types.optional(types.boolean()),
+  error_code: types.optional(types.number()),
+  error: types.optional(types.string()),
+  warnings: types.optional(z.array(DocumentWarning$inboundSchema)),
+  _actions: types.optional(BulkJobItemActions$inboundSchema),
+  _links: types.optional(z.lazy(() => BulkJobEmbeddedItemsLinks$inboundSchema)),
 }).transform((v) => {
   return remap$(v, {
-    "_actions": "actions",
     "agreement_id": "agreementId",
+    "file_name": "fileName",
+    "ai_extraction": "aiExtraction",
     "error_code": "errorCode",
+    "_actions": "actions",
+    "_links": "links",
   });
 });
 

@@ -3,10 +3,27 @@
  */
 
 import * as z from "zod/v3";
+import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import { Link, Link$inboundSchema } from "./link.js";
+import {
+  Link,
+  Link$inboundSchema,
+  Link$Outbound,
+  Link$outboundSchema,
+} from "./link.js";
+
+/**
+ * Link to the collection of configured agreement types for the account. Always present.
+ */
+export type AgreementLinksAgreementTypes = {
+  /**
+   * The URL for the referenced page.
+   */
+  href: string;
+};
 
 /**
  * Hypermedia controls (HATEOAS) for agreement specific links to resources.
@@ -20,7 +37,52 @@ export type AgreementLinks = {
    * @remarks
    */
   document?: Link | null | undefined;
+  /**
+   * Link to the collection of configured agreement types for the account. Always present.
+   */
+  agreementTypes?: AgreementLinksAgreementTypes | null | undefined;
 };
+
+/** @internal */
+export const AgreementLinksAgreementTypes$inboundSchema: z.ZodType<
+  AgreementLinksAgreementTypes,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  href: types.string(),
+});
+/** @internal */
+export type AgreementLinksAgreementTypes$Outbound = {
+  href: string;
+};
+
+/** @internal */
+export const AgreementLinksAgreementTypes$outboundSchema: z.ZodType<
+  AgreementLinksAgreementTypes$Outbound,
+  z.ZodTypeDef,
+  AgreementLinksAgreementTypes
+> = z.object({
+  href: z.string(),
+});
+
+export function agreementLinksAgreementTypesToJSON(
+  agreementLinksAgreementTypes: AgreementLinksAgreementTypes,
+): string {
+  return JSON.stringify(
+    AgreementLinksAgreementTypes$outboundSchema.parse(
+      agreementLinksAgreementTypes,
+    ),
+  );
+}
+export function agreementLinksAgreementTypesFromJSON(
+  jsonString: string,
+): SafeParseResult<AgreementLinksAgreementTypes, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AgreementLinksAgreementTypes$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AgreementLinksAgreementTypes' from JSON`,
+  );
+}
 
 /** @internal */
 export const AgreementLinks$inboundSchema: z.ZodType<
@@ -29,8 +91,39 @@ export const AgreementLinks$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   document: z.nullable(Link$inboundSchema).optional(),
+  agreement_types: z.nullable(
+    z.lazy(() => AgreementLinksAgreementTypes$inboundSchema),
+  ).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "agreement_types": "agreementTypes",
+  });
+});
+/** @internal */
+export type AgreementLinks$Outbound = {
+  document?: Link$Outbound | null | undefined;
+  agreement_types?: AgreementLinksAgreementTypes$Outbound | null | undefined;
+};
+
+/** @internal */
+export const AgreementLinks$outboundSchema: z.ZodType<
+  AgreementLinks$Outbound,
+  z.ZodTypeDef,
+  AgreementLinks
+> = z.object({
+  document: z.nullable(Link$outboundSchema).optional(),
+  agreementTypes: z.nullable(
+    z.lazy(() => AgreementLinksAgreementTypes$outboundSchema),
+  ).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    agreementTypes: "agreement_types",
+  });
 });
 
+export function agreementLinksToJSON(agreementLinks: AgreementLinks): string {
+  return JSON.stringify(AgreementLinks$outboundSchema.parse(agreementLinks));
+}
 export function agreementLinksFromJSON(
   jsonString: string,
 ): SafeParseResult<AgreementLinks, SDKValidationError> {

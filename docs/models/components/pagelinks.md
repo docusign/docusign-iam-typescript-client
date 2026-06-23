@@ -14,11 +14,11 @@ let value: PageLinks = {
     href:
       "https://api.docusign.com/v1/accounts/12345678/agreements?limit=10&ctoken=abc123",
   },
-  next: {
+  self: {
     href:
       "https://api.docusign.com/v1/accounts/12345678/agreements?limit=10&ctoken=abc123",
   },
-  self: {
+  next: {
     href:
       "https://api.docusign.com/v1/accounts/12345678/agreements?limit=10&ctoken=abc123",
   },
@@ -30,5 +30,5 @@ let value: PageLinks = {
 | Field                                                                                                                              | Type                                                                                                                               | Required                                                                                                                           | Description                                                                                                                        |
 | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | `first`                                                                                                                            | [components.PageLink](../../models/components/pagelink.md)                                                                         | :heavy_minus_sign:                                                                                                                 | A URL that references a specific page in the pagination process. This is typically used for navigation<br/>between paginated results.<br/> |
-| `next`                                                                                                                             | [components.PageLink](../../models/components/pagelink.md)                                                                         | :heavy_minus_sign:                                                                                                                 | A URL that references a specific page in the pagination process. This is typically used for navigation<br/>between paginated results.<br/> |
 | `self`                                                                                                                             | [components.PageLink](../../models/components/pagelink.md)                                                                         | :heavy_minus_sign:                                                                                                                 | A URL that references a specific page in the pagination process. This is typically used for navigation<br/>between paginated results.<br/> |
+| `next`                                                                                                                             | [components.PageLink](../../models/components/pagelink.md)                                                                         | :heavy_minus_sign:                                                                                                                 | A URL that references a specific page in the pagination process. This is typically used for navigation<br/>between paginated results.<br/> |

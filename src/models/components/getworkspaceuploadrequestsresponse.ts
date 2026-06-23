@@ -5,6 +5,7 @@
 import * as z from "zod/v3";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   WorkspaceUploadRequest,
@@ -27,7 +28,7 @@ export const GetWorkspaceUploadRequestsResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  data: z.nullable(z.array(WorkspaceUploadRequest$inboundSchema)),
+  data: types.nullable(z.array(WorkspaceUploadRequest$inboundSchema)),
 });
 
 export function getWorkspaceUploadRequestsResponseFromJSON(

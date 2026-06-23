@@ -11,7 +11,7 @@ import {
 } from "./triggerinputs.js";
 
 /**
- * The input information needed to trigger a new instance of a Maestro workflow.
+ * The input information needed to trigger a new instance of a Workflow Builder workflow.
  *
  * @remarks
  * This request body contains the metadata to describe the instance being created,

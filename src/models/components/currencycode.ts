@@ -202,3 +202,6 @@ export type CurrencyCode = ClosedEnum<typeof CurrencyCode>;
 /** @internal */
 export const CurrencyCode$inboundSchema: z.ZodNativeEnum<typeof CurrencyCode> =
   z.nativeEnum(CurrencyCode);
+/** @internal */
+export const CurrencyCode$outboundSchema: z.ZodNativeEnum<typeof CurrencyCode> =
+  CurrencyCode$inboundSchema;

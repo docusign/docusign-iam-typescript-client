@@ -3,11 +3,13 @@
  */
 
 import { IamClientCore } from "../core.js";
-import { appendForm, encodeSimple } from "../lib/encodings.js";
+import { appendForm, encodeSimple, normalizeBlob } from "../lib/encodings.js";
 import {
+  bytesToBlob,
   getContentTypeFromFileName,
   readableStreamToArrayBuffer,
 } from "../lib/files.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -39,6 +41,8 @@ import { isReadableStream } from "../types/streams.js";
  * This operation adds a document to a workspace via file contents upload. The file is passed in the request body as a multipart/form-data file. The file name is used as the document name.
  *
  * Once added, it may be used to create an envelope associated with the workspace.
+ *
+ * If set, this operation will use {@link Security.accessToken} from the global security.
  */
 export function workspacesWorkspaceDocumentsAddWorkspaceDocument(
   client: IamClientCore,
@@ -100,7 +104,10 @@ async function $do(
   if (payload.AddWorkspaceDocumentRequest != null) {
     if (payload.AddWorkspaceDocumentRequest.file !== undefined) {
       if (isBlobLike(payload.AddWorkspaceDocumentRequest.file)) {
-        appendForm(body, "file", payload.AddWorkspaceDocumentRequest.file);
+        const file = payload.AddWorkspaceDocumentRequest.file;
+        const blob = await normalizeBlob(file);
+        const name = "name" in file ? (file.name as string) : undefined;
+        appendForm(body, "file", blob, name);
       } else if (
         isReadableStream(payload.AddWorkspaceDocumentRequest.file.content)
       ) {
@@ -111,11 +118,10 @@ async function $do(
           getContentTypeFromFileName(
             payload.AddWorkspaceDocumentRequest.file.fileName,
           ) || "application/octet-stream";
-        const blob = new Blob([buffer], { type: contentType });
         appendForm(
           body,
           "file",
-          blob,
+          bytesToBlob(buffer, contentType),
           payload.AddWorkspaceDocumentRequest.file.fileName,
         );
       } else {
@@ -126,9 +132,10 @@ async function $do(
         appendForm(
           body,
           "file",
-          new Blob([payload.AddWorkspaceDocumentRequest.file.content], {
-            type: contentType,
-          }),
+          bytesToBlob(
+            payload.AddWorkspaceDocumentRequest.file.content,
+            contentType,
+          ),
           payload.AddWorkspaceDocumentRequest.file.fileName,
         );
       }
@@ -145,7 +152,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc(
     "/v1/accounts/{accountId}/workspaces/{workspaceId}/documents",
   )(pathParams);
@@ -156,7 +162,7 @@ async function $do(
 
   const secConfig = await extractSecurity(client._options.accessToken);
   const securityInput = secConfig == null ? {} : { accessToken: secConfig };
-  const requestSecurity = resolveGlobalSecurity(securityInput);
+  const requestSecurity = resolveGlobalSecurity(securityInput, [0]);
 
   const context = {
     options: client._options,
@@ -200,7 +206,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "4XX", "500", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });

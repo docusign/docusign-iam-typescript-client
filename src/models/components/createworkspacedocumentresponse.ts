@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   CreateWorkspaceDocumentOwner,
@@ -28,17 +29,13 @@ export const CreateWorkspaceDocumentResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  document_id: z.string().optional(),
-  name: z.nullable(z.string()).optional(),
-  owner_id: z.nullable(z.string()).optional(),
-  size: z.nullable(z.number().int()).optional(),
-  created_date: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  last_updated_date: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  owner: CreateWorkspaceDocumentOwner$inboundSchema.optional(),
+  document_id: types.optional(types.string()),
+  name: z.nullable(types.string()).optional(),
+  owner_id: z.nullable(types.string()).optional(),
+  size: z.nullable(types.number()).optional(),
+  created_date: z.nullable(types.date()).optional(),
+  last_updated_date: z.nullable(types.date()).optional(),
+  owner: types.optional(CreateWorkspaceDocumentOwner$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "document_id": "documentId",

@@ -22,7 +22,7 @@ export const BulkJobStatus = {
   InProgress: "IN_PROGRESS",
   Complete: "COMPLETE",
   Failed: "FAILED",
-  Cancelled: "CANCELLED",
+  Canceled: "CANCELED",
 } as const;
 /**
  * Job lifecycle states:

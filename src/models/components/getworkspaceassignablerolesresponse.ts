@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   WorkspaceRoleSummary,
@@ -45,12 +46,12 @@ export const GetWorkspaceAssignableRolesResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  roles: z.nullable(z.array(WorkspaceRoleSummary$inboundSchema)),
-  result_set_size: z.nullable(z.number().int()).optional(),
-  start_position: z.nullable(z.number().int()).optional(),
-  end_position: z.nullable(z.number().int()).optional(),
-  total_row_count: z.nullable(z.number().int()).optional(),
-  current_role_id: z.nullable(z.string()).optional(),
+  roles: types.nullable(z.array(WorkspaceRoleSummary$inboundSchema)),
+  result_set_size: z.nullable(types.number()).optional(),
+  start_position: z.nullable(types.number()).optional(),
+  end_position: z.nullable(types.number()).optional(),
+  total_row_count: z.nullable(types.number()).optional(),
+  current_role_id: z.nullable(types.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "result_set_size": "resultSetSize",

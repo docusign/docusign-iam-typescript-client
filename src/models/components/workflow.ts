@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   ResourceMetadata,
@@ -13,11 +14,17 @@ import {
 } from "./resourcemetadata.js";
 
 export type Workflow = {
+  /**
+   * A unique ID for this workflow
+   */
   id: string;
   /**
    * A user-provided name for this workflow
    */
   name?: string | undefined;
+  /**
+   * A unique ID for the account associated with the workflow
+   */
   accountId: string;
   /**
    * Indicates the readiness and deployment status of a workflow
@@ -32,11 +39,11 @@ export const Workflow$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  id: z.string().default("00000000-0000-0000-0000-000000000000"),
-  name: z.string().optional(),
-  account_id: z.string().default("00000000-0000-0000-0000-000000000000"),
-  status: z.string().optional(),
-  metadata: ResourceMetadata$inboundSchema.optional(),
+  id: types.string().default("00000000-0000-0000-0000-000000000000"),
+  name: types.optional(types.string()),
+  account_id: types.string().default("00000000-0000-0000-0000-000000000000"),
+  status: types.optional(types.string()),
+  metadata: types.optional(ResourceMetadata$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "account_id": "accountId",

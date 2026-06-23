@@ -178,6 +178,22 @@ run();
 <details open>
 <summary>Available methods</summary>
 
+### [AgreementManager.Agreements](docs/sdks/agreements/README.md)
+
+* [getAgreementsList](docs/sdks/agreements/README.md#getagreementslist) - Retrieve a list of agreements
+* [patchAgreementByDocumentId](docs/sdks/agreements/README.md#patchagreementbydocumentid) - Update an agreement by locating it via document ID
+* [getAgreementTypes](docs/sdks/agreements/README.md#getagreementtypes) - List configured agreement types for the account.
+* [getAgreement](docs/sdks/agreements/README.md#getagreement) - Retrieve detailed information about a specific agreement
+* [deleteAgreement](docs/sdks/agreements/README.md#deleteagreement) - Delete a specific agreement
+* [patchAgreement](docs/sdks/agreements/README.md#patchagreement) - Update specific fields of an agreement
+* [changeAgreementType](docs/sdks/agreements/README.md#changeagreementtype) - Change the type of an agreement
+
+### [AgreementManager.BulkJob](docs/sdks/bulkjob/README.md)
+
+* [createBulkUploadJob](docs/sdks/bulkjob/README.md#createbulkuploadjob) - Create new bulk job with presigned URLs direct to Azure Blob Store
+* [getBulkJobStatus](docs/sdks/bulkjob/README.md#getbulkjobstatus) - Get bulk job status
+* [uploadCompleteBulkJob](docs/sdks/bulkjob/README.md#uploadcompletebulkjob) - Mark bulk job upload as complete
+
 ### [Auth](docs/sdks/auth/README.md)
 
 * [getTokenFromConfidentialAuthCode](docs/sdks/auth/README.md#gettokenfromconfidentialauthcode) - Obtains an access token from the Docusign API using an authorization code.
@@ -190,31 +206,19 @@ run();
 
 * [getConnectedFieldsTabGroups](docs/sdks/tabinfo/README.md#getconnectedfieldstabgroups) - Returns all tabs associated with the given account
 
-### [Maestro.WorkflowInstanceManagement](docs/sdks/workflowinstancemanagement/README.md)
+### [WorkflowBuilder.WorkflowInstanceManagement](docs/sdks/workflowinstancemanagement/README.md)
 
 * [getWorkflowInstancesList](docs/sdks/workflowinstancemanagement/README.md#getworkflowinstanceslist) - Retrieve All Workflow Instances
 * [getWorkflowInstance](docs/sdks/workflowinstancemanagement/README.md#getworkflowinstance) - Retrieve a Workflow Instance
 * [cancelWorkflowInstance](docs/sdks/workflowinstancemanagement/README.md#cancelworkflowinstance) - Cancel a Running Workflow Instance
 
-### [Maestro.Workflows](docs/sdks/workflows/README.md)
+### [WorkflowBuilder.Workflows](docs/sdks/workflows/README.md)
 
-* [getWorkflowsList](docs/sdks/workflows/README.md#getworkflowslist) - Retrieve a list of available Maestro workflows
-* [getWorkflowTriggerRequirements](docs/sdks/workflows/README.md#getworkflowtriggerrequirements) - Retrieve trigger requirements for a specific Maestro workflow
-* [triggerWorkflow](docs/sdks/workflows/README.md#triggerworkflow) - Trigger a new instance of a Maestro workflow
+* [getWorkflowsList](docs/sdks/workflows/README.md#getworkflowslist) - Retrieve a list of available Workflow Builder workflows
+* [getWorkflowTriggerRequirements](docs/sdks/workflows/README.md#getworkflowtriggerrequirements) - Retrieve trigger requirements for a specific Workflow Builder workflow
+* [triggerWorkflow](docs/sdks/workflows/README.md#triggerworkflow) - Trigger a new instance of a Workflow Builder workflow
 * [pauseNewWorkflowInstances](docs/sdks/workflows/README.md#pausenewworkflowinstances) - Pause an Active Workflow
 * [resumePausedWorkflow](docs/sdks/workflows/README.md#resumepausedworkflow) - Resume a Paused Workflow
-
-### [Navigator.Agreements](docs/sdks/agreements/README.md)
-
-* [getAgreementsList](docs/sdks/agreements/README.md#getagreementslist) - Retrieve a list of agreements
-* [getAgreement](docs/sdks/agreements/README.md#getagreement) - Retrieve detailed information about a specific agreement
-* [deleteAgreement](docs/sdks/agreements/README.md#deleteagreement) - Delete a specific agreement
-
-### [Navigator.BulkJob](docs/sdks/bulkjob/README.md)
-
-* [createBulkUploadJob](docs/sdks/bulkjob/README.md#createbulkuploadjob) - Create new bulk job with presigned URLs direct to Azure Blob Store
-* [getBulkJobStatus](docs/sdks/bulkjob/README.md#getbulkjobstatus) - Get bulk job status
-* [uploadCompleteBulkJob](docs/sdks/bulkjob/README.md#uploadcompletebulkjob) - Mark bulk job upload as complete
 
 ### [Workspaces.WorkspaceBrands](docs/sdks/workspacebrands/README.md)
 
@@ -275,26 +279,30 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
+- [`agreementManagerAgreementsChangeAgreementType`](docs/sdks/agreements/README.md#changeagreementtype) - Change the type of an agreement
+- [`agreementManagerAgreementsDeleteAgreement`](docs/sdks/agreements/README.md#deleteagreement) - Delete a specific agreement
+- [`agreementManagerAgreementsGetAgreement`](docs/sdks/agreements/README.md#getagreement) - Retrieve detailed information about a specific agreement
+- [`agreementManagerAgreementsGetAgreementsList`](docs/sdks/agreements/README.md#getagreementslist) - Retrieve a list of agreements
+- [`agreementManagerAgreementsGetAgreementTypes`](docs/sdks/agreements/README.md#getagreementtypes) - List configured agreement types for the account.
+- [`agreementManagerAgreementsPatchAgreement`](docs/sdks/agreements/README.md#patchagreement) - Update specific fields of an agreement
+- [`agreementManagerAgreementsPatchAgreementByDocumentId`](docs/sdks/agreements/README.md#patchagreementbydocumentid) - Update an agreement by locating it via document ID
+- [`agreementManagerBulkJobCreateBulkUploadJob`](docs/sdks/bulkjob/README.md#createbulkuploadjob) - Create new bulk job with presigned URLs direct to Azure Blob Store
+- [`agreementManagerBulkJobGetBulkJobStatus`](docs/sdks/bulkjob/README.md#getbulkjobstatus) - Get bulk job status
+- [`agreementManagerBulkJobUploadCompleteBulkJob`](docs/sdks/bulkjob/README.md#uploadcompletebulkjob) - Mark bulk job upload as complete
 - [`authGetTokenFromConfidentialAuthCode`](docs/sdks/auth/README.md#gettokenfromconfidentialauthcode) - Obtains an access token from the Docusign API using an authorization code.
 - [`authGetTokenFromJwtGrant`](docs/sdks/auth/README.md#gettokenfromjwtgrant) - Obtains an access token from the Docusign API using a JWT grant.
 - [`authGetTokenFromPublicAuthCode`](docs/sdks/auth/README.md#gettokenfrompublicauthcode) - Obtains an access token from the Docusign API using an authorization code.
 - [`authGetTokenFromRefreshToken`](docs/sdks/auth/README.md#gettokenfromrefreshtoken) - Obtains an access token from the Docusign API using an authorization code.
 - [`authGetUserInfo`](docs/sdks/auth/README.md#getuserinfo) - Get user information
 - [`connectedFieldsTabInfoGetConnectedFieldsTabGroups`](docs/sdks/tabinfo/README.md#getconnectedfieldstabgroups) - Returns all tabs associated with the given account
-- [`maestroWorkflowInstanceManagementCancelWorkflowInstance`](docs/sdks/workflowinstancemanagement/README.md#cancelworkflowinstance) - Cancel a Running Workflow Instance
-- [`maestroWorkflowInstanceManagementGetWorkflowInstance`](docs/sdks/workflowinstancemanagement/README.md#getworkflowinstance) - Retrieve a Workflow Instance
-- [`maestroWorkflowInstanceManagementGetWorkflowInstancesList`](docs/sdks/workflowinstancemanagement/README.md#getworkflowinstanceslist) - Retrieve All Workflow Instances
-- [`maestroWorkflowsGetWorkflowsList`](docs/sdks/workflows/README.md#getworkflowslist) - Retrieve a list of available Maestro workflows
-- [`maestroWorkflowsGetWorkflowTriggerRequirements`](docs/sdks/workflows/README.md#getworkflowtriggerrequirements) - Retrieve trigger requirements for a specific Maestro workflow
-- [`maestroWorkflowsPauseNewWorkflowInstances`](docs/sdks/workflows/README.md#pausenewworkflowinstances) - Pause an Active Workflow
-- [`maestroWorkflowsResumePausedWorkflow`](docs/sdks/workflows/README.md#resumepausedworkflow) - Resume a Paused Workflow
-- [`maestroWorkflowsTriggerWorkflow`](docs/sdks/workflows/README.md#triggerworkflow) - Trigger a new instance of a Maestro workflow
-- [`navigatorAgreementsDeleteAgreement`](docs/sdks/agreements/README.md#deleteagreement) - Delete a specific agreement
-- [`navigatorAgreementsGetAgreement`](docs/sdks/agreements/README.md#getagreement) - Retrieve detailed information about a specific agreement
-- [`navigatorAgreementsGetAgreementsList`](docs/sdks/agreements/README.md#getagreementslist) - Retrieve a list of agreements
-- [`navigatorBulkJobCreateBulkUploadJob`](docs/sdks/bulkjob/README.md#createbulkuploadjob) - Create new bulk job with presigned URLs direct to Azure Blob Store
-- [`navigatorBulkJobGetBulkJobStatus`](docs/sdks/bulkjob/README.md#getbulkjobstatus) - Get bulk job status
-- [`navigatorBulkJobUploadCompleteBulkJob`](docs/sdks/bulkjob/README.md#uploadcompletebulkjob) - Mark bulk job upload as complete
+- [`workflowBuilderWorkflowInstanceManagementCancelWorkflowInstance`](docs/sdks/workflowinstancemanagement/README.md#cancelworkflowinstance) - Cancel a Running Workflow Instance
+- [`workflowBuilderWorkflowInstanceManagementGetWorkflowInstance`](docs/sdks/workflowinstancemanagement/README.md#getworkflowinstance) - Retrieve a Workflow Instance
+- [`workflowBuilderWorkflowInstanceManagementGetWorkflowInstancesList`](docs/sdks/workflowinstancemanagement/README.md#getworkflowinstanceslist) - Retrieve All Workflow Instances
+- [`workflowBuilderWorkflowsGetWorkflowsList`](docs/sdks/workflows/README.md#getworkflowslist) - Retrieve a list of available Workflow Builder workflows
+- [`workflowBuilderWorkflowsGetWorkflowTriggerRequirements`](docs/sdks/workflows/README.md#getworkflowtriggerrequirements) - Retrieve trigger requirements for a specific Workflow Builder workflow
+- [`workflowBuilderWorkflowsPauseNewWorkflowInstances`](docs/sdks/workflows/README.md#pausenewworkflowinstances) - Pause an Active Workflow
+- [`workflowBuilderWorkflowsResumePausedWorkflow`](docs/sdks/workflows/README.md#resumepausedworkflow) - Resume a Paused Workflow
+- [`workflowBuilderWorkflowsTriggerWorkflow`](docs/sdks/workflows/README.md#triggerworkflow) - Trigger a new instance of a Workflow Builder workflow
 - [`workspacesWorkspaceBrandsGetWorkspaceBrand`](docs/sdks/workspacebrands/README.md#getworkspacebrand) - Returns details about the brand set for a workspace
 - [`workspacesWorkspaceBrandsUpdateWorkspaceBrand`](docs/sdks/workspacebrands/README.md#updateworkspacebrand) - Updates brand for an existing workspace
 - [`workspacesWorkspaceDocumentsAddWorkspaceDocument`](docs/sdks/workspacedocuments/README.md#addworkspacedocument) - Add a document to a workspace via file contents upload
@@ -487,7 +495,7 @@ run();
 **Primary error:**
 * [`IamClientError`](./src/models/errors/iamclienterror.ts): The base class for HTTP error responses.
 
-<details><summary>Less common errors (10)</summary>
+<details><summary>Less common errors (9)</summary>
 
 <br />
 
@@ -500,10 +508,9 @@ run();
 
 
 **Inherit from [`IamClientError`](./src/models/errors/iamclienterror.ts)**:
-* [`ErrorDetails`](./src/models/errors/errordetails.ts): The error response object for the Workspaces API. Applicable to 26 of 46 methods.*
-* [`ErrorT`](./src/models/errors/errort.ts): Bad Request - The request could not be understood or was missing required parameters. Applicable to 10 of 46 methods.*
-* [`OAuthErrorResponse`](./src/models/errors/oautherrorresponse.ts): Status code `400`. Applicable to 5 of 46 methods.*
-* [`ErrDetails`](./src/models/errors/errdetails.ts): Applicable to 3 of 46 methods.*
+* [`ErrorDetails`](./src/models/errors/errordetails.ts): The error response object for the Workspaces API. Applicable to 26 of 50 methods.*
+* [`ErrDetails`](./src/models/errors/errdetails.ts): Error response conforming to RFC 9457 (Problem Details for HTTP APIs). See: https://www.rfc-editor.org/rfc/rfc9457.html. Applicable to 17 of 50 methods.*
+* [`OAuthErrorResponse`](./src/models/errors/oautherrorresponse.ts): Status code `400`. Applicable to 5 of 50 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
@@ -530,14 +537,13 @@ import { IamClient } from "@docusign/iam-sdk";
 
 const iamClient = new IamClient({
   server: "demo",
+  accessToken: process.env["DOCUSIGN_IAM_CLIENT_ACCESS_TOKEN"] ?? "",
 });
 
 async function run() {
-  const result = await iamClient.auth.getTokenFromConfidentialAuthCode({
-    clientId: "2da1cb14-xxxx-xxxx-xxxx-5b7b40829e79",
-    secretKey: "MTIzNDU2Nzxxxxxxxxxxxxxxxxxxxxx0NTY3ODkwMTI",
-  }, {
-    code: "eyJ0eXAi.....QFsje43QVZ_gw",
+  const result = await iamClient.workflowBuilder.workflows.getWorkflowsList({
+    accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
+    status: "active",
   });
 
   console.log(result);
@@ -555,14 +561,13 @@ import { IamClient } from "@docusign/iam-sdk";
 
 const iamClient = new IamClient({
   serverURL: "https://api-d.docusign.com",
+  accessToken: process.env["DOCUSIGN_IAM_CLIENT_ACCESS_TOKEN"] ?? "",
 });
 
 async function run() {
-  const result = await iamClient.auth.getTokenFromConfidentialAuthCode({
-    clientId: "2da1cb14-xxxx-xxxx-xxxx-5b7b40829e79",
-    secretKey: "MTIzNDU2Nzxxxxxxxxxxxxxxxxxxxxx0NTY3ODkwMTI",
-  }, {
-    code: "eyJ0eXAi.....QFsje43QVZ_gw",
+  const result = await iamClient.workflowBuilder.workflows.getWorkflowsList({
+    accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
+    status: "active",
   });
 
   console.log(result);
@@ -611,19 +616,23 @@ The `HTTPClient` constructor takes an optional `fetcher` argument that can be
 used to integrate a third-party HTTP client or when writing tests to mock out
 the HTTP client and feed in fixtures.
 
-The following example shows how to use the `"beforeRequest"` hook to to add a
-custom header and a timeout to requests and how to use the `"requestError"` hook
-to log errors:
+The following example shows how to:
+- route requests through a proxy server using [undici](https://www.npmjs.com/package/undici)'s ProxyAgent
+- use the `"beforeRequest"` hook to add a custom header and a timeout to requests
+- use the `"requestError"` hook to log errors
 
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
+import { ProxyAgent } from "undici";
 import { HTTPClient } from "@docusign/iam-sdk/lib/http";
 
+const dispatcher = new ProxyAgent("http://proxy.example.com:8080");
+
 const httpClient = new HTTPClient({
-  // fetcher takes a function that has the same signature as native `fetch`.
-  fetcher: (request) => {
-    return fetch(request);
-  }
+  // 'fetcher' takes a function that has the same signature as native 'fetch'.
+  fetcher: (input, init) =>
+    // 'dispatcher' is specific to undici and not part of the standard Fetch API.
+    fetch(input, { ...init, dispatcher } as RequestInit),
 });
 
 httpClient.addHook("beforeRequest", (request) => {

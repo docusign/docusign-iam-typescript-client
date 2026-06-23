@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 /**
@@ -44,16 +45,12 @@ export const WorkspaceEnvelopeSummary$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  envelope_id: z.nullable(z.string()),
-  status: z.nullable(z.string()),
-  name: z.nullable(z.string()).optional(),
-  subject: z.nullable(z.string()).optional(),
-  created_date: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  last_updated_date: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
+  envelope_id: types.nullable(types.string()),
+  status: types.nullable(types.string()),
+  name: z.nullable(types.string()).optional(),
+  subject: z.nullable(types.string()).optional(),
+  created_date: z.nullable(types.date()).optional(),
+  last_updated_date: z.nullable(types.date()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "envelope_id": "envelopeId",

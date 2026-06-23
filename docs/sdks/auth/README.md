@@ -104,9 +104,7 @@ You do not need an integration key to obtain an access token.
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
-const iamClient = new IamClient({
-  accessToken: process.env["DOCUSIGN_IAM_CLIENT_ACCESS_TOKEN"] ?? "",
-});
+const iamClient = new IamClient();
 
 async function run() {
   const result = await iamClient.auth.getTokenFromPublicAuthCode({
@@ -131,9 +129,7 @@ import { authGetTokenFromPublicAuthCode } from "@docusign/iam-sdk/funcs/authGetT
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
-const iamClient = new IamClientCore({
-  accessToken: process.env["DOCUSIGN_IAM_CLIENT_ACCESS_TOKEN"] ?? "",
-});
+const iamClient = new IamClientCore();
 
 async function run() {
   const res = await authGetTokenFromPublicAuthCode(iamClient, {
@@ -190,9 +186,7 @@ You do not need an integration key to obtain an access token.
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
-const iamClient = new IamClient({
-  accessToken: process.env["DOCUSIGN_IAM_CLIENT_ACCESS_TOKEN"] ?? "",
-});
+const iamClient = new IamClient();
 
 async function run() {
   const result = await iamClient.auth.getTokenFromJwtGrant({
@@ -215,9 +209,7 @@ import { authGetTokenFromJwtGrant } from "@docusign/iam-sdk/funcs/authGetTokenFr
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
-const iamClient = new IamClientCore({
-  accessToken: process.env["DOCUSIGN_IAM_CLIENT_ACCESS_TOKEN"] ?? "",
-});
+const iamClient = new IamClientCore();
 
 async function run() {
   const res = await authGetTokenFromJwtGrant(iamClient, {

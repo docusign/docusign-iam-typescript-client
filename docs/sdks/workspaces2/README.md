@@ -20,7 +20,7 @@ Pagination is supported by passing `start_position` and `count` in the request. 
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getWorkspaces" method="get" path="/v1/accounts/{accountId}/workspaces" -->
+<!-- UsageSnippet language="typescript" operationID="getWorkspaces" method="get" path="/v1/accounts/{accountId}/workspaces" example="GetWorkspacesResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -97,7 +97,7 @@ Once created, the `workspace_id` is utilized to associate tasks such as envelope
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="createWorkspace" method="post" path="/v1/accounts/{accountId}/workspaces" -->
+<!-- UsageSnippet language="typescript" operationID="createWorkspace" method="post" path="/v1/accounts/{accountId}/workspaces" example="CreateWorkspaceResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -178,7 +178,7 @@ This operation updates details about a specific workspace. It returns the worksp
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="updateWorkspace" method="put" path="/v1/accounts/{accountId}/workspaces/{workspaceId}" -->
+<!-- UsageSnippet language="typescript" operationID="updateWorkspace" method="put" path="/v1/accounts/{accountId}/workspaces/{workspaceId}" example="UpdateWorkspaceResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -261,7 +261,7 @@ This operation retrieves details about a specific workspace. It returns the work
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getWorkspace" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}" -->
+<!-- UsageSnippet language="typescript" operationID="getWorkspace" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}" example="GetWorkspaceResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -342,7 +342,7 @@ Pagination is supported by passing `start_position` and `count` in the request. 
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getWorkspaceAssignableRoles" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/assignable-roles" -->
+<!-- UsageSnippet language="typescript" operationID="getWorkspaceAssignableRoles" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/assignable-roles" example="GetWorkspaceAssignableRolesResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -427,7 +427,7 @@ When `document_ids` is empty or excluded, the envelope is created without any do
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="createWorkspaceEnvelope" method="post" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/envelopes" -->
+<!-- UsageSnippet language="typescript" operationID="createWorkspaceEnvelope" method="post" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/envelopes" example="CreateWorkspaceEnvelopeResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -512,7 +512,7 @@ Based on the permissions of the caller, additional envelope details may be retri
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getWorkspaceEnvelopes" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/envelopes" -->
+<!-- UsageSnippet language="typescript" operationID="getWorkspaceEnvelopes" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/envelopes" example="GetWorkspaceEnvelopesResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 

@@ -3,6 +3,7 @@
  */
 
 import { IamClientCore } from "../core.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
@@ -31,6 +32,8 @@ import { Result } from "../types/fp.js";
  * This endpoint retrieves user information from the Docusign API using an access token.
  * For the developer environment, the URI is https://account-d.docusign.com/oauth/userinfo
  * For the production environment, the URI is https://account.docusign.com/oauth/userinfo
+ *
+ * If set, this operation will use {@link Security.accessToken} from the global security.
  */
 export function authGetUserInfo(
   client: IamClientCore,
@@ -86,7 +89,7 @@ async function $do(
 
   const secConfig = await extractSecurity(client._options.accessToken);
   const securityInput = secConfig == null ? {} : { accessToken: secConfig };
-  const requestSecurity = resolveGlobalSecurity(securityInput);
+  const requestSecurity = resolveGlobalSecurity(securityInput, [0]);
 
   const context = {
     options: client._options,
@@ -129,7 +132,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "4XX", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });

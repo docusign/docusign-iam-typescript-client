@@ -6,15 +6,16 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 /**
  * Describes the limits of a bulk job, or an action associated with a bulk job
  */
 export type BulkJobConstraints = {
-  allowedFormats?: Array<string> | undefined;
-  maxDocumentsPerJob?: number | undefined;
   maxSizeMb?: number | undefined;
+  maxDocumentsPerJob?: number | undefined;
+  allowedFormats?: Array<string> | undefined;
   timeoutSeconds?: number | undefined;
 };
 
@@ -24,15 +25,15 @@ export const BulkJobConstraints$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  allowed_formats: z.array(z.string()).optional(),
-  max_documents_per_job: z.number().int().optional(),
-  max_size_mb: z.number().int().optional(),
-  timeout_seconds: z.number().int().optional(),
+  max_size_mb: types.optional(types.number()),
+  max_documents_per_job: types.optional(types.number()),
+  allowed_formats: types.optional(z.array(types.string())),
+  timeout_seconds: types.optional(types.number()),
 }).transform((v) => {
   return remap$(v, {
-    "allowed_formats": "allowedFormats",
-    "max_documents_per_job": "maxDocumentsPerJob",
     "max_size_mb": "maxSizeMb",
+    "max_documents_per_job": "maxDocumentsPerJob",
+    "allowed_formats": "allowedFormats",
     "timeout_seconds": "timeoutSeconds",
   });
 });

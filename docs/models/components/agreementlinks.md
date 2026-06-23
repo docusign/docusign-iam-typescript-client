@@ -13,11 +13,16 @@ let value: AgreementLinks = {
     href:
       "https://api.docusign.com/v1/accounts/12345678/agreements?limit=10&ctoken=abc123",
   },
+  agreementTypes: {
+    href:
+      "https://api.docusign.com/v1/accounts/12345678/agreements?limit=10&ctoken=abc123",
+  },
 };
 ```
 
 ## Fields
 
-| Field                                              | Type                                               | Required                                           | Description                                        |
-| -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
-| `document`                                         | [components.Link](../../models/components/link.md) | :heavy_minus_sign:                                 | A URL that references a specific resource. <br/>   |
+| Field                                                                                              | Type                                                                                               | Required                                                                                           | Description                                                                                        | Example                                                                                            |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `document`                                                                                         | [components.Link](../../models/components/link.md)                                                 | :heavy_minus_sign:                                                                                 | A URL that references a specific resource. <br/>                                                   |                                                                                                    |
+| `agreementTypes`                                                                                   | [components.AgreementLinksAgreementTypes](../../models/components/agreementlinksagreementtypes.md) | :heavy_minus_sign:                                                                                 | Link to the collection of configured agreement types for the account. Always present.              | /v1/accounts/{accountId}/agreement-types                                                           |

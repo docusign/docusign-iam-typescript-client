@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type ResourceMetadata = {
@@ -30,6 +31,10 @@ export type ResourceMetadata = {
    */
   requestId?: string | null | undefined;
   /**
+   * The timestamp indicating when the response was generated.
+   */
+  responseTimestamp?: Date | null | undefined;
+  /**
    * The duration of time, in milliseconds, that the server took to process and respond
    *
    * @remarks
@@ -37,10 +42,6 @@ export type ResourceMetadata = {
    * until the time the response was sent.
    */
   responseDurationMs?: number | null | undefined;
-  /**
-   * The timestamp indicating when the response was generated.
-   */
-  responseTimestamp?: Date | null | undefined;
 };
 
 /** @internal */
@@ -49,19 +50,13 @@ export const ResourceMetadata$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  created_at: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  created_by: z.nullable(z.string()).optional(),
-  modified_at: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  modified_by: z.nullable(z.string()).optional(),
-  request_id: z.nullable(z.string()).optional(),
-  response_duration_ms: z.nullable(z.number().int()).optional(),
-  response_timestamp: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
+  created_at: z.nullable(types.date()).optional(),
+  created_by: z.nullable(types.string()).optional(),
+  modified_at: z.nullable(types.date()).optional(),
+  modified_by: z.nullable(types.string()).optional(),
+  request_id: z.nullable(types.string()).optional(),
+  response_timestamp: z.nullable(types.date()).optional(),
+  response_duration_ms: z.nullable(types.number()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "created_at": "createdAt",
@@ -69,11 +64,54 @@ export const ResourceMetadata$inboundSchema: z.ZodType<
     "modified_at": "modifiedAt",
     "modified_by": "modifiedBy",
     "request_id": "requestId",
-    "response_duration_ms": "responseDurationMs",
     "response_timestamp": "responseTimestamp",
+    "response_duration_ms": "responseDurationMs",
+  });
+});
+/** @internal */
+export type ResourceMetadata$Outbound = {
+  created_at?: string | null | undefined;
+  created_by?: string | null | undefined;
+  modified_at?: string | null | undefined;
+  modified_by?: string | null | undefined;
+  request_id?: string | null | undefined;
+  response_timestamp?: string | null | undefined;
+  response_duration_ms?: number | null | undefined;
+};
+
+/** @internal */
+export const ResourceMetadata$outboundSchema: z.ZodType<
+  ResourceMetadata$Outbound,
+  z.ZodTypeDef,
+  ResourceMetadata
+> = z.object({
+  createdAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
+  createdBy: z.nullable(z.string()).optional(),
+  modifiedAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
+  modifiedBy: z.nullable(z.string()).optional(),
+  requestId: z.nullable(z.string()).optional(),
+  responseTimestamp: z.nullable(z.date().transform(v => v.toISOString()))
+    .optional(),
+  responseDurationMs: z.nullable(z.number().int()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    createdAt: "created_at",
+    createdBy: "created_by",
+    modifiedAt: "modified_at",
+    modifiedBy: "modified_by",
+    requestId: "request_id",
+    responseTimestamp: "response_timestamp",
+    responseDurationMs: "response_duration_ms",
   });
 });
 
+export function resourceMetadataToJSON(
+  resourceMetadata: ResourceMetadata,
+): string {
+  return JSON.stringify(
+    ResourceMetadata$outboundSchema.parse(resourceMetadata),
+  );
+}
 export function resourceMetadataFromJSON(
   jsonString: string,
 ): SafeParseResult<ResourceMetadata, SDKValidationError> {

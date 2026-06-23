@@ -28,14 +28,14 @@ export type PageLinks = {
    * @remarks
    * between paginated results.
    */
-  next?: PageLink | null | undefined;
+  self?: PageLink | null | undefined;
   /**
    * A URL that references a specific page in the pagination process. This is typically used for navigation
    *
    * @remarks
    * between paginated results.
    */
-  self?: PageLink | null | undefined;
+  next?: PageLink | null | undefined;
 };
 
 /** @internal */
@@ -45,8 +45,8 @@ export const PageLinks$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   first: z.nullable(PageLink$inboundSchema).optional(),
-  next: z.nullable(PageLink$inboundSchema).optional(),
   self: z.nullable(PageLink$inboundSchema).optional(),
+  next: z.nullable(PageLink$inboundSchema).optional(),
 });
 
 export function pageLinksFromJSON(

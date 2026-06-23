@@ -5,9 +5,6 @@
 import * as z from "zod/v3";
 
 export type PauseNewWorkflowInstancesRequest = {
-  /**
-   * The unique identifier of the account.
-   */
   accountId?: string | undefined;
   workflowId?: string | undefined;
 };

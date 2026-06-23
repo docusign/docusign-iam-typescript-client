@@ -6,17 +6,29 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import { Affordance, Affordance$inboundSchema } from "./affordance.js";
 
+/**
+ * Available actions for this document. Actions vary based on document state - upload actions during initial upload, remediation actions after processing.
+ */
 export type BulkJobItemActions = {
   /**
    * Azure Blob Store presigned URL to upload the document file (valid for ~8 hours)
    */
   uploadDocument?: string | undefined;
   /**
-   * Azure Blob Store url to upload metadata of the specific file
+   * Affordances (aka 'actions') describe the available operations on a resource, including CRUD and RPC-like operations. It details the
+   *
+   * @remarks
+   * expected input payload, http method, query parameters, and the resulting output.
+   *
+   * Affordances enable clients to dynamically adapt to the API's current state and available actions. Instead of
+   * hardcoding all possible endpoints and their associated logic, a client can inspect the affordances within a
+   * resource's representation to discover what actions are possible and how to perform them.
    */
-  uploadMetadata?: string | undefined;
+  updateMetadata?: Affordance | null | undefined;
 };
 
 /** @internal */
@@ -25,12 +37,12 @@ export const BulkJobItemActions$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  upload_document: z.string().optional(),
-  upload_metadata: z.string().optional(),
+  upload_document: types.optional(types.string()),
+  update_metadata: z.nullable(Affordance$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "upload_document": "uploadDocument",
-    "upload_metadata": "uploadMetadata",
+    "update_metadata": "updateMetadata",
   });
 });
 

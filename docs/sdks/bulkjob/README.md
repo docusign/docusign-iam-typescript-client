@@ -1,4 +1,4 @@
-# Navigator.BulkJob
+# AgreementManager.BulkJob
 
 ## Overview
 
@@ -10,9 +10,7 @@
 
 ## createBulkUploadJob
 
-Create a new job, give pre-signed URLs back, the client will upload to Azure Blob Store directly.
-
-[Required scopes](/docs/navigator-api/auth/): `document_uploader_write`, `document_uploader_read`
+Create a new job, give presigned URLs back, the client will upload to Azure Blob Store directly.
 
 **Important Upload Workflow**:
 1. Call this endpoint to create a job and receive upload URLs
@@ -46,19 +44,68 @@ Use the pre-signed URL from step 2 to upload your document directly to Azure Blo
 PUT [pre-signed URL from _actions.upload_document]
 
 Headers:
-- x-ms-blob-type: BlockBlob
-- x-ms-meta-filename: YourDocumentName.pdf
-- Content-Type: application/pdf
+- x-ms-blob-type: BlockBlob (Required)
+- x-ms-meta-filename: YourDocumentName.pdf (Recommended)
+- Content-Type: application/pdf (Required)
+- x-ms-meta-metadata: <stringified JSON metadata> (Optional)
 
 Body: [Your document binary data]
 ```
 
 **Important Notes**:
 - The `upload_document` URLs are pre-signed Azure Blob Storage URLs with time-limited validity (8 hours)
+- No Auth header is needed
 - The `x-ms-meta-filename` header should contain your original document filename
 - The `x-ms-blob-type` must be set to `BlockBlob`
 - Setting the `Content-Type` header is recommended to match your document type
 - If `Content-Type` is not specified, Azure defaults to `application/octet-stream`
+- The `x-ms-meta-metadata` header is optional and allows you to attach metadata to the newly created agreement at upload time. See **Applying Metadata to Agreements** below for details
+
+**Applying Metadata to Agreements**:
+
+You may include metadata alongside the document bytes during upload. This metadata will be directly applied to the 
+newly created agreement. To do this, include the `x-ms-meta-metadata` header on the PUT operation with a stringified 
+JSON value.
+
+The JSON schema for this header follows the same structure as the standard Agreement PATCH request body.
+
+**Example metadata JSON**:
+```json
+{
+  "provisions": {
+    "jurisdiction": "California",
+    "payment_terms_due_date": "OTHER"
+  },
+  "custom_provisions": {
+    "c_ClientId": "value"
+  },
+  "linked_data": [
+    {
+      "application_name": "Salesforce",
+      "object_name": "Account",
+      "record_id": "579386BF-C8EA-4673-AE0E-E2F922B09DC5"
+    },
+    {
+      "application_name": "Dynamics",
+      "object_name": "Account",
+      "record_id": "514CEAFB-1AC7-43FF-9E88-24CB15150963"
+    }
+  ]
+}
+```
+
+**Stringified header value**:
+
+The JSON must be stringified before being set as the header value. For example, the above JSON would become:
+```
+x-ms-meta-metadata: "{\"provisions\":{\"jurisdiction\":\"California\",\"payment_terms_due_date\":\"OTHER\"},\"custom_provisions\":{\"c_ClientId\":\"value\"},\"linked_data\":[{\"application_name\":\"Salesforce\",\"object_name\":\"Account\",\"record_id\":\"579386BF-C8EA-4673-AE0E-E2F922B09DC5\"},{\"application_name\":\"Dynamics\",\"object_name\":\"Account\",\"record_id\":\"514CEAFB-1AC7-43FF-9E88-24CB15150963\"}]}"
+```
+
+**Metadata Notes**:
+- The `x-ms-meta-metadata` header is entirely optional. If omitted, the agreement is created with AI-extracted values only
+- The JSON must be stringified (serialized to a single string) before being placed in the header value
+- The metadata payload follows the same schema as the Agreement PATCH endpoint request body
+- Values provided via metadata will be applied to the agreement after creation, overriding any AI-extracted values for the same fields
 
 **Firewall & Network Configuration**:
 
@@ -121,12 +168,13 @@ The table below shows common file formats and their recommended Content-Type hea
 
 **Example Upload Requests**:
 
-PDF Document:
+PDF Document (with optional metadata):
 ```
 PUT https://storage.blob.core.windows.net/container/doc-id?signature=...
 Content-Type: application/pdf
 x-ms-blob-type: BlockBlob
 x-ms-meta-filename: contract.pdf
+x-ms-meta-metadata: "{\"provisions\":{\"jurisdiction\":\"California\"},\"custom_provisions\":{\"c_ClientId\":\"value\"}}"
 
 [Binary PDF data]
 ```
@@ -154,7 +202,7 @@ x-ms-meta-filename: signed-page.jpg
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="createBulkUploadJob" method="post" path="/v1/accounts/{accountId}/upload/jobs" -->
+<!-- UsageSnippet language="typescript" operationID="createBulkUploadJob" method="post" path="/v1/accounts/{accountId}/upload/jobs" example="BulkJobCreated" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -163,10 +211,10 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.navigator.bulkJob.createBulkUploadJob({
+  const result = await iamClient.agreementManager.bulkJob.createBulkUploadJob({
     createBulkJob: {
-      expectedNumberOfDocs: 2,
       jobName: "Q4 2025 Contracts",
+      expectedNumberOfDocs: 2,
       language: "en-US",
     },
   });
@@ -183,7 +231,7 @@ The standalone function version of this method:
 
 ```typescript
 import { IamClientCore } from "@docusign/iam-sdk/core.js";
-import { navigatorBulkJobCreateBulkUploadJob } from "@docusign/iam-sdk/funcs/navigatorBulkJobCreateBulkUploadJob.js";
+import { agreementManagerBulkJobCreateBulkUploadJob } from "@docusign/iam-sdk/funcs/agreementManagerBulkJobCreateBulkUploadJob.js";
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -192,10 +240,10 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await navigatorBulkJobCreateBulkUploadJob(iamClient, {
+  const res = await agreementManagerBulkJobCreateBulkUploadJob(iamClient, {
     createBulkJob: {
-      expectedNumberOfDocs: 2,
       jobName: "Q4 2025 Contracts",
+      expectedNumberOfDocs: 2,
       language: "en-US",
     },
   });
@@ -203,7 +251,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("navigatorBulkJobCreateBulkUploadJob failed:", res.error);
+    console.log("agreementManagerBulkJobCreateBulkUploadJob failed:", res.error);
   }
 }
 
@@ -225,21 +273,19 @@ run();
 
 ### Errors
 
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| errors.ErrDetails  | 400, 401, 403, 429 | application/json   |
-| errors.ErrDetails  | 500                | application/json   |
-| errors.APIError    | 4XX, 5XX           | \*/\*              |
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrDetails        | 400, 403, 429            | application/problem+json |
+| errors.ErrDetails        | 500                      | application/problem+json |
+| errors.APIError          | 4XX, 5XX                 | \*/\*                    |
 
 ## getBulkJobStatus
 
 Get the current status and details of a bulk job.
 
-[Required scopes](/docs/navigator-api/auth/): `document_uploader_read`
-
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getBulkJobStatus" method="get" path="/v1/accounts/{accountId}/upload/jobs/{jobId}" -->
+<!-- UsageSnippet language="typescript" operationID="getBulkJobStatus" method="get" path="/v1/accounts/{accountId}/upload/jobs/{jobId}" example="BulkJobStatus" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -248,7 +294,7 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.navigator.bulkJob.getBulkJobStatus({});
+  const result = await iamClient.agreementManager.bulkJob.getBulkJobStatus({});
 
   console.log(result);
 }
@@ -262,7 +308,7 @@ The standalone function version of this method:
 
 ```typescript
 import { IamClientCore } from "@docusign/iam-sdk/core.js";
-import { navigatorBulkJobGetBulkJobStatus } from "@docusign/iam-sdk/funcs/navigatorBulkJobGetBulkJobStatus.js";
+import { agreementManagerBulkJobGetBulkJobStatus } from "@docusign/iam-sdk/funcs/agreementManagerBulkJobGetBulkJobStatus.js";
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -271,12 +317,12 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await navigatorBulkJobGetBulkJobStatus(iamClient, {});
+  const res = await agreementManagerBulkJobGetBulkJobStatus(iamClient, {});
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("navigatorBulkJobGetBulkJobStatus failed:", res.error);
+    console.log("agreementManagerBulkJobGetBulkJobStatus failed:", res.error);
   }
 }
 
@@ -298,11 +344,11 @@ run();
 
 ### Errors
 
-| Error Type        | Status Code       | Content Type      |
-| ----------------- | ----------------- | ----------------- |
-| errors.ErrDetails | 401, 403, 404     | application/json  |
-| errors.ErrDetails | 500               | application/json  |
-| errors.APIError   | 4XX, 5XX          | \*/\*             |
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrDetails        | 403, 404                 | application/problem+json |
+| errors.ErrDetails        | 500                      | application/problem+json |
+| errors.APIError          | 4XX, 5XX                 | \*/\*                    |
 
 ## uploadCompleteBulkJob
 
@@ -310,8 +356,6 @@ Mark the upload of documents as complete for a bulk job.
 End user won't upload more docs for this job.
 
 **Important**: Only call this endpoint after successfully uploading all documents to their respective pre-signed URLs obtained from the create job response.
-
-[Required scopes](/docs/navigator-api/auth/): `document_uploader_write`, `document_uploader_read`
 
 
 ### Example Usage
@@ -325,7 +369,7 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.navigator.bulkJob.uploadCompleteBulkJob({});
+  const result = await iamClient.agreementManager.bulkJob.uploadCompleteBulkJob({});
 
   console.log(result);
 }
@@ -339,7 +383,7 @@ The standalone function version of this method:
 
 ```typescript
 import { IamClientCore } from "@docusign/iam-sdk/core.js";
-import { navigatorBulkJobUploadCompleteBulkJob } from "@docusign/iam-sdk/funcs/navigatorBulkJobUploadCompleteBulkJob.js";
+import { agreementManagerBulkJobUploadCompleteBulkJob } from "@docusign/iam-sdk/funcs/agreementManagerBulkJobUploadCompleteBulkJob.js";
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -348,12 +392,12 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await navigatorBulkJobUploadCompleteBulkJob(iamClient, {});
+  const res = await agreementManagerBulkJobUploadCompleteBulkJob(iamClient, {});
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("navigatorBulkJobUploadCompleteBulkJob failed:", res.error);
+    console.log("agreementManagerBulkJobUploadCompleteBulkJob failed:", res.error);
   }
 }
 
@@ -375,8 +419,8 @@ run();
 
 ### Errors
 
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| errors.ErrDetails  | 400, 401, 403, 404 | application/json   |
-| errors.ErrDetails  | 500                | application/json   |
-| errors.APIError    | 4XX, 5XX           | \*/\*              |
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrDetails        | 400, 403, 404            | application/problem+json |
+| errors.ErrDetails        | 500                      | application/problem+json |
+| errors.APIError          | 4XX, 5XX                 | \*/\*                    |

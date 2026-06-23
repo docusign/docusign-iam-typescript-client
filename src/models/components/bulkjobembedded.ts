@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   BulkJobEmbeddedItems,
@@ -32,8 +33,8 @@ export const BulkJobEmbedded$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  document_status_enum: z.array(z.string()).optional(),
-  documents: z.array(BulkJobEmbeddedItems$inboundSchema).optional(),
+  document_status_enum: types.optional(z.array(types.string())),
+  documents: types.optional(z.array(BulkJobEmbeddedItems$inboundSchema)),
 }).transform((v) => {
   return remap$(v, {
     "document_status_enum": "documentStatusEnum",

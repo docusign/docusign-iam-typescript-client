@@ -29,6 +29,21 @@ export type GetAgreementsListRequest = {
    */
   ctoken?: string | null | undefined;
   /**
+   * OData full-text search expression. Performs a case-insensitive search across agreement text fields including title, type, parties, and provisions.
+   *
+   * @remarks
+   *
+   * The search term is matched as a substring against searchable fields. Enclose multi-word terms in double quotes for exact phrase matching.
+   *
+   * Examples:
+   * - `$search=Acme` — matches agreements mentioning "Acme" in any searchable field
+   * - `$search="Non-Disclosure Agreement"` — exact phrase match
+   * - `$search=renewal` — matches agreements with "renewal" in title, type, or provisions
+   *
+   * **Note**: `$search` can be combined with `$filter` for more targeted results (e.g., `$search=Acme&$filter=status eq 'COMPLETE'`).
+   */
+  dollarSearch?: string | undefined;
+  /**
    * OData filter expression for complex queries. Supports:
    *
    * @remarks
@@ -120,6 +135,10 @@ export type GetAgreementsListRequest = {
    * Source id of the agreement.
    */
   sourceId?: string | undefined;
+  /**
+   * Include linked data from external systems that correlate with agreements.
+   */
+  includeLinkedData?: boolean | undefined;
 };
 
 /** @internal */
@@ -131,6 +150,7 @@ export type GetAgreementsListRequest$Outbound = {
   accountId: string;
   limit: number | null;
   ctoken?: string | null | undefined;
+  $search?: string | undefined;
   $filter?: string | undefined;
   sort?: string | undefined;
   direction?: string | undefined;
@@ -152,6 +172,7 @@ export type GetAgreementsListRequest$Outbound = {
   "provisions.term_length"?: string | undefined;
   source_name?: string | undefined;
   source_id?: string | undefined;
+  include_linked_data: boolean;
 };
 
 /** @internal */
@@ -163,6 +184,7 @@ export const GetAgreementsListRequest$outboundSchema: z.ZodType<
   accountId: z.string().default("00000000-0000-0000-0000-000000000000"),
   limit: z.nullable(z.number().int().default(25)),
   ctoken: z.nullable(z.string()).optional(),
+  dollarSearch: z.string().optional(),
   dollarFilter: z.string().optional(),
   sort: z.string().optional(),
   direction: Direction$outboundSchema.optional(),
@@ -182,8 +204,10 @@ export const GetAgreementsListRequest$outboundSchema: z.ZodType<
   provisionsTermLength: z.string().optional(),
   sourceName: z.string().optional(),
   sourceId: z.string().optional(),
+  includeLinkedData: z.boolean().default(false),
 }).transform((v) => {
   return remap$(v, {
+    dollarSearch: "$search",
     dollarFilter: "$filter",
     documentId: "document_id",
     reviewStatus: "review_status",
@@ -198,6 +222,7 @@ export const GetAgreementsListRequest$outboundSchema: z.ZodType<
     provisionsTermLength: "provisions.term_length",
     sourceName: "source_name",
     sourceId: "source_id",
+    includeLinkedData: "include_linked_data",
   });
 });
 

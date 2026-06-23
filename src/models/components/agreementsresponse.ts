@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import { Agreement, Agreement$inboundSchema } from "./agreement.js";
 import { PageLinks, PageLinks$inboundSchema } from "./pagelinks.js";
@@ -14,14 +15,10 @@ import {
   ResponseMetadata$inboundSchema,
 } from "./responsemetadata.js";
 
+/**
+ * A collection of agreements.
+ */
 export type AgreementsResponse = {
-  /**
-   * Hypermedia controls (HATEOAS) for navigating between pages in a paginated collection of results.
-   *
-   * @remarks
-   * Links for the current page, next page, and previous page, with optional first and last page links.
-   */
-  links?: PageLinks | null | undefined;
   /**
    * A list of agreements
    */
@@ -30,6 +27,13 @@ export type AgreementsResponse = {
    * Control information and metadata for the response.
    */
   responseMetadata?: ResponseMetadata | undefined;
+  /**
+   * Hypermedia controls (HATEOAS) for navigating between pages in a paginated collection of results.
+   *
+   * @remarks
+   * Links for the current page, next page, and previous page, with optional first and last page links.
+   */
+  links?: PageLinks | null | undefined;
 };
 
 /** @internal */
@@ -38,13 +42,13 @@ export const AgreementsResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
+  data: types.optional(z.array(Agreement$inboundSchema)),
+  response_metadata: types.optional(ResponseMetadata$inboundSchema),
   _links: z.nullable(PageLinks$inboundSchema).optional(),
-  data: z.array(Agreement$inboundSchema).optional(),
-  response_metadata: ResponseMetadata$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
-    "_links": "links",
     "response_metadata": "responseMetadata",
+    "_links": "links",
   });
 });
 

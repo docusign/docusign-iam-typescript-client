@@ -1,6 +1,6 @@
 # DocStatus
 
-Document status. Last 3 are terminal statuses. Matches enum with similar name in the backend.
+Document status. Last 4 are terminal statuses. Matches enum with similar name in the backend.
 
 ## Example Usage
 
@@ -13,5 +13,5 @@ let value: DocStatus = "NOT_STARTED";
 ## Values
 
 ```typescript
-"NOT_STARTED" | "IN_PROGRESS" | "CANCELED" | "SUCCEEDED" | "FAILED"
+"NOT_STARTED" | "IN_PROGRESS" | "CANCELED" | "SUCCEEDED" | "SUCCEEDED_WITH_WARNINGS" | "FAILED"
 ```

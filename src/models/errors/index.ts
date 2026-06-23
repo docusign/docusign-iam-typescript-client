@@ -4,7 +4,6 @@
 
 export * from "./apierror.js";
 export * from "./errdetails.js";
-export * from "./error.js";
 export * from "./errordetails.js";
 export * from "./httpclienterrors.js";
 export * from "./iamclienterror.js";

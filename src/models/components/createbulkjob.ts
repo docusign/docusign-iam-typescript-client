@@ -7,17 +7,13 @@ import { remap as remap$ } from "../../lib/primitives.js";
 
 export type CreateBulkJob = {
   /**
-   * Optional list of agreement set IDs (21-character NanoID format).
+   * Name for the new job to be created. If empty, server will auto-create name for the job.
    */
-  agreementSetIds?: Array<string> | undefined;
+  jobName?: string | undefined;
   /**
    * Number of docs this job will have. Will use provided document_requests size if there is a mismatch.
    */
   expectedNumberOfDocs: number;
-  /**
-   * Name for the new job to be created. If empty, server will auto-create name for the job.
-   */
-  jobName?: string | undefined;
   /**
    * Language for the user, such as en-US, en-GB, if not provided will default to en-US.
    */
@@ -26,9 +22,8 @@ export type CreateBulkJob = {
 
 /** @internal */
 export type CreateBulkJob$Outbound = {
-  agreement_set_ids?: Array<string> | undefined;
-  expected_number_of_docs: number;
   job_name?: string | undefined;
+  expected_number_of_docs: number;
   language?: string | undefined;
 };
 
@@ -38,15 +33,13 @@ export const CreateBulkJob$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   CreateBulkJob
 > = z.object({
-  agreementSetIds: z.array(z.string()).optional(),
-  expectedNumberOfDocs: z.number().int(),
   jobName: z.string().optional(),
+  expectedNumberOfDocs: z.number().int(),
   language: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
-    agreementSetIds: "agreement_set_ids",
-    expectedNumberOfDocs: "expected_number_of_docs",
     jobName: "job_name",
+    expectedNumberOfDocs: "expected_number_of_docs",
   });
 });
 

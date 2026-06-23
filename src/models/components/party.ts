@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 /**
@@ -31,16 +32,41 @@ export type Party = {
 /** @internal */
 export const Party$inboundSchema: z.ZodType<Party, z.ZodTypeDef, unknown> = z
   .object({
-    id: z.string(),
-    name_in_agreement: z.nullable(z.string()).optional(),
-    preferred_name: z.nullable(z.string()).optional(),
+    id: types.string(),
+    name_in_agreement: z.nullable(types.string()).optional(),
+    preferred_name: z.nullable(types.string()).optional(),
   }).transform((v) => {
     return remap$(v, {
       "name_in_agreement": "nameInAgreement",
       "preferred_name": "preferredName",
     });
   });
+/** @internal */
+export type Party$Outbound = {
+  id: string;
+  name_in_agreement?: string | null | undefined;
+  preferred_name?: string | null | undefined;
+};
 
+/** @internal */
+export const Party$outboundSchema: z.ZodType<
+  Party$Outbound,
+  z.ZodTypeDef,
+  Party
+> = z.object({
+  id: z.string(),
+  nameInAgreement: z.nullable(z.string()).optional(),
+  preferredName: z.nullable(z.string()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    nameInAgreement: "name_in_agreement",
+    preferredName: "preferred_name",
+  });
+});
+
+export function partyToJSON(party: Party): string {
+  return JSON.stringify(Party$outboundSchema.parse(party));
+}
 export function partyFromJSON(
   jsonString: string,
 ): SafeParseResult<Party, SDKValidationError> {

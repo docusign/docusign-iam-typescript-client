@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 /**
@@ -21,6 +22,10 @@ export type ResponseMetadata = {
    */
   requestId: string | null;
   /**
+   * The timestamp indicating when the response was generated.
+   */
+  responseTimestamp: Date | null;
+  /**
    * The duration of time, in milliseconds, that the server took to process and respond
    *
    * @remarks
@@ -28,10 +33,6 @@ export type ResponseMetadata = {
    * until the time the response was sent.
    */
   responseDurationMs: number | null;
-  /**
-   * The timestamp indicating when the response was generated.
-   */
-  responseTimestamp: Date | null;
 };
 
 /** @internal */
@@ -40,18 +41,16 @@ export const ResponseMetadata$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  page_limit: z.nullable(z.number().int().default(25)),
-  request_id: z.nullable(z.string()),
-  response_duration_ms: z.nullable(z.number().int()),
-  response_timestamp: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ),
+  page_limit: z.nullable(types.number().default(25)),
+  request_id: types.nullable(types.string()),
+  response_timestamp: types.nullable(types.date()),
+  response_duration_ms: types.nullable(types.number()),
 }).transform((v) => {
   return remap$(v, {
     "page_limit": "pageLimit",
     "request_id": "requestId",
-    "response_duration_ms": "responseDurationMs",
     "response_timestamp": "responseTimestamp",
+    "response_duration_ms": "responseDurationMs",
   });
 });
 

@@ -4,6 +4,7 @@
 
 import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
+import * as types from "../../types/primitives.js";
 import { IamClientError } from "./iamclienterror.js";
 
 /**
@@ -51,8 +52,8 @@ export const ErrorDetails$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  message: z.nullable(z.string()).optional(),
-  error_code: z.nullable(z.string()).optional(),
+  message: z.nullable(types.string()).optional(),
+  error_code: z.nullable(types.string()).optional(),
   request$: z.instanceof(Request),
   response$: z.instanceof(Response),
   body$: z.string(),

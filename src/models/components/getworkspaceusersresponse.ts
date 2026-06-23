@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   WorkspaceUserSummary,
@@ -41,11 +42,11 @@ export const GetWorkspaceUsersResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  users: z.nullable(z.array(WorkspaceUserSummary$inboundSchema)),
-  result_set_size: z.nullable(z.number().int()).optional(),
-  start_position: z.nullable(z.number().int()).optional(),
-  end_position: z.nullable(z.number().int()).optional(),
-  total_row_count: z.nullable(z.number().int()).optional(),
+  users: types.nullable(z.array(WorkspaceUserSummary$inboundSchema)),
+  result_set_size: z.nullable(types.number()).optional(),
+  start_position: z.nullable(types.number()).optional(),
+  end_position: z.nullable(types.number()).optional(),
+  total_row_count: z.nullable(types.number()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "result_set_size": "resultSetSize",

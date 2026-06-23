@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   BulkJobActionTemplate,
@@ -14,7 +15,6 @@ import {
 
 export type BulkJobActionTemplates = {
   uploadDocument?: BulkJobActionTemplate | undefined;
-  uploadMetadata?: BulkJobActionTemplate | undefined;
 };
 
 /** @internal */
@@ -23,12 +23,10 @@ export const BulkJobActionTemplates$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  upload_document: BulkJobActionTemplate$inboundSchema.optional(),
-  upload_metadata: BulkJobActionTemplate$inboundSchema.optional(),
+  upload_document: types.optional(BulkJobActionTemplate$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "upload_document": "uploadDocument",
-    "upload_metadata": "uploadMetadata",
   });
 });
 

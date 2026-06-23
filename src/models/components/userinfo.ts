@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type UserInfoLink = {
@@ -42,8 +43,8 @@ export const UserInfoLink$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  rel: z.string(),
-  href: z.string(),
+  rel: types.string(),
+  href: types.string(),
 });
 
 export function userInfoLinkFromJSON(
@@ -62,7 +63,7 @@ export const Organization$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  organization_id: z.string(),
+  organization_id: types.string(),
   links: z.array(z.lazy(() => UserInfoLink$inboundSchema)),
 }).transform((v) => {
   return remap$(v, {
@@ -83,11 +84,11 @@ export function organizationFromJSON(
 /** @internal */
 export const Account$inboundSchema: z.ZodType<Account, z.ZodTypeDef, unknown> =
   z.object({
-    account_id: z.string(),
-    is_default: z.boolean(),
-    account_name: z.string(),
-    base_uri: z.string(),
-    organization: z.lazy(() => Organization$inboundSchema).optional(),
+    account_id: types.string(),
+    is_default: types.boolean(),
+    account_name: types.string(),
+    base_uri: types.string(),
+    organization: types.optional(z.lazy(() => Organization$inboundSchema)),
   }).transform((v) => {
     return remap$(v, {
       "account_id": "accountId",
@@ -113,12 +114,12 @@ export const UserInfo$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  sub: z.string(),
-  name: z.string(),
-  given_name: z.string(),
-  family_name: z.string(),
-  created: z.string(),
-  email: z.string(),
+  sub: types.string(),
+  name: types.string(),
+  given_name: types.string(),
+  family_name: types.string(),
+  created: types.string(),
+  email: types.string(),
   accounts: z.array(z.lazy(() => Account$inboundSchema)),
 }).transform((v) => {
   return remap$(v, {

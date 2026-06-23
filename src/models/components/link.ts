@@ -5,6 +5,7 @@
 import * as z from "zod/v3";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 /**
@@ -22,9 +23,22 @@ export type Link = {
 /** @internal */
 export const Link$inboundSchema: z.ZodType<Link, z.ZodTypeDef, unknown> = z
   .object({
+    href: types.string(),
+  });
+/** @internal */
+export type Link$Outbound = {
+  href: string;
+};
+
+/** @internal */
+export const Link$outboundSchema: z.ZodType<Link$Outbound, z.ZodTypeDef, Link> =
+  z.object({
     href: z.string(),
   });
 
+export function linkToJSON(link: Link): string {
+  return JSON.stringify(Link$outboundSchema.parse(link));
+}
 export function linkFromJSON(
   jsonString: string,
 ): SafeParseResult<Link, SDKValidationError> {

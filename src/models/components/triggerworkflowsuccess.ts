@@ -6,12 +6,21 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 /**
  * Control information and metadata for the response.
  */
 export type TriggerWorkflowSuccess = {
+  /**
+   * A unique identifier for this specific instance of the workflow. This UUID
+   *
+   * @remarks
+   * is used to reference the running instance in other API calls (e.g., to
+   * retrieve its status or terminate the instance).
+   * Example: '1a46ccde-9db4-42d6-94fa-0ddd07a3d2ff'
+   */
   instanceId: string;
   /**
    * A fully-qualified URL that can be used to access or interact with this
@@ -30,6 +39,10 @@ export type TriggerWorkflowSuccess = {
    */
   requestId: string | null;
   /**
+   * The timestamp indicating when the response was generated.
+   */
+  responseTimestamp: Date | null;
+  /**
    * The duration of time, in milliseconds, that the server took to process and respond
    *
    * @remarks
@@ -37,10 +50,6 @@ export type TriggerWorkflowSuccess = {
    * until the time the response was sent.
    */
   responseDurationMs: number | null;
-  /**
-   * The timestamp indicating when the response was generated.
-   */
-  responseTimestamp: Date | null;
 };
 
 /** @internal */
@@ -49,22 +58,20 @@ export const TriggerWorkflowSuccess$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  instance_id: z.string().default("00000000-0000-0000-0000-000000000000"),
-  instance_url: z.string().optional(),
-  page_limit: z.nullable(z.number().int().default(25)),
-  request_id: z.nullable(z.string()),
-  response_duration_ms: z.nullable(z.number().int()),
-  response_timestamp: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ),
+  instance_id: types.string().default("00000000-0000-0000-0000-000000000000"),
+  instance_url: types.optional(types.string()),
+  page_limit: z.nullable(types.number().default(25)),
+  request_id: types.nullable(types.string()),
+  response_timestamp: types.nullable(types.date()),
+  response_duration_ms: types.nullable(types.number()),
 }).transform((v) => {
   return remap$(v, {
     "instance_id": "instanceId",
     "instance_url": "instanceUrl",
     "page_limit": "pageLimit",
     "request_id": "requestId",
-    "response_duration_ms": "responseDurationMs",
     "response_timestamp": "responseTimestamp",
+    "response_duration_ms": "responseDurationMs",
   });
 });
 

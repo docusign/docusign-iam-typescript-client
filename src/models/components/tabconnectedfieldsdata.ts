@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 /**
@@ -53,11 +54,11 @@ export const TabConnectedFieldsData$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  typeSystemNamespace: z.string(),
-  typeName: z.string(),
+  typeSystemNamespace: types.string(),
+  typeName: types.string(),
   supportedOperation: SupportedOperation$inboundSchema,
-  propertyName: z.string(),
-  supportedUri: z.string(),
+  propertyName: types.string(),
+  supportedUri: types.string(),
 });
 
 export function tabConnectedFieldsDataFromJSON(

@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   WorkspaceUploadRequestResponsibilityType,
@@ -32,9 +33,10 @@ export const WorkspaceUploadRequestAssignment$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  assignee_user_id: z.string(),
-  upload_request_responsibility_type_id:
-    WorkspaceUploadRequestResponsibilityType$inboundSchema.optional(),
+  assignee_user_id: types.string(),
+  upload_request_responsibility_type_id: types.optional(
+    WorkspaceUploadRequestResponsibilityType$inboundSchema,
+  ),
 }).transform((v) => {
   return remap$(v, {
     "assignee_user_id": "assigneeUserId",

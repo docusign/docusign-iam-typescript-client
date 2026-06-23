@@ -1,18 +1,18 @@
-# Maestro.Workflows
+# WorkflowBuilder.Workflows
 
 ## Overview
 
 ### Available Operations
 
-* [getWorkflowsList](#getworkflowslist) - Retrieve a list of available Maestro workflows
-* [getWorkflowTriggerRequirements](#getworkflowtriggerrequirements) - Retrieve trigger requirements for a specific Maestro workflow
-* [triggerWorkflow](#triggerworkflow) - Trigger a new instance of a Maestro workflow
+* [getWorkflowsList](#getworkflowslist) - Retrieve a list of available Workflow Builder workflows
+* [getWorkflowTriggerRequirements](#getworkflowtriggerrequirements) - Retrieve trigger requirements for a specific Workflow Builder workflow
+* [triggerWorkflow](#triggerworkflow) - Trigger a new instance of a Workflow Builder workflow
 * [pauseNewWorkflowInstances](#pausenewworkflowinstances) - Pause an Active Workflow
 * [resumePausedWorkflow](#resumepausedworkflow) - Resume a Paused Workflow
 
 ## getWorkflowsList
 
-This operation retrieves a list of all available Maestro workflows. It returns basic information
+This operation retrieves a list of all available Workflow Builder workflows. It returns basic information
 about each workflow, including its unique identifier (`id`), name, description, and the input
 schema required to trigger the workflow.
 
@@ -31,7 +31,7 @@ be triggered.
 
 ### Key Features:
 - **Comprehensive Workflow Overview**: Provides a full list of workflows, giving visibility
-  into all the automated processes available within the Maestro platform.
+  into all the automated processes available within the Workflow Builder platform.
 - **Input Schema Information**: Each workflow includes its trigger input schema, showing
   what data must be provided when triggering the workflow.
 - **Metadata for Tracking**: Useful metadata like creation time, last modification date,
@@ -42,7 +42,7 @@ be triggered.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="GetWorkflowsList" method="get" path="/v1/accounts/{accountId}/workflows" -->
+<!-- UsageSnippet language="typescript" operationID="GetWorkflowsList" method="get" path="/v1/accounts/{accountId}/workflows" example="WorkflowCollectionExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -51,7 +51,7 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.maestro.workflows.getWorkflowsList({
+  const result = await iamClient.workflowBuilder.workflows.getWorkflowsList({
     accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
     status: "active",
   });
@@ -68,7 +68,7 @@ The standalone function version of this method:
 
 ```typescript
 import { IamClientCore } from "@docusign/iam-sdk/core.js";
-import { maestroWorkflowsGetWorkflowsList } from "@docusign/iam-sdk/funcs/maestroWorkflowsGetWorkflowsList.js";
+import { workflowBuilderWorkflowsGetWorkflowsList } from "@docusign/iam-sdk/funcs/workflowBuilderWorkflowsGetWorkflowsList.js";
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -77,7 +77,7 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await maestroWorkflowsGetWorkflowsList(iamClient, {
+  const res = await workflowBuilderWorkflowsGetWorkflowsList(iamClient, {
     accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
     status: "active",
   });
@@ -85,7 +85,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("maestroWorkflowsGetWorkflowsList failed:", res.error);
+    console.log("workflowBuilderWorkflowsGetWorkflowsList failed:", res.error);
   }
 }
 
@@ -107,16 +107,16 @@ run();
 
 ### Errors
 
-| Error Type       | Status Code      | Content Type     |
-| ---------------- | ---------------- | ---------------- |
-| errors.ErrorT    | 400, 403, 404    | application/json |
-| errors.ErrorT    | 500              | application/json |
-| errors.APIError  | 4XX, 5XX         | \*/\*            |
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrDetails        | 400, 401, 403, 404       | application/problem+json |
+| errors.ErrDetails        | 500                      | application/problem+json |
+| errors.APIError          | 4XX, 5XX                 | \*/\*                    |
 
 ## getWorkflowTriggerRequirements
 
 This operation retrieves the configuration and input requirements necessary to trigger a specific
-Maestro workflow. It provides detailed information about the `trigger_event_type`, such as HTTP
+Workflow Builder workflow. It provides detailed information about the `trigger_event_type`, such as HTTP
 or other supported types, and specifies the required input schema, including field names, data types,
 and any default values.
 
@@ -140,7 +140,7 @@ the workflow instance, ensuring seamless execution and compliance with workflow 
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="GetWorkflowTriggerRequirements" method="get" path="/v1/accounts/{accountId}/workflows/{workflowId}/trigger-requirements" -->
+<!-- UsageSnippet language="typescript" operationID="GetWorkflowTriggerRequirements" method="get" path="/v1/accounts/{accountId}/workflows/{workflowId}/trigger-requirements" example="WorkflowTriggerRequirementsSuccessExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -149,9 +149,8 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.maestro.workflows.getWorkflowTriggerRequirements({
+  const result = await iamClient.workflowBuilder.workflows.getWorkflowTriggerRequirements({
     accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-    workflowId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
   });
 
   console.log(result);
@@ -166,7 +165,7 @@ The standalone function version of this method:
 
 ```typescript
 import { IamClientCore } from "@docusign/iam-sdk/core.js";
-import { maestroWorkflowsGetWorkflowTriggerRequirements } from "@docusign/iam-sdk/funcs/maestroWorkflowsGetWorkflowTriggerRequirements.js";
+import { workflowBuilderWorkflowsGetWorkflowTriggerRequirements } from "@docusign/iam-sdk/funcs/workflowBuilderWorkflowsGetWorkflowTriggerRequirements.js";
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -175,15 +174,14 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await maestroWorkflowsGetWorkflowTriggerRequirements(iamClient, {
+  const res = await workflowBuilderWorkflowsGetWorkflowTriggerRequirements(iamClient, {
     accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-    workflowId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("maestroWorkflowsGetWorkflowTriggerRequirements failed:", res.error);
+    console.log("workflowBuilderWorkflowsGetWorkflowTriggerRequirements failed:", res.error);
   }
 }
 
@@ -205,15 +203,15 @@ run();
 
 ### Errors
 
-| Error Type       | Status Code      | Content Type     |
-| ---------------- | ---------------- | ---------------- |
-| errors.ErrorT    | 400, 403, 404    | application/json |
-| errors.ErrorT    | 500              | application/json |
-| errors.APIError  | 4XX, 5XX         | \*/\*            |
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrDetails        | 400, 401, 403, 404       | application/problem+json |
+| errors.ErrDetails        | 500                      | application/problem+json |
+| errors.APIError          | 4XX, 5XX                 | \*/\*                    |
 
 ## triggerWorkflow
 
-This operation triggers a new instance of a specified Maestro workflow. When invoked,
+This operation triggers a new instance of a specified Workflow Builder workflow. When invoked,
 the workflow is started based on the provided input data, and the workflow instance
 begins executing according to its defined logic and configuration.
 
@@ -246,7 +244,7 @@ interact with or track the running instance.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="TriggerWorkflow" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/actions/trigger" -->
+<!-- UsageSnippet language="typescript" operationID="TriggerWorkflow" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/actions/trigger" example="WorkflowTriggerSuccessExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -255,9 +253,8 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.maestro.workflows.triggerWorkflow({
+  const result = await iamClient.workflowBuilder.workflows.triggerWorkflow({
     accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-    workflowId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
     triggerWorkflow: {
       instanceName: "My Instance",
       triggerInputs: {
@@ -279,7 +276,7 @@ The standalone function version of this method:
 
 ```typescript
 import { IamClientCore } from "@docusign/iam-sdk/core.js";
-import { maestroWorkflowsTriggerWorkflow } from "@docusign/iam-sdk/funcs/maestroWorkflowsTriggerWorkflow.js";
+import { workflowBuilderWorkflowsTriggerWorkflow } from "@docusign/iam-sdk/funcs/workflowBuilderWorkflowsTriggerWorkflow.js";
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -288,9 +285,8 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await maestroWorkflowsTriggerWorkflow(iamClient, {
+  const res = await workflowBuilderWorkflowsTriggerWorkflow(iamClient, {
     accountId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
-    workflowId: "ae232f1f-8efc-4b8c-bb08-626847fad8bb",
     triggerWorkflow: {
       instanceName: "My Instance",
       triggerInputs: {
@@ -303,7 +299,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("maestroWorkflowsTriggerWorkflow failed:", res.error);
+    console.log("workflowBuilderWorkflowsTriggerWorkflow failed:", res.error);
   }
 }
 
@@ -325,11 +321,11 @@ run();
 
 ### Errors
 
-| Error Type       | Status Code      | Content Type     |
-| ---------------- | ---------------- | ---------------- |
-| errors.ErrorT    | 400, 403, 404    | application/json |
-| errors.ErrorT    | 500              | application/json |
-| errors.APIError  | 4XX, 5XX         | \*/\*            |
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrDetails        | 400, 401, 403, 404       | application/problem+json |
+| errors.ErrDetails        | 500                      | application/problem+json |
+| errors.APIError          | 4XX, 5XX                 | \*/\*                    |
 
 ## pauseNewWorkflowInstances
 
@@ -338,7 +334,7 @@ This operation pauses new workflow instances from being created. Any running wor
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="pauseNewWorkflowInstances" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/actions/pause" -->
+<!-- UsageSnippet language="typescript" operationID="pauseNewWorkflowInstances" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/actions/pause" example="PauseNewWorkflowInstancesExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -347,7 +343,7 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.maestro.workflows.pauseNewWorkflowInstances({});
+  const result = await iamClient.workflowBuilder.workflows.pauseNewWorkflowInstances({});
 
   console.log(result);
 }
@@ -361,7 +357,7 @@ The standalone function version of this method:
 
 ```typescript
 import { IamClientCore } from "@docusign/iam-sdk/core.js";
-import { maestroWorkflowsPauseNewWorkflowInstances } from "@docusign/iam-sdk/funcs/maestroWorkflowsPauseNewWorkflowInstances.js";
+import { workflowBuilderWorkflowsPauseNewWorkflowInstances } from "@docusign/iam-sdk/funcs/workflowBuilderWorkflowsPauseNewWorkflowInstances.js";
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -370,12 +366,12 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await maestroWorkflowsPauseNewWorkflowInstances(iamClient, {});
+  const res = await workflowBuilderWorkflowsPauseNewWorkflowInstances(iamClient, {});
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("maestroWorkflowsPauseNewWorkflowInstances failed:", res.error);
+    console.log("workflowBuilderWorkflowsPauseNewWorkflowInstances failed:", res.error);
   }
 }
 
@@ -397,11 +393,11 @@ run();
 
 ### Errors
 
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| errors.ErrorT      | 400, 403, 404, 409 | application/json   |
-| errors.ErrorT      | 500                | application/json   |
-| errors.APIError    | 4XX, 5XX           | \*/\*              |
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrDetails        | 400, 401, 403, 404, 409  | application/problem+json |
+| errors.ErrDetails        | 500                      | application/problem+json |
+| errors.APIError          | 4XX, 5XX                 | \*/\*                    |
 
 ## resumePausedWorkflow
 
@@ -410,7 +406,7 @@ This operation enables new workflow instances to be created
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="resumePausedWorkflow" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/actions/resume" -->
+<!-- UsageSnippet language="typescript" operationID="resumePausedWorkflow" method="post" path="/v1/accounts/{accountId}/workflows/{workflowId}/actions/resume" example="ResumeNewWorkflowInstancesExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -419,7 +415,7 @@ const iamClient = new IamClient({
 });
 
 async function run() {
-  const result = await iamClient.maestro.workflows.resumePausedWorkflow({});
+  const result = await iamClient.workflowBuilder.workflows.resumePausedWorkflow({});
 
   console.log(result);
 }
@@ -433,7 +429,7 @@ The standalone function version of this method:
 
 ```typescript
 import { IamClientCore } from "@docusign/iam-sdk/core.js";
-import { maestroWorkflowsResumePausedWorkflow } from "@docusign/iam-sdk/funcs/maestroWorkflowsResumePausedWorkflow.js";
+import { workflowBuilderWorkflowsResumePausedWorkflow } from "@docusign/iam-sdk/funcs/workflowBuilderWorkflowsResumePausedWorkflow.js";
 
 // Use `IamClientCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -442,12 +438,12 @@ const iamClient = new IamClientCore({
 });
 
 async function run() {
-  const res = await maestroWorkflowsResumePausedWorkflow(iamClient, {});
+  const res = await workflowBuilderWorkflowsResumePausedWorkflow(iamClient, {});
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("maestroWorkflowsResumePausedWorkflow failed:", res.error);
+    console.log("workflowBuilderWorkflowsResumePausedWorkflow failed:", res.error);
   }
 }
 
@@ -469,8 +465,8 @@ run();
 
 ### Errors
 
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| errors.ErrorT      | 400, 403, 404, 409 | application/json   |
-| errors.ErrorT      | 500                | application/json   |
-| errors.APIError    | 4XX, 5XX           | \*/\*              |
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrDetails        | 400, 401, 403, 404, 409  | application/problem+json |
+| errors.ErrDetails        | 500                      | application/problem+json |
+| errors.APIError          | 4XX, 5XX                 | \*/\*                    |
