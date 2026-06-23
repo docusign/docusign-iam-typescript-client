@@ -6,13 +6,14 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import { TriggerInputs, TriggerInputs$inboundSchema } from "./triggerinputs.js";
 
 /**
  * Additional metadata related to this workflow instance
  */
-export type Metadata = {
+export type WorkflowInstanceMetadata = {
   /**
    * Identifier of the user who originally created the workflow definition
    */
@@ -112,18 +113,18 @@ export type WorkflowInstance = {
   /**
    * Additional metadata related to this workflow instance
    */
-  metadata?: Metadata | undefined;
+  metadata?: WorkflowInstanceMetadata | undefined;
 };
 
 /** @internal */
-export const Metadata$inboundSchema: z.ZodType<
-  Metadata,
+export const WorkflowInstanceMetadata$inboundSchema: z.ZodType<
+  WorkflowInstanceMetadata,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  workflow_created_by: z.string().optional(),
-  workflow_version: z.string().optional(),
-  workflow_metadata_id: z.string().optional(),
+  workflow_created_by: types.optional(types.string()),
+  workflow_version: types.optional(types.string()),
+  workflow_metadata_id: types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "workflow_created_by": "workflowCreatedBy",
@@ -132,13 +133,13 @@ export const Metadata$inboundSchema: z.ZodType<
   });
 });
 
-export function metadataFromJSON(
+export function workflowInstanceMetadataFromJSON(
   jsonString: string,
-): SafeParseResult<Metadata, SDKValidationError> {
+): SafeParseResult<WorkflowInstanceMetadata, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Metadata$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Metadata' from JSON`,
+    (x) => WorkflowInstanceMetadata$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'WorkflowInstanceMetadata' from JSON`,
   );
 }
 
@@ -148,35 +149,28 @@ export const WorkflowInstance$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  id: z.string().optional(),
-  name: z.string().optional(),
-  workflow_status: z.string().optional(),
-  template_id: z.string().optional(),
-  account_id: z.string().optional(),
-  started_at: z.string().datetime({ offset: true }).transform(v => new Date(v))
-    .optional(),
-  started_by: z.string().optional(),
-  started_by_name: z.string().optional(),
-  started_by_role: z.string().optional(),
-  ended_at: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  expires_at: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  last_modified_at: z.string().datetime({ offset: true }).transform(v =>
-    new Date(v)
-  ).optional(),
-  canceled_at: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  canceled_by: z.nullable(z.string()).optional(),
-  trigger_inputs: z.record(TriggerInputs$inboundSchema).optional(),
-  total_steps: z.number().int().optional(),
-  last_completed_step: z.number().int().optional(),
-  last_completed_step_name: z.nullable(z.string()).optional(),
-  tags: z.array(z.string()).optional(),
-  metadata: z.lazy(() => Metadata$inboundSchema).optional(),
+  id: types.optional(types.string()),
+  name: types.optional(types.string()),
+  workflow_status: types.optional(types.string()),
+  template_id: types.optional(types.string()),
+  account_id: types.optional(types.string()),
+  started_at: types.optional(types.date()),
+  started_by: types.optional(types.string()),
+  started_by_name: types.optional(types.string()),
+  started_by_role: types.optional(types.string()),
+  ended_at: z.nullable(types.date()).optional(),
+  expires_at: z.nullable(types.date()).optional(),
+  last_modified_at: types.optional(types.date()),
+  canceled_at: z.nullable(types.date()).optional(),
+  canceled_by: z.nullable(types.string()).optional(),
+  trigger_inputs: types.optional(z.record(TriggerInputs$inboundSchema)),
+  total_steps: types.optional(types.number()),
+  last_completed_step: types.optional(types.number()),
+  last_completed_step_name: z.nullable(types.string()).optional(),
+  tags: types.optional(z.array(types.string())),
+  metadata: types.optional(
+    z.lazy(() => WorkflowInstanceMetadata$inboundSchema),
+  ),
 }).transform((v) => {
   return remap$(v, {
     "workflow_status": "workflowStatus",

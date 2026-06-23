@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   ResponseMetadata,
@@ -33,8 +34,8 @@ export const WorkflowInstanceCollection$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  data: z.array(WorkflowInstance$inboundSchema).optional(),
-  response_metadata: ResponseMetadata$inboundSchema.optional(),
+  data: types.optional(z.array(WorkflowInstance$inboundSchema)),
+  response_metadata: types.optional(ResponseMetadata$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "response_metadata": "responseMetadata",

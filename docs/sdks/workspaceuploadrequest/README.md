@@ -18,7 +18,7 @@ This operation creates a new upload request within a workspace. The upload reque
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="createWorkspaceUploadRequest" method="post" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/upload-requests" -->
+<!-- UsageSnippet language="typescript" operationID="createWorkspaceUploadRequest" method="post" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/upload-requests" example="GetWorkspaceUploadRequestResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -117,7 +117,7 @@ This operation retrieves a list of upload requests within a workspace. Each uplo
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getWorkspaceUploadRequests" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/upload-requests" -->
+<!-- UsageSnippet language="typescript" operationID="getWorkspaceUploadRequests" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/upload-requests" example="GetWorkspaceUploadRequestsResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -194,7 +194,7 @@ This operation retrieves details about a specific upload request within a worksp
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getWorkspaceUploadRequest" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/upload-requests/{uploadRequestId}" -->
+<!-- UsageSnippet language="typescript" operationID="getWorkspaceUploadRequest" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/upload-requests/{uploadRequestId}" example="GetWorkspaceUploadRequestResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -273,7 +273,7 @@ This operation updates a specific upload request within a workspace. Only draft 
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="updateWorkspaceUploadRequest" method="put" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/upload-requests/{uploadRequestId}" -->
+<!-- UsageSnippet language="typescript" operationID="updateWorkspaceUploadRequest" method="put" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/upload-requests/{uploadRequestId}" example="GetWorkspaceUploadRequestResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -443,7 +443,7 @@ This operation adds a document to a specific upload request within a workspace v
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="addWorkspaceUploadRequestDocument" method="post" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/upload-requests/{uploadRequestId}/documents" -->
+<!-- UsageSnippet language="typescript" operationID="addWorkspaceUploadRequestDocument" method="post" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/upload-requests/{uploadRequestId}/documents" example="AddWorkspaceUploadRequestDocumentResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 

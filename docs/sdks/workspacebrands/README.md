@@ -13,7 +13,7 @@ This operation retrieves details about a specific workspace. It returns the bran
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getWorkspaceBrand" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/brand" -->
+<!-- UsageSnippet language="typescript" operationID="getWorkspaceBrand" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/brand" example="GetWorkspaceBrandResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -90,7 +90,7 @@ This operation updates brand for a specific workspace. It returns the brand deta
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="updateWorkspaceBrand" method="put" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/brand" -->
+<!-- UsageSnippet language="typescript" operationID="updateWorkspaceBrand" method="put" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/brand" example="UpdateWorkspaceBrandResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 

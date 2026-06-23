@@ -18,7 +18,7 @@ Pagination is supported by passing `start_position` and `count` in the request. 
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getWorkspaceDocuments" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/documents" -->
+<!-- UsageSnippet language="typescript" operationID="getWorkspaceDocuments" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/documents" example="GetWorkspaceDocumentsResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -97,7 +97,7 @@ Once added, it may be used to create an envelope associated with the workspace.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="addWorkspaceDocument" method="post" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/documents" -->
+<!-- UsageSnippet language="typescript" operationID="addWorkspaceDocument" method="post" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/documents" example="CreateWorkspaceDocumentResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -174,7 +174,7 @@ This operation retrieves information about the document. The response includes t
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getWorkspaceDocument" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/documents/{documentId}" -->
+<!-- UsageSnippet language="typescript" operationID="getWorkspaceDocument" method="get" path="/v1/accounts/{accountId}/workspaces/{workspaceId}/documents/{documentId}" example="GetWorkspaceDocumentResponseExample" -->
 ```typescript
 import { IamClient } from "@docusign/iam-sdk";
 
@@ -395,7 +395,7 @@ run();
 
 ### Response
 
-**Promise\<[ReadableStream<Uint8Array>](../../models/.md)\>**
+**Promise\<[ReadableStream<Uint8Array>](../../models/getworkspacedocumentcontentsresponse.md)\>**
 
 ### Errors
 

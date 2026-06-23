@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 /**
@@ -32,9 +33,9 @@ export const AddWorkspaceUploadRequestDocumentResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  upload_request_id: z.string(),
-  document_id: z.string(),
-  document_name: z.nullable(z.string()),
+  upload_request_id: types.string(),
+  document_id: types.string(),
+  document_name: types.nullable(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "upload_request_id": "uploadRequestId",

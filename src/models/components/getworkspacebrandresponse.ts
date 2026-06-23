@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import { BrandColor, BrandColor$inboundSchema } from "./brandcolor.js";
 import { BrandLogos, BrandLogos$inboundSchema } from "./brandlogos.js";
@@ -34,18 +35,18 @@ export const GetWorkspaceBrandResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  brand_id: z.nullable(z.string()).optional(),
-  brand_name: z.nullable(z.string()).optional(),
-  brand_company: z.nullable(z.string()).optional(),
-  colors: z.nullable(z.array(BrandColor$inboundSchema)),
-  logos: BrandLogos$inboundSchema.optional(),
-  brand_languages: z.nullable(z.array(z.string())),
-  default_brand_language: z.nullable(z.string()).optional(),
-  is_sending_default: z.boolean().optional(),
-  is_signing_default: z.boolean().optional(),
-  primary_logo_id: z.nullable(z.string()).optional(),
-  secondary_logo_id: z.nullable(z.string()).optional(),
-  email_logo_id: z.nullable(z.string()).optional(),
+  brand_id: z.nullable(types.string()).optional(),
+  brand_name: z.nullable(types.string()).optional(),
+  brand_company: z.nullable(types.string()).optional(),
+  colors: types.nullable(z.array(BrandColor$inboundSchema)),
+  logos: types.optional(BrandLogos$inboundSchema),
+  brand_languages: types.nullable(z.array(types.string())),
+  default_brand_language: z.nullable(types.string()).optional(),
+  is_sending_default: types.optional(types.boolean()),
+  is_signing_default: types.optional(types.boolean()),
+  primary_logo_id: z.nullable(types.string()).optional(),
+  secondary_logo_id: z.nullable(types.string()).optional(),
+  email_logo_id: z.nullable(types.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "brand_id": "brandId",

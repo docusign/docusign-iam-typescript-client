@@ -8,13 +8,13 @@ Describes the limits of a bulk job, or an action associated with a bulk job
 import { BulkJobConstraints } from "@docusign/iam-sdk/models/components";
 
 let value: BulkJobConstraints = {
+  maxSizeMb: 100,
+  maxDocumentsPerJob: 10000,
   allowedFormats: [
     "pdf",
     "docx",
     "txt",
   ],
-  maxDocumentsPerJob: 10000,
-  maxSizeMb: 100,
   timeoutSeconds: 300,
 };
 ```
@@ -23,7 +23,7 @@ let value: BulkJobConstraints = {
 
 | Field                    | Type                     | Required                 | Description              | Example                  |
 | ------------------------ | ------------------------ | ------------------------ | ------------------------ | ------------------------ |
-| `allowedFormats`         | *string*[]               | :heavy_minus_sign:       | N/A                      | [<br/>"pdf",<br/>"docx",<br/>"txt"<br/>] |
-| `maxDocumentsPerJob`     | *number*                 | :heavy_minus_sign:       | N/A                      | 10000                    |
 | `maxSizeMb`              | *number*                 | :heavy_minus_sign:       | N/A                      | 100                      |
+| `maxDocumentsPerJob`     | *number*                 | :heavy_minus_sign:       | N/A                      | 10000                    |
+| `allowedFormats`         | *string*[]               | :heavy_minus_sign:       | N/A                      | [<br/>"pdf",<br/>"docx",<br/>"txt"<br/>] |
 | `timeoutSeconds`         | *number*                 | :heavy_minus_sign:       | N/A                      | 300                      |

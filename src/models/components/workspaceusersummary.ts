@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type WorkspaceUserSummary = {
@@ -41,12 +42,12 @@ export const WorkspaceUserSummary$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  user_id: z.string().optional(),
-  email: z.nullable(z.string()).optional(),
-  first_name: z.nullable(z.string()).optional(),
-  last_name: z.nullable(z.string()).optional(),
-  role_id: z.nullable(z.string()).optional(),
-  role_name: z.nullable(z.string()).optional(),
+  user_id: types.optional(types.string()),
+  email: z.nullable(types.string()).optional(),
+  first_name: z.nullable(types.string()).optional(),
+  last_name: z.nullable(types.string()).optional(),
+  role_id: z.nullable(types.string()).optional(),
+  role_name: z.nullable(types.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "user_id": "userId",

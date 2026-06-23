@@ -10,7 +10,8 @@ let value: GetAgreementRequest = {};
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `accountId`        | *string*           | :heavy_check_mark: | N/A                |
-| `agreementId`      | *string*           | :heavy_check_mark: | N/A                |
+| Field                                                                         | Type                                                                          | Required                                                                      | Description                                                                   |
+| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `accountId`                                                                   | *string*                                                                      | :heavy_check_mark:                                                            | N/A                                                                           |
+| `agreementId`                                                                 | *string*                                                                      | :heavy_check_mark:                                                            | N/A                                                                           |
+| `includeLinkedData`                                                           | *boolean*                                                                     | :heavy_minus_sign:                                                            | Include linked data from external systems that correlate with this agreement. |

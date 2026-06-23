@@ -5,6 +5,7 @@
 import * as z from "zod/v3";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type TabConnectionInstance = {
@@ -24,8 +25,8 @@ export const TabConnectionInstance$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  connectionKey: z.string(),
-  connectionValue: z.string(),
+  connectionKey: types.string(),
+  connectionValue: types.string(),
 });
 
 export function tabConnectionInstanceFromJSON(

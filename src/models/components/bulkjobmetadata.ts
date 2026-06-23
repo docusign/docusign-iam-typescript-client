@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 /**
@@ -14,13 +15,13 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 export type BulkJobMetadata = {
   requestId?: string | undefined;
   /**
-   * Time in ms to process this request
-   */
-  responseDuration?: number | undefined;
-  /**
    * When this response was generated
    */
   responseTimestamp?: Date | undefined;
+  /**
+   * Time in ms to process this request
+   */
+  responseDuration?: number | undefined;
 };
 
 /** @internal */
@@ -29,16 +30,14 @@ export const BulkJobMetadata$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  request_id: z.string().optional(),
-  response_duration: z.number().int().optional(),
-  response_timestamp: z.string().datetime({ offset: true }).transform(v =>
-    new Date(v)
-  ).optional(),
+  request_id: types.optional(types.string()),
+  response_timestamp: types.optional(types.date()),
+  response_duration: types.optional(types.number()),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
-    "response_duration": "responseDuration",
     "response_timestamp": "responseTimestamp",
+    "response_duration": "responseDuration",
   });
 });
 

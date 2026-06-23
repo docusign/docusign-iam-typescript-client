@@ -5,6 +5,8 @@
 import * as z from "zod/v3";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
+import { smartUnion } from "../../types/smartUnion.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 /**
@@ -25,10 +27,10 @@ export const TriggerInputs$inboundSchema: z.ZodType<
   TriggerInputs,
   z.ZodTypeDef,
   unknown
-> = z.union([
-  z.string(),
-  z.number(),
-  z.boolean(),
+> = smartUnion([
+  types.string(),
+  types.number(),
+  types.boolean(),
   z.record(z.any()),
   z.array(z.any()),
 ]);
@@ -42,7 +44,7 @@ export const TriggerInputs$outboundSchema: z.ZodType<
   TriggerInputs$Outbound,
   z.ZodTypeDef,
   TriggerInputs
-> = z.union([
+> = smartUnion([
   z.string(),
   z.number(),
   z.boolean(),

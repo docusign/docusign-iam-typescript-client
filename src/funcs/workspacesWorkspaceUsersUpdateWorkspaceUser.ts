@@ -4,6 +4,7 @@
 
 import { IamClientCore } from "../core.js";
 import { encodeJSON, encodeSimple } from "../lib/encodings.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -31,6 +32,8 @@ import { Result } from "../types/fp.js";
  *
  * @remarks
  * This operation updates the specified user's role in the workspace. Users within the account are considered "Internal" and may be assigned any role. Users outside the account are considered "External" and may only be assigned "External" roles.
+ *
+ * If set, this operation will use {@link Security.accessToken} from the global security.
  */
 export function workspacesWorkspaceUsersUpdateWorkspaceUser(
   client: IamClientCore,
@@ -106,7 +109,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc(
     "/v1/accounts/{accountId}/workspaces/{workspaceId}/users/{userId}",
   )(pathParams);
@@ -118,7 +120,7 @@ async function $do(
 
   const secConfig = await extractSecurity(client._options.accessToken);
   const securityInput = secConfig == null ? {} : { accessToken: secConfig };
-  const requestSecurity = resolveGlobalSecurity(securityInput);
+  const requestSecurity = resolveGlobalSecurity(securityInput, [0]);
 
   const context = {
     options: client._options,
@@ -162,7 +164,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "4XX", "500", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });

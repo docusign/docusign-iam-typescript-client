@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   TabConnectedFieldsData,
@@ -86,18 +87,20 @@ export const TabExtensionData$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  extensionGroupId: z.string(),
-  actionInputKey: z.string(),
-  extensionPolicy: ExtensionPolicy$inboundSchema.optional(),
-  publisherName: z.string().optional(),
-  applicationName: z.string().optional(),
-  actionName: z.string().optional(),
-  extensionContract: z.string().optional(),
-  actionContract: z.string().optional(),
-  extensionName: z.string().optional(),
-  requiredForExtension: z.boolean(),
-  connectionInstances: z.array(TabConnectionInstance$inboundSchema).optional(),
-  connectedFieldsData: TabConnectedFieldsData$inboundSchema.optional(),
+  extensionGroupId: types.string(),
+  actionInputKey: types.string(),
+  extensionPolicy: types.optional(ExtensionPolicy$inboundSchema),
+  publisherName: types.optional(types.string()),
+  applicationName: types.optional(types.string()),
+  actionName: types.optional(types.string()),
+  extensionContract: types.optional(types.string()),
+  actionContract: types.optional(types.string()),
+  extensionName: types.optional(types.string()),
+  requiredForExtension: types.boolean(),
+  connectionInstances: types.optional(
+    z.array(TabConnectionInstance$inboundSchema),
+  ),
+  connectedFieldsData: types.optional(TabConnectedFieldsData$inboundSchema),
 });
 
 export function tabExtensionDataFromJSON(

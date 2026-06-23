@@ -5,6 +5,7 @@
 import * as z from "zod/v3";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   TabExtensionData,
@@ -39,11 +40,11 @@ export type Tab = {
 export const Tab$inboundSchema: z.ZodType<Tab, z.ZodTypeDef, unknown> = z
   .object({
     extensionData: TabExtensionData$inboundSchema,
-    tabType: z.string(),
-    validationPattern: z.string().optional(),
-    validationMessage: z.string().optional(),
-    tabLabel: z.string(),
-    radios: z.array(z.string()).optional(),
+    tabType: types.string(),
+    validationPattern: types.optional(types.string()),
+    validationMessage: types.optional(types.string()),
+    tabLabel: types.string(),
+    radios: types.optional(z.array(types.string())),
   });
 
 export function tabFromJSON(

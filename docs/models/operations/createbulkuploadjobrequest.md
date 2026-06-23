@@ -7,11 +7,8 @@ import { CreateBulkUploadJobRequest } from "@docusign/iam-sdk/models/operations"
 
 let value: CreateBulkUploadJobRequest = {
   createBulkJob: {
-    agreementSetIds: [
-      "-8c-dVtBzjSe7nh_zAf9L",
-    ],
-    expectedNumberOfDocs: 2,
     jobName: "Q4 2025 Contracts",
+    expectedNumberOfDocs: 2,
     language: "en-US",
   },
 };

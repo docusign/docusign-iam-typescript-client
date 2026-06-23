@@ -6,17 +6,18 @@ import * as z from "zod/v3";
 import { ClosedEnum } from "../../types/enums.js";
 
 /**
- * Document status. Last 3 are terminal statuses. Matches enum with similar name in the backend.
+ * Document status. Last 4 are terminal statuses. Matches enum with similar name in the backend.
  */
 export const DocStatus = {
   NotStarted: "NOT_STARTED",
   InProgress: "IN_PROGRESS",
   Canceled: "CANCELED",
   Succeeded: "SUCCEEDED",
+  SucceededWithWarnings: "SUCCEEDED_WITH_WARNINGS",
   Failed: "FAILED",
 } as const;
 /**
- * Document status. Last 3 are terminal statuses. Matches enum with similar name in the backend.
+ * Document status. Last 4 are terminal statuses. Matches enum with similar name in the backend.
  */
 export type DocStatus = ClosedEnum<typeof DocStatus>;
 

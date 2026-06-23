@@ -7,11 +7,9 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
+import { smartUnion } from "../../types/smartUnion.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import {
-  ResourceMetadata,
-  ResourceMetadata$inboundSchema,
-} from "./resourcemetadata.js";
 
 /**
  * The type of event that triggers the workflow. In this case, the workflow is initiated
@@ -36,7 +34,7 @@ export type TriggerEventType = ClosedEnum<typeof TriggerEventType>;
  * @remarks
  * that will initiate the workflow (e.g., GET, POST).
  */
-export const Method = {
+export const MethodResponse = {
   Get: "GET",
   Post: "POST",
   Put: "PUT",
@@ -49,7 +47,7 @@ export const Method = {
  * @remarks
  * that will initiate the workflow (e.g., GET, POST).
  */
-export type Method = ClosedEnum<typeof Method>;
+export type MethodResponse = ClosedEnum<typeof MethodResponse>;
 
 /**
  * Configuration details specific to HTTP-triggered workflows. This object describes the
@@ -65,7 +63,13 @@ export type TriggerHttpConfig = {
    * @remarks
    * that will initiate the workflow (e.g., GET, POST).
    */
-  method?: Method | undefined;
+  method?: MethodResponse | undefined;
+  /**
+   * The URL that is associated with the trigger event. This is the endpoint that must be
+   *
+   * @remarks
+   * called using the specified HTTP method to start the workflow.
+   */
   url?: string | null | undefined;
 };
 
@@ -119,6 +123,49 @@ export type TriggerInputSchema = {
 };
 
 /**
+ * Metadata related to the workflow definition, including details about when the workflow was
+ *
+ * @remarks
+ * created, who created it, when it was last modified, and by whom. This information is useful
+ * for tracking changes to the workflow over time and identifying the user or system responsible
+ * for creating or modifying the workflow.
+ */
+export type MetadataResponse = {
+  /**
+   * Timestamp when the agreement document was created.
+   */
+  createdAt?: Date | null | undefined;
+  /**
+   * User ID of the person who created the agreement document.
+   */
+  createdBy?: string | null | undefined;
+  /**
+   * Timestamp when the agreement document was last modified.
+   */
+  modifiedAt?: Date | null | undefined;
+  /**
+   * User ID of the person who last modified the agreement document.
+   */
+  modifiedBy?: string | null | undefined;
+  /**
+   * Unique identifier for the request, useful for tracking and debugging.
+   */
+  requestId?: string | null | undefined;
+  /**
+   * The timestamp indicating when the response was generated.
+   */
+  responseTimestamp?: Date | null | undefined;
+  /**
+   * The duration of time, in milliseconds, that the server took to process and respond
+   *
+   * @remarks
+   * to the request. This is measured from the time the server received the request
+   * until the time the response was sent.
+   */
+  responseDurationMs?: number | null | undefined;
+};
+
+/**
  * Control information and metadata for the response.
  */
 export type WorkflowTriggerRequirementsSuccess = {
@@ -146,7 +193,15 @@ export type WorkflowTriggerRequirementsSuccess = {
    * The schema includes the field name, expected data type, and any default values for the input.
    */
   triggerInputSchema?: Array<TriggerInputSchema> | undefined;
-  metadata?: ResourceMetadata | undefined;
+  /**
+   * Metadata related to the workflow definition, including details about when the workflow was
+   *
+   * @remarks
+   * created, who created it, when it was last modified, and by whom. This information is useful
+   * for tracking changes to the workflow over time and identifying the user or system responsible
+   * for creating or modifying the workflow.
+   */
+  metadata?: MetadataResponse | undefined;
   /**
    * The maximum number of items that can be returned in a single page.
    */
@@ -156,6 +211,10 @@ export type WorkflowTriggerRequirementsSuccess = {
    */
   requestId: string | null;
   /**
+   * The timestamp indicating when the response was generated.
+   */
+  responseTimestamp: Date | null;
+  /**
    * The duration of time, in milliseconds, that the server took to process and respond
    *
    * @remarks
@@ -163,10 +222,6 @@ export type WorkflowTriggerRequirementsSuccess = {
    * until the time the response was sent.
    */
   responseDurationMs: number | null;
-  /**
-   * The timestamp indicating when the response was generated.
-   */
-  responseTimestamp: Date | null;
 };
 
 /** @internal */
@@ -175,8 +230,9 @@ export const TriggerEventType$inboundSchema: z.ZodNativeEnum<
 > = z.nativeEnum(TriggerEventType);
 
 /** @internal */
-export const Method$inboundSchema: z.ZodNativeEnum<typeof Method> = z
-  .nativeEnum(Method);
+export const MethodResponse$inboundSchema: z.ZodNativeEnum<
+  typeof MethodResponse
+> = z.nativeEnum(MethodResponse);
 
 /** @internal */
 export const TriggerHttpConfig$inboundSchema: z.ZodType<
@@ -184,8 +240,8 @@ export const TriggerHttpConfig$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  method: Method$inboundSchema.optional(),
-  url: z.nullable(z.string()).optional(),
+  method: types.optional(MethodResponse$inboundSchema),
+  url: z.nullable(types.string()).optional(),
 });
 
 export function triggerHttpConfigFromJSON(
@@ -203,10 +259,10 @@ export const DefaultValue$inboundSchema: z.ZodType<
   DefaultValue,
   z.ZodTypeDef,
   unknown
-> = z.union([
-  z.string(),
-  z.number(),
-  z.boolean(),
+> = smartUnion([
+  types.string(),
+  types.number(),
+  types.boolean(),
   z.record(z.any()),
   z.array(z.any()),
 ]);
@@ -227,15 +283,17 @@ export const TriggerInputSchema$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  field_name: z.string().optional(),
-  field_data_type: z.string().optional(),
-  default_value: z.union([
-    z.string(),
-    z.number(),
-    z.boolean(),
-    z.record(z.any()),
-    z.array(z.any()),
-  ]).optional(),
+  field_name: types.optional(types.string()),
+  field_data_type: types.optional(types.string()),
+  default_value: types.optional(
+    smartUnion([
+      types.string(),
+      types.number(),
+      types.boolean(),
+      z.record(z.any()),
+      z.array(z.any()),
+    ]),
+  ),
 }).transform((v) => {
   return remap$(v, {
     "field_name": "fieldName",
@@ -255,23 +313,59 @@ export function triggerInputSchemaFromJSON(
 }
 
 /** @internal */
+export const MetadataResponse$inboundSchema: z.ZodType<
+  MetadataResponse,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  created_at: z.nullable(types.date()).optional(),
+  created_by: z.nullable(types.string()).optional(),
+  modified_at: z.nullable(types.date()).optional(),
+  modified_by: z.nullable(types.string()).optional(),
+  request_id: z.nullable(types.string()).optional(),
+  response_timestamp: z.nullable(types.date()).optional(),
+  response_duration_ms: z.nullable(types.number()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "created_at": "createdAt",
+    "created_by": "createdBy",
+    "modified_at": "modifiedAt",
+    "modified_by": "modifiedBy",
+    "request_id": "requestId",
+    "response_timestamp": "responseTimestamp",
+    "response_duration_ms": "responseDurationMs",
+  });
+});
+
+export function metadataResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<MetadataResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => MetadataResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'MetadataResponse' from JSON`,
+  );
+}
+
+/** @internal */
 export const WorkflowTriggerRequirementsSuccess$inboundSchema: z.ZodType<
   WorkflowTriggerRequirementsSuccess,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  trigger_id: z.string().default("00000000-0000-0000-0000-000000000000"),
-  trigger_event_type: TriggerEventType$inboundSchema.optional(),
-  trigger_http_config: z.lazy(() => TriggerHttpConfig$inboundSchema).optional(),
-  trigger_input_schema: z.array(z.lazy(() => TriggerInputSchema$inboundSchema))
-    .optional(),
-  metadata: ResourceMetadata$inboundSchema.optional(),
-  page_limit: z.nullable(z.number().int().default(25)),
-  request_id: z.nullable(z.string()),
-  response_duration_ms: z.nullable(z.number().int()),
-  response_timestamp: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
+  trigger_id: types.string().default("00000000-0000-0000-0000-000000000000"),
+  trigger_event_type: types.optional(TriggerEventType$inboundSchema),
+  trigger_http_config: types.optional(
+    z.lazy(() => TriggerHttpConfig$inboundSchema),
   ),
+  trigger_input_schema: types.optional(
+    z.array(z.lazy(() => TriggerInputSchema$inboundSchema)),
+  ),
+  metadata: types.optional(z.lazy(() => MetadataResponse$inboundSchema)),
+  page_limit: z.nullable(types.number().default(25)),
+  request_id: types.nullable(types.string()),
+  response_timestamp: types.nullable(types.date()),
+  response_duration_ms: types.nullable(types.number()),
 }).transform((v) => {
   return remap$(v, {
     "trigger_id": "triggerId",
@@ -280,8 +374,8 @@ export const WorkflowTriggerRequirementsSuccess$inboundSchema: z.ZodType<
     "trigger_input_schema": "triggerInputSchema",
     "page_limit": "pageLimit",
     "request_id": "requestId",
-    "response_duration_ms": "responseDurationMs",
     "response_timestamp": "responseTimestamp",
+    "response_duration_ms": "responseDurationMs",
   });
 });
 

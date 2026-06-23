@@ -3,16 +3,22 @@
  */
 
 import * as z from "zod/v3";
+import { remap as remap$ } from "../../lib/primitives.js";
 
 export type GetAgreementRequest = {
   accountId?: string | undefined;
   agreementId?: string | undefined;
+  /**
+   * Include linked data from external systems that correlate with this agreement.
+   */
+  includeLinkedData?: boolean | undefined;
 };
 
 /** @internal */
 export type GetAgreementRequest$Outbound = {
   accountId: string;
   agreementId: string;
+  include_linked_data: boolean;
 };
 
 /** @internal */
@@ -23,6 +29,11 @@ export const GetAgreementRequest$outboundSchema: z.ZodType<
 > = z.object({
   accountId: z.string().default("00000000-0000-0000-0000-000000000000"),
   agreementId: z.string().default("00000000-0000-0000-0000-000000000000"),
+  includeLinkedData: z.boolean().default(false),
+}).transform((v) => {
+  return remap$(v, {
+    includeLinkedData: "include_linked_data",
+  });
 });
 
 export function getAgreementRequestToJSON(

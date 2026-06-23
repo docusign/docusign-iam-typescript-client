@@ -4,6 +4,7 @@
 
 import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
+import * as types from "../../types/primitives.js";
 import { IamClientError } from "./iamclienterror.js";
 
 export type OAuthErrorResponseData = {
@@ -42,8 +43,8 @@ export const OAuthErrorResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  error: z.nullable(z.string()).optional(),
-  error_description: z.nullable(z.string()).optional(),
+  error: z.nullable(types.string()).optional(),
+  error_description: z.nullable(types.string()).optional(),
   request$: z.instanceof(Request),
   response$: z.instanceof(Response),
   body$: z.string(),

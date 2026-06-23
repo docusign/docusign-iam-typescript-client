@@ -3,10 +3,10 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
+import { AgreementManager } from "./agreementmanager.js";
 import { Auth } from "./auth.js";
 import { ConnectedFields } from "./connectedfields.js";
-import { Maestro } from "./maestro.js";
-import { Navigator } from "./navigator.js";
+import { WorkflowBuilder } from "./workflowbuilder.js";
 import { Workspaces1 } from "./workspaces1.js";
 
 export class IamClient extends ClientSDK {
@@ -15,14 +15,14 @@ export class IamClient extends ClientSDK {
     return (this._auth ??= new Auth(this._options));
   }
 
-  private _maestro?: Maestro;
-  get maestro(): Maestro {
-    return (this._maestro ??= new Maestro(this._options));
+  private _workflowBuilder?: WorkflowBuilder;
+  get workflowBuilder(): WorkflowBuilder {
+    return (this._workflowBuilder ??= new WorkflowBuilder(this._options));
   }
 
-  private _navigator?: Navigator;
-  get navigator(): Navigator {
-    return (this._navigator ??= new Navigator(this._options));
+  private _agreementManager?: AgreementManager;
+  get agreementManager(): AgreementManager {
+    return (this._agreementManager ??= new AgreementManager(this._options));
   }
 
   private _connectedFields?: ConnectedFields;
@@ -30,8 +30,8 @@ export class IamClient extends ClientSDK {
     return (this._connectedFields ??= new ConnectedFields(this._options));
   }
 
-  private _workspaces1?: Workspaces1;
-  get workspaces1(): Workspaces1 {
-    return (this._workspaces1 ??= new Workspaces1(this._options));
+  private _workspaces?: Workspaces1;
+  get workspaces(): Workspaces1 {
+    return (this._workspaces ??= new Workspaces1(this._options));
   }
 }

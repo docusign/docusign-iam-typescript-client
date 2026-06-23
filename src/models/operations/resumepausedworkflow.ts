@@ -5,9 +5,6 @@
 import * as z from "zod/v3";
 
 export type ResumePausedWorkflowRequest = {
-  /**
-   * The unique identifier of the account.
-   */
   accountId?: string | undefined;
   workflowId?: string | undefined;
 };

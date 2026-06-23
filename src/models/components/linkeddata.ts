@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 /**
@@ -23,9 +24,9 @@ export const LinkedData$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  application_name: z.string().optional(),
-  object_name: z.string().optional(),
-  record_id: z.string().optional(),
+  application_name: types.optional(types.string()),
+  object_name: types.optional(types.string()),
+  record_id: types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "application_name": "applicationName",
@@ -33,7 +34,33 @@ export const LinkedData$inboundSchema: z.ZodType<
     "record_id": "recordId",
   });
 });
+/** @internal */
+export type LinkedData$Outbound = {
+  application_name?: string | undefined;
+  object_name?: string | undefined;
+  record_id?: string | undefined;
+};
 
+/** @internal */
+export const LinkedData$outboundSchema: z.ZodType<
+  LinkedData$Outbound,
+  z.ZodTypeDef,
+  LinkedData
+> = z.object({
+  applicationName: z.string().optional(),
+  objectName: z.string().optional(),
+  recordId: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    applicationName: "application_name",
+    objectName: "object_name",
+    recordId: "record_id",
+  });
+});
+
+export function linkedDataToJSON(linkedData: LinkedData): string {
+  return JSON.stringify(LinkedData$outboundSchema.parse(linkedData));
+}
 export function linkedDataFromJSON(
   jsonString: string,
 ): SafeParseResult<LinkedData, SDKValidationError> {

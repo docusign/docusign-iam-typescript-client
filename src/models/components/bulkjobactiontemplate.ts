@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   BulkJobConstraints,
@@ -13,9 +14,9 @@ import {
 } from "./bulkjobconstraints.js";
 
 /**
- * Key value pairs of error response codes and explanations of those codes
+ * Key value pairs of variable names and descriptions, explaining how they are to be used
  */
-export type ErrorStatusCodes = {};
+export type TemplateVariables = {};
 
 /**
  * Key value pairs of header names and example values
@@ -23,24 +24,11 @@ export type ErrorStatusCodes = {};
 export type Headers = {};
 
 /**
- * Key value pairs of variable names and descriptions, explaining how they are to be used
+ * Key value pairs of error response codes and explanations of those codes
  */
-export type TemplateVariables = {};
+export type ErrorStatusCodes = {};
 
 export type BulkJobActionTemplate = {
-  /**
-   * Describes the limits of a bulk job, or an action associated with a bulk job
-   */
-  constraints?: BulkJobConstraints | undefined;
-  description?: string | undefined;
-  /**
-   * Key value pairs of error response codes and explanations of those codes
-   */
-  errorStatusCodes?: ErrorStatusCodes | undefined;
-  /**
-   * Key value pairs of header names and example values
-   */
-  headers?: Headers | undefined;
   /**
    * HTTP method used for this template
    */
@@ -49,43 +37,25 @@ export type BulkJobActionTemplate = {
    * Whether this action is required
    */
   required?: boolean | undefined;
-  successStatusCode?: number | undefined;
+  description?: string | undefined;
   /**
    * Key value pairs of variable names and descriptions, explaining how they are to be used
    */
   templateVariables?: TemplateVariables | undefined;
+  /**
+   * Key value pairs of header names and example values
+   */
+  headers?: Headers | undefined;
+  /**
+   * Describes the limits of a bulk job, or an action associated with a bulk job
+   */
+  constraints?: BulkJobConstraints | undefined;
+  successStatusCode?: number | undefined;
+  /**
+   * Key value pairs of error response codes and explanations of those codes
+   */
+  errorStatusCodes?: ErrorStatusCodes | undefined;
 };
-
-/** @internal */
-export const ErrorStatusCodes$inboundSchema: z.ZodType<
-  ErrorStatusCodes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
-
-export function errorStatusCodesFromJSON(
-  jsonString: string,
-): SafeParseResult<ErrorStatusCodes, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ErrorStatusCodes$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ErrorStatusCodes' from JSON`,
-  );
-}
-
-/** @internal */
-export const Headers$inboundSchema: z.ZodType<Headers, z.ZodTypeDef, unknown> =
-  z.object({});
-
-export function headersFromJSON(
-  jsonString: string,
-): SafeParseResult<Headers, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Headers$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Headers' from JSON`,
-  );
-}
 
 /** @internal */
 export const TemplateVariables$inboundSchema: z.ZodType<
@@ -105,24 +75,59 @@ export function templateVariablesFromJSON(
 }
 
 /** @internal */
+export const Headers$inboundSchema: z.ZodType<Headers, z.ZodTypeDef, unknown> =
+  z.object({});
+
+export function headersFromJSON(
+  jsonString: string,
+): SafeParseResult<Headers, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Headers$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Headers' from JSON`,
+  );
+}
+
+/** @internal */
+export const ErrorStatusCodes$inboundSchema: z.ZodType<
+  ErrorStatusCodes,
+  z.ZodTypeDef,
+  unknown
+> = z.object({});
+
+export function errorStatusCodesFromJSON(
+  jsonString: string,
+): SafeParseResult<ErrorStatusCodes, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ErrorStatusCodes$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ErrorStatusCodes' from JSON`,
+  );
+}
+
+/** @internal */
 export const BulkJobActionTemplate$inboundSchema: z.ZodType<
   BulkJobActionTemplate,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  constraints: BulkJobConstraints$inboundSchema.optional(),
-  description: z.string().optional(),
-  error_status_codes: z.lazy(() => ErrorStatusCodes$inboundSchema).optional(),
-  headers: z.lazy(() => Headers$inboundSchema).optional(),
-  method: z.string().optional(),
-  required: z.boolean().optional(),
-  success_status_code: z.number().int().optional(),
-  template_variables: z.lazy(() => TemplateVariables$inboundSchema).optional(),
+  method: types.optional(types.string()),
+  required: types.optional(types.boolean()),
+  description: types.optional(types.string()),
+  template_variables: types.optional(
+    z.lazy(() => TemplateVariables$inboundSchema),
+  ),
+  headers: types.optional(z.lazy(() => Headers$inboundSchema)),
+  constraints: types.optional(BulkJobConstraints$inboundSchema),
+  success_status_code: types.optional(types.number()),
+  error_status_codes: types.optional(
+    z.lazy(() => ErrorStatusCodes$inboundSchema),
+  ),
 }).transform((v) => {
   return remap$(v, {
-    "error_status_codes": "errorStatusCodes",
-    "success_status_code": "successStatusCode",
     "template_variables": "templateVariables",
+    "success_status_code": "successStatusCode",
+    "error_status_codes": "errorStatusCodes",
   });
 });
 

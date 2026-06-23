@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type GetWorkspaceDocumentResponse = {
@@ -45,15 +46,13 @@ export const GetWorkspaceDocumentResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  workspace_id: z.nullable(z.string()).optional(),
-  document_id: z.string(),
-  name: z.string(),
-  owner_id: z.nullable(z.string()).optional(),
-  size: z.nullable(z.number().int()).optional(),
-  created_date: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  content_type: z.nullable(z.string()).optional(),
+  workspace_id: z.nullable(types.string()).optional(),
+  document_id: types.string(),
+  name: types.string(),
+  owner_id: z.nullable(types.string()).optional(),
+  size: z.nullable(types.number()).optional(),
+  created_date: z.nullable(types.date()).optional(),
+  content_type: z.nullable(types.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "workspace_id": "workspaceId",

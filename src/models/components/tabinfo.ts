@@ -5,6 +5,7 @@
 import * as z from "zod/v3";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import { Tab, Tab$inboundSchema } from "./tab.js";
 
@@ -22,7 +23,7 @@ export type TabInfo = {
 /** @internal */
 export const TabInfo$inboundSchema: z.ZodType<TabInfo, z.ZodTypeDef, unknown> =
   z.object({
-    appId: z.string(),
+    appId: types.string(),
     tabs: z.array(Tab$inboundSchema),
   });
 

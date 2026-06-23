@@ -6,6 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   WorkspaceUploadRequestAssignment,
@@ -94,34 +95,26 @@ export const WorkspaceUploadRequest$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  upload_request_id: z.string(),
-  workspace_id: z.string(),
-  name: z.nullable(z.string()),
-  description: z.nullable(z.string()).optional(),
+  upload_request_id: types.string(),
+  workspace_id: types.string(),
+  name: types.nullable(types.string()),
+  description: z.nullable(types.string()).optional(),
   upload_request_owner: WorkspaceUploadRequestOwner$inboundSchema,
   status: WorkspaceUploadRequestStatus$inboundSchema,
-  documents: z.nullable(z.array(WorkspaceUploadRequestDocument$inboundSchema)),
-  assignments: z.nullable(
+  documents: types.nullable(
+    z.array(WorkspaceUploadRequestDocument$inboundSchema),
+  ),
+  assignments: types.nullable(
     z.array(WorkspaceUploadRequestAssignment$inboundSchema),
   ),
-  created_date: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ),
-  updated_date: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ),
-  due_date: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  sent_date: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  completed_date: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  can_view: z.boolean(),
-  can_edit: z.boolean(),
-  can_delete: z.boolean(),
+  created_date: types.nullable(types.date()),
+  updated_date: types.nullable(types.date()),
+  due_date: z.nullable(types.date()).optional(),
+  sent_date: z.nullable(types.date()).optional(),
+  completed_date: z.nullable(types.date()).optional(),
+  can_view: types.boolean(),
+  can_edit: types.boolean(),
+  can_delete: types.boolean(),
 }).transform((v) => {
   return remap$(v, {
     "upload_request_id": "uploadRequestId",

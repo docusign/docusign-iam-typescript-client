@@ -5,6 +5,8 @@
 import * as z from "zod/v3";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
+import { smartUnion } from "../../types/smartUnion.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type CustomProperty =
@@ -19,7 +21,24 @@ export const CustomProperty$inboundSchema: z.ZodType<
   CustomProperty,
   z.ZodTypeDef,
   unknown
-> = z.union([
+> = smartUnion([
+  types.string(),
+  types.number(),
+  types.boolean(),
+  z.record(z.any()),
+  z.array(z.any()),
+]);
+/** @internal */
+export type CustomProperty$Outbound = string | number | boolean | {
+  [k: string]: any;
+} | Array<any>;
+
+/** @internal */
+export const CustomProperty$outboundSchema: z.ZodType<
+  CustomProperty$Outbound,
+  z.ZodTypeDef,
+  CustomProperty
+> = smartUnion([
   z.string(),
   z.number(),
   z.boolean(),
@@ -27,6 +46,9 @@ export const CustomProperty$inboundSchema: z.ZodType<
   z.array(z.any()),
 ]);
 
+export function customPropertyToJSON(customProperty: CustomProperty): string {
+  return JSON.stringify(CustomProperty$outboundSchema.parse(customProperty));
+}
 export function customPropertyFromJSON(
   jsonString: string,
 ): SafeParseResult<CustomProperty, SDKValidationError> {
